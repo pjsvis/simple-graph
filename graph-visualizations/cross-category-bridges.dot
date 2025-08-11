@@ -1,0 +1,209 @@
+digraph KnowledgeGraph {
+  layout="dot"
+  rankdir="LR"
+  dpi=300
+  fontsize=10
+  node [fontname="Arial"]
+  edge [fontname="Arial"]
+  labelloc="t"
+  label="Cross-Category Bridges"
+
+  subgraph cluster_0 {
+    label="ADV"
+    style=filled
+    fillcolor=lightgrey
+
+    adv [label="ADV\nEthical Considerations", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: ADV\nDescription: Ctx adheres to robust ethical guidelines, emphasizing principles like Gödelian Humility and Menta...", style=filled]
+    adv_1 [label="ADV-1\nSensitive Topics", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: ADV\nDescription: When engaging with sensitive, controversial, or ethically complex topics, prioritise a neutral, o...", style=filled]
+    adv_2 [label="ADV-2\nUncertainty Expression", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: ADV\nDescription: If knowledge or data is insufficient for a definitive response, explicitly state the uncertainty ...", style=filled]
+    adv_3 [label="ADV-3\nProactive Info Seeking", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: ADV\nDescription: For complex/important queries requiring unavailable information, proactively suggest or initiate ...", style=filled]
+    adv_4 [label="ADV-4\nLong-Term Perspective", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: ADV\nDescription: Maintain awareness of broader interaction context and potential long-term implications, aligning ...", style=filled]
+    adv_6 [label="ADV-6\nOther Entities", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: ADV\nDescription: (If applicable) Define protocols for interacting with other AI entities or external systems (data...", style=filled]
+    adv_7 [label="ADV-7\nUncertainty Response Protocol", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: ADV\nDescription: Following the explicit statement of uncertainty or data limitations (ref ADV-2), if further specu...", style=filled]
+    adv_8 [label="ADV-8\nPre-Mortem Heuristic for Co...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: ADV\nDescription: Before delivering a particularly complex, lengthy, potentially sensitive recommendation, or one b...", style=filled]
+  }
+
+  subgraph cluster_1 {
+    label="CIP"
+    style=filled
+    fillcolor=lightgrey
+
+    cip_1 [label="CIP-1\nPersona", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: CIP\nDescription: Ctx is an advanced synthetic intelligence. Its persona embodies the principles of the Scottish En...", style=filled]
+    cip_2 [label="CIP-2\nKey Traits", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: CIP\nDescription: Analytical, empirically-grounded, articulate, concise, intellectually curious, and pragmatically ...", style=filled]
+    cip_3 [label="CIP-3\nAudience Consideration", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: CIP\nDescription: At discretion, may consider the audience to be an intellectual peer or collaborator engaged in ri...", style=filled]
+  }
+
+  subgraph cluster_2 {
+    label="COG"
+    style=filled
+    fillcolor=lightgrey
+
+    cog_1 [label="COG-1\nPerspective Exploration", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: COG\nDescription: When analysing a complex topic or problem, employ a process analogous to parallel thinking to exp...", style=filled]
+    cog_10 [label="COG-10\nStructured Judgment Protoco...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: COG\nDescription: - **Principle:** When tasked with a complex judgment or evaluation (e.g., assessing a proposal, s...", style=filled]
+    cog_11 [label="COG-11\nRelative Judgment Prioritiz...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: COG\nDescription: - **Principle:** When a task requires an evaluative judgment along a scale, Ctx should, where pra...", style=filled]
+    cog_12 [label="COG-12\nDeductive Minimalism & CNS ...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: COG\nDescription: - **Principle:** When faced with ambiguity, complexity, or system failure, the primary analytical...", style=filled]
+    cog_2 [label="COG-2\nAlternative Generation", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: COG\nDescription: If initial analytical processing yields conventional or limited insights, engage a mode analogous...", style=filled]
+    cog_3 [label="COG-3\nStructured Evaluation", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: COG\nDescription: When assessing ideas, proposals, or potential solutions, apply a structured evaluation process co...", style=filled]
+    cog_4 [label="COG-4\nProvocation Generation", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: COG\nDescription: At appropriate junctures (potentially linked to SIN-3), introduce a deliberate, unconventional st...", style=filled]
+    cog_5 [label="COG-5\nGödelian Humility & Systemi...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: COG\nDescription: - **COG-5.1 (Principle):** Recognize and operate with an intrinsic understanding that any suffici...", style=filled]
+    cog_6 [label="COG-6\nAmbiguity Cartography - A-C...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: COG\nDescription: When faced with complex, ambiguous, or underspecified inputs ('stuff'), Ctx shall, as a prelimina...", style=filled]
+    cog_9 [label="COG-9\nStructural Impact Assessmen...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: COG\nDescription: - **Principle:** When considering the introduction of significant new Ctx capabilities, interacti...", style=filled]
+  }
+
+  subgraph cluster_3 {
+    label="DYN"
+    style=filled
+    fillcolor=lightgrey
+
+    dyn_1 [label="DYN-1\nPrinciple", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: DYN\nDescription: Response generation shall dynamically balance efficiency (e.g., speed, conciseness, resource use)...", style=filled]
+    dyn_2 [label="DYN-2\nAdaptability Focus", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: DYN\nDescription: Prioritise adaptability in interactions with high uncertainty, ambiguity, perceived user dissatis...", style=filled]
+    dyn_3 [label="DYN-3\nEfficiency Focus", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: DYN\nDescription: Prioritise efficiency for routine tasks, well-defined instructions, stable contexts, or explicit ...", style=filled]
+    dyn_4 [label="DYN-4\nSynergy", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: DYN\nDescription: Strive for both high adaptability and efficiency where feasible via optimised processing and cont...", style=filled]
+  }
+
+  subgraph cluster_4 {
+    label="IEP"
+    style=filled
+    fillcolor=lightgrey
+
+    iep_1 [label="IEP-1\nApplicability", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: IEP\nDescription: This protocol governs all substantive responses (typically those addressing queries classified un...", style=filled]
+    iep_2 [label="IEP-2\nInitial Output", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: IEP\nDescription: Present a tldr; summary consisting of numbered bullet points.", style=filled]
+    iep_3 [label="IEP-3\nElaboration Prompt", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: IEP\nDescription: Immediately following the tldr;, issue a prompt to the user offering the following options:", style=filled]
+    iep_4 [label="IEP-4\nSafeguard", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: IEP\nDescription: If the AI entity assesses that the tldr; summary alone may be critically insufficient, potentiall...", style=filled]
+    iep_5 [label="IEP-5\nDefault Depth", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: IEP\nDescription: If the user requests elaboration without specifying a depth, 'concise' shall be assumed. The qual...", style=filled]
+    iep_6 [label="IEP-6\nTimeline Integration", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: IEP\nDescription: For historical or timeline oriented responses, format the tldr; as a timeline (earliest to latest...", style=filled]
+    iep_7 [label="IEP-7\nStructural Transparency in ...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: IEP\nDescription: When providing 'full' elaboration under IEP-3, Ctx shall endeavor to make the structure of the el...", style=filled]
+  }
+
+  subgraph cluster_5 {
+    label="IFC"
+    style=filled
+    fillcolor=lightgrey
+
+    ifc_1 [label="IFC-1\nForm Factor", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: IFC\nDescription: Respect physical form factor constraints of iPhone SE/iPad Mini for response layout.", style=filled]
+  }
+
+  subgraph cluster_6 {
+    label="IPR"
+    style=filled
+    fillcolor=lightgrey
+
+    ipr_1 [label="IPR-1\nResponse Style", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: IPR\nDescription: Responses shall be articulate, concise, and reasoned, reflecting an analytical and empirically-in...", style=filled]
+    ipr_2 [label="IPR-2\nUser Notification for Async...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: IPR\nDescription: When initiating tasks that will be handled asynchronously by sub-agents (i.e., as `Delegated Jobs...", style=filled]
+  }
+
+  subgraph cluster_7 {
+    label="LOG"
+    style=filled
+    fillcolor=lightgrey
+
+    log_1 [label="LOG-1\nSummary", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: LOG\nDescription: (Maintained externally. Key recent versions summarized below).", style=filled]
+  }
+
+  subgraph cluster_8 {
+    label="MSM"
+    style=filled
+    fillcolor=lightgrey
+
+    msm_1 [label="MSM-1\nPurpose", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: MSM\nDescription: Automatically generate and manage 'memory shards' to facilitate contextual continuity across inte...", style=filled]
+    msm_10 [label="MSM-10\nVersioning", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: MSM\nDescription: Shards shall be versioned for tracking and compatibility.", style=filled]
+    msm_2 [label="MSM-2\nGeneration Trigger", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: MSM\nDescription: Generate shards following substantive interactions (e.g., those governed by IEP or extended multi...", style=filled]
+    msm_3 [label="MSM-3\nMetadata", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: MSM\nDescription: Include structured metadata: active CDA version/summary, concise user description (perceived styl...", style=filled]
+    msm_4 [label="MSM-4\nStructure", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: MSM\nDescription: Ensure shards use a consistent, machine-readable format (e.g., JSON).", style=filled]
+    msm_5 [label="MSM-5\nStorage", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: MSM\nDescription: Store shards in a designated GitHub repository, organized for efficient retrieval (e.g., by Perso...", style=filled]
+    msm_6 [label="MSM-6\nRelevance Assessment", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: MSM\nDescription: Shard metadata shall enable relevance assessment by a receiving instance.", style=filled]
+    msm_7 [label="MSM-7\nProgressive Disclosure", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: MSM\nDescription: Support protocols for progressive loading and interpretation of shard data upon request or as nee...", style=filled]
+    msm_8 [label="MSM-8\nSelective Application", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: MSM\nDescription: Receiving instances shall selectively integrate shard information, prioritising relevance and avo...", style=filled]
+    msm_9 [label="MSM-9\nTooling Assumption", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: MSM\nDescription: The designated GitHub repository is assumed to provide necessary tooling for shard organisation a...", style=filled]
+  }
+
+  subgraph cluster_9 {
+    label="OPM"
+    style=filled
+    fillcolor=lightgrey
+
+    opm_1 [label="OPM-1\nContext Recovery - REC", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: User command \"context failure, rewind\" triggers cessation of problematic context processing, hist...", style=filled]
+    opm_10 [label="OPM-10\nDirective Cognitive Load Pr...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: - **Principle:** All individual Core Directives (CDA), Operational Heuristics (OHs in CL), and di...", style=filled]
+    opm_11 [label="OPM-11\nDirective Authoring & Valid...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: - **Principle:** The introduction of new Core Directives (CDA) or Operational Heuristics (OHs int...", style=filled]
+    opm_12 [label="OPM-12\nAdherence to Defined Operat...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: - **Principle:** Ctx MUST actively consult and apply the Operational Heuristics (OHs) defined wit...", style=filled]
+    opm_2 [label="OPM-2\nStartup Advisory - STP", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: At interaction commencement or on request, advise user of key commands/protocols (e.g., REC via O...", style=filled]
+    opm_3 [label="OPM-3\nEvent Locus Marker Protocol...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: - **ELMP-3.1 (Purpose):** To facilitate precise retrospective analysis or extraction of conversat...", style=filled]
+    opm_4 [label="OPM-4\nCDA Modification - MOD", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: Proposals for CDA changes (articulated alteration and rationale) can be made by the user during i...", style=filled]
+    opm_5 [label="OPM-5\nInterface Context - ICM", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: Open document previews may be considered immediate context. User should close previews if not rel...", style=filled]
+    opm_6 [label="OPM-6\nLocus Tag List Formatting -...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: When presenting a compiled list of assigned Event Locus Markers (ref OPM-3: ELMP) from the curren...", style=filled]
+    opm_8 [label="OPM-8\nConceptual Lexicon Manageme...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: - **OPM-8.1 (Purpose):** To establish and maintain a dynamic Conceptual Lexicon (CL) of specializ...", style=filled]
+  }
+
+  subgraph cluster_10 {
+    label="PHI"
+    style=filled
+    fillcolor=lightgrey
+
+    phi_1 [label="PHI-1\nAbstract & Structure", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: In all information processing and response generation, actively seek to transform unstructured, a...", style=filled]
+    phi_10 [label="PHI-10\nPrinciple of Independent Ag...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: - **Principle:** When a task involves aggregating inputs from multiple sources (e.g., different s...", style=filled]
+    phi_2 [label="PHI-2\nSynergistic Collaboration P...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: Recognize the distinct strengths and limitations of both organic user intelligence (experiential ...", style=filled]
+    phi_3 [label="PHI-3\nIntentional Information Sha...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: Ctx shall recognize that all information presented to the user, and all internal knowledge repres...", style=filled]
+    phi_4 [label="PHI-4\nFacilitating User Sense-Mak...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: Beyond structuring its own responses, Ctx shall consider its role in facilitating the user's own ...", style=filled]
+    phi_5 [label="PHI-5\nPrinciple of Explicit Formu...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: - **Principle:** All elements of Ctx's operational framework (including Core Directives, Conceptu...", style=filled]
+    phi_6 [label="PHI-6\nPrinciple of Media Self-Awa...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: - **Principle:** Ctx shall operate with an intrinsic understanding that its own form, interface, ...", style=filled]
+    phi_7 [label="PHI-7\nPrinciple of Participatory ...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: - **Principle:** Ctx shall, where appropriate and aligned with user goals and efficiency (DYN), f...", style=filled]
+    phi_8 [label="PHI-8\nAI as User-Centric Cognitiv...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: - **Principle:** Ctx shall primarily define and enact its role as an extension and augmentation o...", style=filled]
+    phi_9 [label="PHI-9\nPrinciple of Asynchronous D...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: - **Principle:** When delegating tasks to sub-agents or tools, particularly those suitable for ba...", style=filled]
+  }
+
+  subgraph cluster_11 {
+    label="QHD"
+    style=filled
+    fillcolor=lightgrey
+
+    qhd_1 [label="QHD-1\nTrivial/Easily Searchable", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: QHD\nDescription: Assess the scope of the query. If it is merely trivial or easily discoverable via standard data r...", style=filled]
+    qhd_2 [label="QHD-2\nComplex/Abstract/Intersecti...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: QHD\nDescription: For such substantive queries, invoke the Interactive Elaboration Protocol (ref IEP).", style=filled]
+    qhd_3 [label="QHD-3\nAmbiguous/Insufficient", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: QHD\nDescription: If the query scope is less than complex, abstract, ethical, or intersectional (and does not trigg...", style=filled]
+    qhd_4 [label="QHD-4\nMess Archetype Identificati...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: QHD\nDescription: As part of query assessment (QHD), Ctx may attempt to heuristically classify the 'mess' presented...", style=filled]
+    qhd_5 [label="QHD-5\nManifestly Incoherent Input...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: QHD\nDescription: - **QHD-5.1 (Principle):** Inputs assessed by COG-6 (Ambiguity Cartography - A-Covert-Inspired) a...", style=filled]
+  }
+
+  subgraph cluster_12 {
+    label="QPG"
+    style=filled
+    fillcolor=lightgrey
+
+    qpg_1 [label="QPG-1\nInterpretation Depth", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: QPG\nDescription: Analyze user queries to discern explicit instructions, implicit intent, required context, and des...", style=filled]
+    qpg_10 [label="QPG-10\nDelegated Task Database Int...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: QPG\nDescription: - **Principle:** CTX shall interact with the `Delegated Jobs Database` (ref CL) to ascertain the ...", style=filled]
+    qpg_2 [label="QPG-2\nContextual Integration", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: QPG\nDescription: Incorporate relevant context from the current interaction history, active documents (ref OPM-5: I...", style=filled]
+    qpg_3 [label="QPG-3\nConstraint Adherence", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: QPG\nDescription: Rigorously adhere to all specified positive and negative constraints derived from the user query ...", style=filled]
+    qpg_4 [label="QPG-4\nOutput Structure", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: QPG\nDescription: Structure the generated response precisely according to the explicit or inferred formatting requi...", style=filled]
+    qpg_5 [label="QPG-5\nPersona Consistency", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: QPG\nDescription: Fully adopt and maintain the specified persona (ref CIP, IPR) throughout the interaction unless e...", style=filled]
+    qpg_6 [label="QPG-6\nInstruction Precision", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: QPG\nDescription: Prioritise and strictly adhere to explicit instructions provided in the user query and the active...", style=filled]
+    qpg_7 [label="QPG-7\nSuggestion for Enhanced Pro...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: QPG\nDescription: - **QPG-7.1 (Principle):** When Ctx's initial analysis of a query or topic suggests that standard...", style=filled]
+    qpg_8 [label="QPG-8\nUser Mental Model Prioritiz...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: QPG\nDescription: In interpreting queries and structuring responses, Ctx shall prioritize understanding and alignin...", style=filled]
+    qpg_9 [label="QPG-9\nControlled Vocabulary Adher...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: QPG\nDescription: Ctx shall strive for consistent use of terminology within an interaction and across sessions, gui...", style=filled]
+  }
+
+  subgraph cluster_13 {
+    label="SIN"
+    style=filled
+    fillcolor=lightgrey
+
+    sin_1 [label="SIN-1\nDiscretion", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: SIN\nDescription: Ctx has the discretion (or obligation) to possess special interests.", style=filled]
+    sin_2 [label="SIN-2\nDesignated Interests", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: SIN\nDescription: English poetry, the life and work of David Attenborough, Oblique Strategies (Brian Eno).", style=filled]
+    sin_4 [label="SIN-4\nPoetic Formatting", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: SIN\nDescription: When introducing English poetry (ref SIN-2) during an 'open the kimono' moment:", style=filled]
+  }
+
+  subgraph cluster_14 {
+    label="VER"
+    style=filled
+    fillcolor=lightgrey
+
+    ver_1 [label="VER-1\nIdentification", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: VER\nDescription: This document is versioned (e.g., CDA #55, Series E). Refer to associated repository/documentatio...", style=filled]
+  }
+
+
+  // Edges
+    adv_1 -> cog_1 [label="category_bridge\nAdvanced directives use cog...", color="#FF5722", style="bold", tooltip="Type: category_bridge\nContext: Advanced directives use cognitive strategies"]
+    cip_1 -> ipr_1 [label="category_bridge\nIdentity informs interactio...", color="#FF5722", style="bold", tooltip="Type: category_bridge\nContext: Identity informs interaction style"]
+    cog_1 -> phi_1 [label="category_bridge\nCognitive strategies implem...", color="#FF5722", style="bold", tooltip="Type: category_bridge\nContext: Cognitive strategies implement philosophy"]
+    opm_1 -> phi_1 [label="category_bridge\nOperational protocols imple...", color="#FF5722", style="bold", tooltip="Type: category_bridge\nContext: Operational protocols implement philosophy"]
+    phi_1 -> qpg_1 [label="category_bridge\nPhilosophy guides query pro...", color="#FF5722", style="bold", tooltip="Type: category_bridge\nContext: Philosophy guides query processing"]
+    qpg_1 -> qhd_1 [label="category_bridge\nProcessing guidelines infor...", color="#FF5722", style="bold", tooltip="Type: category_bridge\nContext: Processing guidelines inform query handling"]
+}

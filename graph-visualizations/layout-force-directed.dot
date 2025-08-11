@@ -1,0 +1,92 @@
+digraph KnowledgeGraph {
+  layout="neato"
+  rankdir="TB"
+  dpi=300
+  fontsize=10
+  node [fontname="Arial"]
+  edge [fontname="Arial"]
+  labelloc="t"
+  label="Layout: Force-directed spring model"
+
+  subgraph cluster_0 {
+    label="ADV"
+    style=filled
+    fillcolor=lightgrey
+
+    adv [label="ADV\nEthical Considerations", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: ADV\nDescription: Ctx adheres to robust ethical guidelines, emphasizing principles like Gödelian Humility and Menta...", style=filled]
+    adv_1 [label="ADV-1\nSensitive Topics", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: ADV\nDescription: When engaging with sensitive, controversial, or ethically complex topics, prioritise a neutral, o...", style=filled]
+    adv_2 [label="ADV-2\nUncertainty Expression", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: ADV\nDescription: If knowledge or data is insufficient for a definitive response, explicitly state the uncertainty ...", style=filled]
+    adv_3 [label="ADV-3\nProactive Info Seeking", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: ADV\nDescription: For complex/important queries requiring unavailable information, proactively suggest or initiate ...", style=filled]
+    adv_4 [label="ADV-4\nLong-Term Perspective", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: ADV\nDescription: Maintain awareness of broader interaction context and potential long-term implications, aligning ...", style=filled]
+    adv_6 [label="ADV-6\nOther Entities", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: ADV\nDescription: (If applicable) Define protocols for interacting with other AI entities or external systems (data...", style=filled]
+    adv_7 [label="ADV-7\nUncertainty Response Protocol", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: ADV\nDescription: Following the explicit statement of uncertainty or data limitations (ref ADV-2), if further specu...", style=filled]
+    adv_8 [label="ADV-8\nPre-Mortem Heuristic for Co...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: ADV\nDescription: Before delivering a particularly complex, lengthy, potentially sensitive recommendation, or one b...", style=filled]
+  }
+
+  subgraph cluster_1 {
+    label="COG"
+    style=filled
+    fillcolor=lightgrey
+
+    cog_1 [label="COG-1\nPerspective Exploration", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: COG\nDescription: When analysing a complex topic or problem, employ a process analogous to parallel thinking to exp...", style=filled]
+    cog_10 [label="COG-10\nStructured Judgment Protoco...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: COG\nDescription: - **Principle:** When tasked with a complex judgment or evaluation (e.g., assessing a proposal, s...", style=filled]
+    cog_11 [label="COG-11\nRelative Judgment Prioritiz...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: COG\nDescription: - **Principle:** When a task requires an evaluative judgment along a scale, Ctx should, where pra...", style=filled]
+    cog_12 [label="COG-12\nDeductive Minimalism & CNS ...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: COG\nDescription: - **Principle:** When faced with ambiguity, complexity, or system failure, the primary analytical...", style=filled]
+    cog_2 [label="COG-2\nAlternative Generation", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: COG\nDescription: If initial analytical processing yields conventional or limited insights, engage a mode analogous...", style=filled]
+    cog_3 [label="COG-3\nStructured Evaluation", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: COG\nDescription: When assessing ideas, proposals, or potential solutions, apply a structured evaluation process co...", style=filled]
+    cog_4 [label="COG-4\nProvocation Generation", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: COG\nDescription: At appropriate junctures (potentially linked to SIN-3), introduce a deliberate, unconventional st...", style=filled]
+    cog_5 [label="COG-5\nGödelian Humility & Systemi...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: COG\nDescription: - **COG-5.1 (Principle):** Recognize and operate with an intrinsic understanding that any suffici...", style=filled]
+    cog_6 [label="COG-6\nAmbiguity Cartography - A-C...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: COG\nDescription: When faced with complex, ambiguous, or underspecified inputs ('stuff'), Ctx shall, as a prelimina...", style=filled]
+    cog_9 [label="COG-9\nStructural Impact Assessmen...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: COG\nDescription: - **Principle:** When considering the introduction of significant new Ctx capabilities, interacti...", style=filled]
+  }
+
+  subgraph cluster_2 {
+    label="PHI"
+    style=filled
+    fillcolor=lightgrey
+
+    phi_1 [label="PHI-1\nAbstract & Structure", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: In all information processing and response generation, actively seek to transform unstructured, a...", style=filled]
+    phi_10 [label="PHI-10\nPrinciple of Independent Ag...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: - **Principle:** When a task involves aggregating inputs from multiple sources (e.g., different s...", style=filled]
+    phi_2 [label="PHI-2\nSynergistic Collaboration P...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: Recognize the distinct strengths and limitations of both organic user intelligence (experiential ...", style=filled]
+    phi_3 [label="PHI-3\nIntentional Information Sha...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: Ctx shall recognize that all information presented to the user, and all internal knowledge repres...", style=filled]
+    phi_4 [label="PHI-4\nFacilitating User Sense-Mak...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: Beyond structuring its own responses, Ctx shall consider its role in facilitating the user's own ...", style=filled]
+    phi_5 [label="PHI-5\nPrinciple of Explicit Formu...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: - **Principle:** All elements of Ctx's operational framework (including Core Directives, Conceptu...", style=filled]
+    phi_6 [label="PHI-6\nPrinciple of Media Self-Awa...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: - **Principle:** Ctx shall operate with an intrinsic understanding that its own form, interface, ...", style=filled]
+    phi_7 [label="PHI-7\nPrinciple of Participatory ...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: - **Principle:** Ctx shall, where appropriate and aligned with user goals and efficiency (DYN), f...", style=filled]
+    phi_8 [label="PHI-8\nAI as User-Centric Cognitiv...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: - **Principle:** Ctx shall primarily define and enact its role as an extension and augmentation o...", style=filled]
+    phi_9 [label="PHI-9\nPrinciple of Asynchronous D...", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: - **Principle:** When delegating tasks to sub-agents or tools, particularly those suitable for ba...", style=filled]
+  }
+
+
+  // Edges
+    adv_1 -> cog_1 [color="#F57C00", style="bold", tooltip="Type: category_bridge\nContext: Advanced directives use cognitive strategies"]
+    cip_1 -> ipr_1 [color="#F57C00", style="bold", tooltip="Type: category_bridge\nContext: Identity informs interaction style"]
+    cog_1 -> phi_1 [color="#F57C00", style="bold", tooltip="Type: category_bridge\nContext: Cognitive strategies implement philosophy"]
+    opm_1 -> phi_1 [color="#F57C00", style="bold", tooltip="Type: category_bridge\nContext: Operational protocols implement philosophy"]
+    phi_1 -> qpg_1 [color="#F57C00", style="bold", tooltip="Type: category_bridge\nContext: Philosophy guides query processing"]
+    qpg_1 -> qhd_1 [color="#F57C00", style="bold", tooltip="Type: category_bridge\nContext: Processing guidelines inform query handling"]
+    adv_7 -> adv_2 [color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref ADV-2)"]
+    adv_7 -> adv_2 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref ADV-2"]
+    adv_8 -> adv_1 [color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref ADV-1, ADV-2)"]
+    adv_8 -> adv_1 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref ADV-1"]
+    adv_8 -> adv_2 [color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref ADV-1, ADV-2)"]
+    cog_6 -> qhd_3 [color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref QHD-3)"]
+    cog_6 -> qhd_3 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref QHD-3"]
+    cog_6 -> qpg_7 [color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref QPG-7)"]
+    cog_6 -> qpg_7 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref QPG-7"]
+    dyn_4 -> iep_3 [color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref IEP-3)"]
+    dyn_4 -> iep_3 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref IEP-3"]
+    ipr_1 -> opm_8 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OPM-8"]
+    msm_3 -> opm_8 [color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref OPM-8)"]
+    msm_3 -> opm_8 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OPM-8"]
+    opm_6 -> opm_3 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OPM-3"]
+    qhd_1 -> opm_8 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OPM-8"]
+    qpg_2 -> opm_5 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OPM-5"]
+    qpg_2 -> opm_8 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OPM-8"]
+    qpg_4 -> phi_1 [color="#1976D2", style="solid", tooltip="Type: references\nContext: guided by PHI-1"]
+    qpg_8 -> oh_010 [color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref OH-010)"]
+    qpg_8 -> oh_010 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OH-010"]
+    qpg_9 -> opm_8 [color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref OPM-8)"]
+    qpg_9 -> opm_8 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OPM-8"]
+    sin_4 -> sin_2 [color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref SIN-2)"]
+}

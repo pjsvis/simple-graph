@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CDA Knowledge Graph Visualizations</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        .stats {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .stats strong {
+            color: #2980b9;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        .section h2 {
+            color: #34495e;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .graph-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        .graph-card {
+            border: 1px solid #bdc3c7;
+            border-radius: 10px;
+            padding: 20px;
+            background: #fafafa;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .graph-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .graph-card h3 {
+            margin-top: 0;
+            color: #2c3e50;
+            font-size: 1.3em;
+        }
+        .graph-links {
+            margin: 15px 0;
+        }
+        .graph-links a {
+            display: inline-block;
+            margin-right: 10px;
+            margin-bottom: 8px;
+            padding: 8px 15px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 0.9em;
+            transition: background 0.3s ease;
+        }
+        .graph-links a:hover {
+            background: #2980b9;
+        }
+        .graph-links a.dot {
+            background: #95a5a6;
+        }
+        .graph-links a.dot:hover {
+            background: #7f8c8d;
+        }
+        .description {
+            font-size: 0.95em;
+            color: #555;
+            line-height: 1.5;
+            margin-top: 10px;
+        }
+        .thumbnail {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .thumbnail:hover {
+            transform: scale(1.05);
+        }
+        .instructions {
+            background: #e8f6f3;
+            border-left: 4px solid #1abc9c;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 0 8px 8px 0;
+        }
+        .instructions h3 {
+            color: #16a085;
+            margin-top: 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 CDA Knowledge Graph Visualizations</h1>
+        <div class="subtitle">Interactive exploration of the Core Directive Array knowledge network</div>
+        
+        <div class="stats">
+            <strong>10 High-Quality PNG Visualizations</strong> • <strong>19 Thumbnail Previews</strong> • <strong>Generated from 19 DOT Files</strong>
+        </div>
+
+        <div class="instructions">
+            <h3>🚀 How to Use</h3>
+            <p><strong>Click any PNG link</strong> to view the full-resolution visualization. <strong>Click thumbnails</strong> for quick previews. Each visualization reveals different aspects of the CDA knowledge graph structure and relationships.</p>
+        </div>
+
+        <div class="section">
+            <h2>🎯 Priority Visualizations</h2>
+            <div class="graph-grid">
+                <div class="graph-card">
+                    <h3>Complete Knowledge Graph</h3>
+                    <div class="graph-links">
+                        <a href="complete-knowledge-graph.png" target="_blank">PNG</a>
+                        <a href="../graph-visualizations/complete-knowledge-graph.dot" class="dot" target="_blank">DOT</a>
+                    </div>
+                    <img src="thumbnails/complete-knowledge-graph_thumb.png" alt="Complete Knowledge Graph" class="thumbnail" onclick="window.open('complete-knowledge-graph.png', '_blank')">
+                    <div class="description">Full network overview showing all 85 directives, categories, and 189 relationships. Best starting point for understanding the complete system structure.</div>
+                </div>
+
+                <div class="graph-card">
+                    <h3>Hub & Authority Nodes</h3>
+                    <div class="graph-links">
+                        <a href="hub-authority.png" target="_blank">PNG</a>
+                        <a href="../graph-visualizations/hub-authority.dot" class="dot" target="_blank">DOT</a>
+                    </div>
+                    <img src="thumbnails/hub-authority_thumb.png" alt="Hub Authority" class="thumbnail" onclick="window.open('hub-authority.png', '_blank')">
+                    <div class="description">Highlights the most connected directives: COG-6 (Ambiguity Cartography) and OPM-8 (Conceptual Lexicon Management) with 7 connections each.</div>
+                </div>
+
+                <div class="graph-card">
+                    <h3>Directives Network</h3>
+                    <div class="graph-links">
+                        <a href="directives-only.png" target="_blank">PNG</a>
+                        <a href="../graph-visualizations/directives-only.dot" class="dot" target="_blank">DOT</a>
+                    </div>
+                    <img src="thumbnails/directives-only_thumb.png" alt="Directives Only" class="thumbnail" onclick="window.open('directives-only.png', '_blank')">
+                    <div class="description">Clean view of directive interconnections using force-directed layout. Shows natural clustering and relationship patterns without category grouping.</div>
+                </div>
+
+                <div class="graph-card">
+                    <h3>Cross-Category Bridges</h3>
+                    <div class="graph-links">
+                        <a href="cross-category-bridges.png" target="_blank">PNG</a>
+                        <a href="../graph-visualizations/cross-category-bridges.dot" class="dot" target="_blank">DOT</a>
+                    </div>
+                    <img src="thumbnails/cross-category-bridges_thumb.png" alt="Cross Category Bridges" class="thumbnail" onclick="window.open('cross-category-bridges.png', '_blank')">
+                    <div class="description">Strategic connections between directive categories. Shows how CIP informs IPR, PHI guides QPG, and other architectural relationships.</div>
+                </div>
+
+                <div class="graph-card">
+                    <h3>Semantic Relationships</h3>
+                    <div class="graph-links">
+                        <a href="semantic-similarity.png" target="_blank">PNG</a>
+                        <a href="../graph-visualizations/semantic-similarity.dot" class="dot" target="_blank">DOT</a>
+                    </div>
+                    <img src="thumbnails/semantic-similarity_thumb.png" alt="Semantic Similarity" class="thumbnail" onclick="window.open('semantic-similarity.png', '_blank')">
+                    <div class="description">Connections based on semantic similarity and keyword matching. Reveals thematic clusters and conceptual relationships.</div>
+                </div>
+
+                <div class="graph-card">
+                    <h3>Inspirational Clusters</h3>
+                    <div class="graph-links">
+                        <a href="inspirational-clusters.png" target="_blank">PNG</a>
+                        <a href="../graph-visualizations/inspirational-clusters.dot" class="dot" target="_blank">DOT</a>
+                    </div>
+                    <img src="thumbnails/inspirational-clusters_thumb.png" alt="Inspirational Clusters" class="thumbnail" onclick="window.open('inspirational-clusters.png', '_blank')">
+                    <div class="description">Groups directives by shared inspirational sources: McLuhan-inspired, HSE-inspired, A-Covert-inspired, and Noise-Reduction approaches.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📂 Category-Specific Views</h2>
+            <div class="graph-grid">
+                <div class="graph-card">
+                    <h3>Advanced Directives (ADV)</h3>
+                    <div class="graph-links">
+                        <a href="category-adv.png" target="_blank">PNG</a>
+                        <a href="../graph-visualizations/category-adv.dot" class="dot" target="_blank">DOT</a>
+                    </div>
+                    <img src="thumbnails/category-adv_thumb.png" alt="Category ADV" class="thumbnail" onclick="window.open('category-adv.png', '_blank')">
+                    <div class="description">8 advanced directives including uncertainty expression, ethical considerations, and pre-mortem heuristics.</div>
+                </div>
+
+                <div class="graph-card">
+                    <h3>Cognitive Strategies (COG)</h3>
+                    <div class="graph-links">
+                        <a href="category-cog.png" target="_blank">PNG</a>
+                        <a href="../graph-visualizations/category-cog.dot" class="dot" target="_blank">DOT</a>
+                    </div>
+                    <img src="thumbnails/category-cog_thumb.png" alt="Category COG" class="thumbnail" onclick="window.open('category-cog.png', '_blank')">
+                    <div class="description">10 cognitive strategy directives including perspective exploration, ambiguity cartography, and Gödelian humility.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎨 Layout Demonstrations</h2>
+            <div class="graph-grid">
+                <div class="graph-card">
+                    <h3>Force-Directed Layout</h3>
+                    <div class="graph-links">
+                        <a href="layout-force-directed.png" target="_blank">PNG</a>
+                        <a href="../graph-visualizations/layout-force-directed.dot" class="dot" target="_blank">DOT</a>
+                    </div>
+                    <img src="thumbnails/layout-force-directed_thumb.png" alt="Force Directed Layout" class="thumbnail" onclick="window.open('layout-force-directed.png', '_blank')">
+                    <div class="description">Neato force-directed layout revealing natural clustering patterns and relationship strengths through spatial positioning.</div>
+                </div>
+
+                <div class="graph-card">
+                    <h3>Minimal Example</h3>
+                    <div class="graph-links">
+                        <a href="minimal-example.png" target="_blank">PNG</a>
+                        <a href="../graph-visualizations/minimal-example.dot" class="dot" target="_blank">DOT</a>
+                    </div>
+                    <img src="thumbnails/minimal-example_thumb.png" alt="Minimal Example" class="thumbnail" onclick="window.open('minimal-example.png', '_blank')">
+                    <div class="description">Simple 3-node example showing basic directive relationships: CIP-1 → IPR-1 → PHI-1. Perfect for understanding the visualization format.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Generated on <strong id="date"></strong> • <strong>CDA Knowledge Graph Visualizer</strong> • 🎨 Powered by Graphviz</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('date').textContent = new Date().toLocaleDateString();
+    </script>
+</body>
+</html>

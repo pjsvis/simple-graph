@@ -1,0 +1,13 @@
+digraph KnowledgeGraph {
+  layout="dot"
+  rankdir="TB"
+  
+  // Sample nodes
+  node1 [label="CIP-1\nCore Identity", shape="box", fillcolor="#E3F2FD", style=filled]
+  node2 [label="IPR-1\nInteraction Style", shape="box", fillcolor="#E3F2FD", style=filled]
+  node3 [label="PHI-1\nProcessing Philosophy", shape="box", fillcolor="#E3F2FD", style=filled]
+  
+  // Sample edges
+  node1 -> node2 [label="informs", color="#1976D2"]
+  node2 -> node3 [label="guides", color="#1976D2"]
+}

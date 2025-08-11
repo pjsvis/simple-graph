@@ -1,0 +1,39 @@
+{
+  "name": "simple-graph",
+  "version": "1.0.0",
+  "description": "A simple graph database with TypeScript SQL functions",
+  "type": "module",
+  "scripts": {
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:watch": "vitest --watch",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "render-graphs": "node -r ts-node/register scripts/render-graphs.ts",
+    "render-png": "node scripts/render-png.cjs",
+    "render-png-all": "node scripts/render-png.cjs --all",
+    "render-thumbnails": "node scripts/render-png.cjs --thumbnails",
+    "generate-visualizations": "npm run test:run dot-graph-visualization.test.ts && npm run render-graphs",
+    "reorganize": "node scripts/reorganize-project.cjs",
+    "reorganize-preview": "node scripts/reorganize-project.cjs --dry-run --verbose"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/sqlite3": "^3.1.11",
+    "@vitest/coverage-v8": "^1.0.0",
+    "@vitest/ui": "^1.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0"
+  },
+  "keywords": [
+    "graph",
+    "database",
+    "sql",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "sqlite3": "^5.1.7"
+  }
+}
