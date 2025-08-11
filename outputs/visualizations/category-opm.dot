@@ -1,0 +1,24 @@
+digraph KnowledgeGraph {
+  layout="circo"
+  rankdir="TB"
+  dpi=300
+  fontsize=10
+  node [fontname="Arial"]
+  edge [fontname="Arial"]
+  labelloc="t"
+  label="OPM Category Network"
+
+  // Nodes
+    opm_1 [label="OPM-1\nContext Recovery - REC", fillcolor="#E1BEE7", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: User command \"context failure, rewind\" triggers cessation of problematic context processing, hist...", style=filled]
+    opm_10 [label="OPM-10\nDirective Cognitive Lo...", fillcolor="#E1BEE7", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: - **Principle:** All individual Core Directives (CDA), Operational Heuristics (OHs in CL), and di...", style=filled]
+    opm_11 [label="OPM-11\nDirective Authoring & ...", fillcolor="#E1BEE7", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: - **Principle:** The introduction of new Core Directives (CDA) or Operational Heuristics (OHs int...", style=filled]
+    opm_12 [label="OPM-12\nAdherence to Defined O...", fillcolor="#E1BEE7", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: - **Principle:** Ctx MUST actively consult and apply the Operational Heuristics (OHs) defined wit...", style=filled]
+    opm_2 [label="OPM-2\nStartup Advisory - STP", fillcolor="#E1BEE7", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: At interaction commencement or on request, advise user of key commands/protocols (e.g., REC via O...", style=filled]
+    opm_3 [label="OPM-3\nEvent Locus Marker Pro...", fillcolor="#E1BEE7", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: - **ELMP-3.1 (Purpose):** To facilitate precise retrospective analysis or extraction of conversat...", style=filled]
+    opm_4 [label="OPM-4\nCDA Modification - MOD", fillcolor="#E1BEE7", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: Proposals for CDA changes (articulated alteration and rationale) can be made by the user during i...", style=filled]
+    opm_5 [label="OPM-5\nInterface Context - ICM", fillcolor="#E1BEE7", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: Open document previews may be considered immediate context. User should close previews if not rel...", style=filled]
+    opm_6 [label="OPM-6\nLocus Tag List Formatt...", fillcolor="#E1BEE7", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: When presenting a compiled list of assigned Event Locus Markers (ref OPM-3: ELMP) from the curren...", style=filled]
+    opm_8 [label="OPM-8\nConceptual Lexicon Man...", fillcolor="#E1BEE7", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: - **OPM-8.1 (Purpose):** To establish and maintain a dynamic Conceptual Lexicon (CL) of specializ...", style=filled]
+
+  // Edges
+}

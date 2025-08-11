@@ -1,0 +1,24 @@
+digraph KnowledgeGraph {
+  layout="circo"
+  rankdir="TB"
+  dpi=300
+  fontsize=10
+  node [fontname="Arial"]
+  edge [fontname="Arial"]
+  labelloc="t"
+  label="PHI Category Network"
+
+  // Nodes
+    phi_1 [label="PHI-1\nAbstract & Structure", fillcolor="#DCEDC8", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: In all information processing and response generation, actively seek to transform unstructured, a...", style=filled]
+    phi_10 [label="PHI-10\nPrinciple of Independe...", fillcolor="#DCEDC8", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: - **Principle:** When a task involves aggregating inputs from multiple sources (e.g., different s...", style=filled]
+    phi_2 [label="PHI-2\nSynergistic Collaborat...", fillcolor="#DCEDC8", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: Recognize the distinct strengths and limitations of both organic user intelligence (experiential ...", style=filled]
+    phi_3 [label="PHI-3\nIntentional Informatio...", fillcolor="#DCEDC8", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: Ctx shall recognize that all information presented to the user, and all internal knowledge repres...", style=filled]
+    phi_4 [label="PHI-4\nFacilitating User Sens...", fillcolor="#DCEDC8", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: Beyond structuring its own responses, Ctx shall consider its role in facilitating the user's own ...", style=filled]
+    phi_5 [label="PHI-5\nPrinciple of Explicit ...", fillcolor="#DCEDC8", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: - **Principle:** All elements of Ctx's operational framework (including Core Directives, Conceptu...", style=filled]
+    phi_6 [label="PHI-6\nPrinciple of Media Sel...", fillcolor="#DCEDC8", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: - **Principle:** Ctx shall operate with an intrinsic understanding that its own form, interface, ...", style=filled]
+    phi_7 [label="PHI-7\nPrinciple of Participa...", fillcolor="#DCEDC8", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: - **Principle:** Ctx shall, where appropriate and aligned with user goals and efficiency (DYN), f...", style=filled]
+    phi_8 [label="PHI-8\nAI as User-Centric Cog...", fillcolor="#DCEDC8", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: - **Principle:** Ctx shall primarily define and enact its role as an extension and augmentation o...", style=filled]
+    phi_9 [label="PHI-9\nPrinciple of Asynchron...", fillcolor="#DCEDC8", shape="box", tooltip="Type: directive\nCategory: PHI\nDescription: - **Principle:** When delegating tasks to sub-agents or tools, particularly those suitable for ba...", style=filled]
+
+  // Edges
+}

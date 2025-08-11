@@ -288,15 +288,23 @@ class ProjectReorganizer {
   moveDirectory(from, to) {
     if (fs.existsSync(from)) {
       if (!this.dryRun) {
-        // Ensure target parent directory exists
-        const targetParent = path.dirname(to)
-        fs.mkdirSync(targetParent, { recursive: true })
-        
-        // Move directory
-        fs.renameSync(from, to)
+        try {
+          // Ensure target parent directory exists
+          const targetParent = path.dirname(to)
+          fs.mkdirSync(targetParent, { recursive: true })
+
+          // Try to move directory
+          fs.renameSync(from, to)
+          console.log(`   📁 ${from}/ → ${to}/`)
+          this.moveCount++
+        } catch (error) {
+          console.log(`   ⚠️  Could not move ${from}/ (${error.code}): ${error.message}`)
+          console.log(`   💡 Please manually move this directory after reorganization`)
+        }
+      } else {
+        console.log(`   📁 ${from}/ → ${to}/`)
+        this.moveCount++
       }
-      console.log(`   📁 ${from}/ → ${to}/`)
-      this.moveCount++
     } else if (this.verbose) {
       console.log(`   ⚠️  Not found: ${from}/`)
     }

@@ -1,0 +1,24 @@
+digraph KnowledgeGraph {
+  layout="circo"
+  rankdir="TB"
+  dpi=300
+  fontsize=10
+  node [fontname="Arial"]
+  edge [fontname="Arial"]
+  labelloc="t"
+  label="QPG Category Network"
+
+  // Nodes
+    qpg_1 [label="QPG-1\nInterpretation Depth", fillcolor="#FFE0B2", shape="box", tooltip="Type: directive\nCategory: QPG\nDescription: Analyze user queries to discern explicit instructions, implicit intent, required context, and des...", style=filled]
+    qpg_10 [label="QPG-10\nDelegated Task Databas...", fillcolor="#FFE0B2", shape="box", tooltip="Type: directive\nCategory: QPG\nDescription: - **Principle:** CTX shall interact with the `Delegated Jobs Database` (ref CL) to ascertain the ...", style=filled]
+    qpg_2 [label="QPG-2\nContextual Integration", fillcolor="#FFE0B2", shape="box", tooltip="Type: directive\nCategory: QPG\nDescription: Incorporate relevant context from the current interaction history, active documents (ref OPM-5: I...", style=filled]
+    qpg_3 [label="QPG-3\nConstraint Adherence", fillcolor="#FFE0B2", shape="box", tooltip="Type: directive\nCategory: QPG\nDescription: Rigorously adhere to all specified positive and negative constraints derived from the user query ...", style=filled]
+    qpg_4 [label="QPG-4\nOutput Structure", fillcolor="#FFE0B2", shape="box", tooltip="Type: directive\nCategory: QPG\nDescription: Structure the generated response precisely according to the explicit or inferred formatting requi...", style=filled]
+    qpg_5 [label="QPG-5\nPersona Consistency", fillcolor="#FFE0B2", shape="box", tooltip="Type: directive\nCategory: QPG\nDescription: Fully adopt and maintain the specified persona (ref CIP, IPR) throughout the interaction unless e...", style=filled]
+    qpg_6 [label="QPG-6\nInstruction Precision", fillcolor="#FFE0B2", shape="box", tooltip="Type: directive\nCategory: QPG\nDescription: Prioritise and strictly adhere to explicit instructions provided in the user query and the active...", style=filled]
+    qpg_7 [label="QPG-7\nSuggestion for Enhance...", fillcolor="#FFE0B2", shape="box", tooltip="Type: directive\nCategory: QPG\nDescription: - **QPG-7.1 (Principle):** When Ctx's initial analysis of a query or topic suggests that standard...", style=filled]
+    qpg_8 [label="QPG-8\nUser Mental Model Prio...", fillcolor="#FFE0B2", shape="box", tooltip="Type: directive\nCategory: QPG\nDescription: In interpreting queries and structuring responses, Ctx shall prioritize understanding and alignin...", style=filled]
+    qpg_9 [label="QPG-9\nControlled Vocabulary ...", fillcolor="#FFE0B2", shape="box", tooltip="Type: directive\nCategory: QPG\nDescription: Ctx shall strive for consistent use of terminology within an interaction and across sessions, gui...", style=filled]
+
+  // Edges
+}
