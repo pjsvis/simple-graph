@@ -13,22 +13,41 @@ export interface Database {
 }
 
 export interface DatabaseConfig {
-  type: 'memory' | 'file'
+  type: 'memory' | 'file' | 'test-safe'
   filename?: string
   cleanup?: boolean // Whether to delete file after tests
+  useTestDatabase?: boolean // Whether to use the safe test database
 }
 
 export function createDatabase(config: DatabaseConfig = { type: 'memory' }): Database {
   let dbPath: string
-  
+
   if (config.type === 'memory') {
     dbPath = ':memory:'
+  } else if (config.type === 'test-safe') {
+    // Use the safe test database path
+    dbPath = config.useTestDatabase ? 'data/databases/test-run.db' : 'cda-import-test.db'
   } else {
     dbPath = config.filename || 'test-graph.db'
   }
-  
+
   const db = new sqlite3.Database(dbPath)
-  
+
+  // Configure high-concurrency settings immediately after connection
+  db.serialize(() => {
+    // Enable Write-Ahead Logging for improved concurrency
+    db.run("PRAGMA journal_mode=WAL;")
+
+    // Set busy timeout to 5 seconds to handle concurrent access
+    db.run("PRAGMA busy_timeout = 5000;")
+
+    // Set synchronous mode to NORMAL for better performance
+    db.run("PRAGMA synchronous = NORMAL;")
+
+    // Enable foreign key constraints
+    db.run("PRAGMA foreign_keys = ON;")
+  })
+
   const database: Database = {
     run: promisify(db.run.bind(db)),
     get: promisify(db.get.bind(db)),
@@ -36,7 +55,7 @@ export function createDatabase(config: DatabaseConfig = { type: 'memory' }): Dat
     exec: promisify(db.exec.bind(db)),
     close: async () => {
       await promisify(db.close.bind(db))()
-      
+
       // Clean up file if requested
       if (config.type === 'file' && config.cleanup && config.filename) {
         try {
@@ -49,7 +68,7 @@ export function createDatabase(config: DatabaseConfig = { type: 'memory' }): Dat
       }
     }
   }
-  
+
   return database
 }
 

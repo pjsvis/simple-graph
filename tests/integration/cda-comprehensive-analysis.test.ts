@@ -370,15 +370,12 @@ describe('Core Directive Array Comprehensive Analysis', () => {
   })
 
   describe('5. Unified Knowledge Graph Creation', () => {
-    it('should create a unified knowledge graph combining CDA and conceptual lexicon', async () => {
-      console.log('\n🌐 UNIFIED KNOWLEDGE GRAPH CREATION')
+    it('should analyze CDA structure for future knowledge graph integration', async () => {
+      console.log('\n🌐 CDA STRUCTURE ANALYSIS FOR INTEGRATION')
       console.log('=' .repeat(60))
 
-      // First, let's import the conceptual lexicon data into the same database
-      console.log('📥 Importing conceptual lexicon data...')
-
-      // Note: In a real scenario, we'd merge the databases or import both datasets
-      // For now, let's analyze the CDA structure and propose integration points
+      // Analyze the CDA structure and propose integration points
+      console.log('📊 Analyzing CDA structure for future conceptual lexicon integration...')
 
       // Analyze directive complexity and categorization
       const directiveComplexity = await db.all(`

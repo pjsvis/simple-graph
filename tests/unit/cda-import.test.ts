@@ -9,13 +9,13 @@ import { insertEdgeFromObject, getInsertEdgeParams } from '../../src/database/in
 // Import CDA types and parser
 import { CDAParser } from '../../src/parsers/cda-parser'
 import { ConceptualLexiconUtils } from '../../src/types/cl-types'
-import type { 
+import type {
   CDANode,
   DirectiveNode,
   CoreConceptNode,
   CDAMembership,
   DirectiveRelationship
-} from '../ts/cl-types'
+} from '../../src/types/cl-types'
 
 const DB_FILE = 'cda-import-test.db'
 const CDA_FILE = 'data/source/core-directive-array.md'
@@ -188,22 +188,32 @@ describe('Core Directive Array Import Tests', () => {
         })
       }
       
-      // Create relationship edges
+      // Create relationship edges (only for nodes that exist)
       for (const ref of references) {
         const targetId = ConceptualLexiconUtils.normalizeDirectiveId(ref.directive)
-        
-        const relationship: DirectiveRelationship = {
-          source: sourceId,
-          target: targetId,
-          properties: {
-            type: ref.type as any,
-            context: ref.context,
-            extracted_from: 'description'
+
+        // Check if target node exists before creating edge
+        const targetExists = await db.get(
+          'SELECT id FROM nodes WHERE id = ?',
+          [targetId]
+        )
+
+        if (targetExists) {
+          const relationship: DirectiveRelationship = {
+            source: sourceId,
+            target: targetId,
+            properties: {
+              type: ref.type as any,
+              context: ref.context,
+              extracted_from: 'description'
+            }
           }
+
+          await db.run(insertEdgeFromObject(relationship), getInsertEdgeParams(relationship))
+          relationshipCount++
+        } else {
+          console.log(`   ⚠️  Skipping reference to non-existent node: ${ref.directive}`)
         }
-        
-        await db.run(insertEdgeFromObject(relationship), getInsertEdgeParams(relationship))
-        relationshipCount++
       }
     }
     

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll } from 'vitest'
+import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 import { createDatabase, type Database } from '../helpers/database'
 
 const SOURCE_DB = 'cda-import-test.db'
@@ -16,11 +16,16 @@ describe('ID Refactor Validation Tests', () => {
       cleanup: false 
     })
     
-    targetDb = createDatabase({ 
-      type: 'file', 
-      filename: TARGET_DB, 
-      cleanup: false 
+    targetDb = createDatabase({
+      type: 'file',
+      filename: TARGET_DB,
+      cleanup: false
     })
+  })
+
+  afterAll(async () => {
+    if (sourceDb) await sourceDb.close()
+    if (targetDb) await targetDb.close()
   })
 
   describe('Database Integrity', () => {
