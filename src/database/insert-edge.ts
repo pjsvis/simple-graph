@@ -1,4 +1,4 @@
-import { Edge } from './types';
+import { Edge } from '../types/base-types';
 
 /**
  * Returns SQL to insert an edge with source, target, and properties

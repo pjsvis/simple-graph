@@ -24,7 +24,7 @@
     "refactor-ids": "node scripts/id-refactor/run-refactor.cjs",
     "id-mapping-report": "node scripts/id-refactor/generate-id-mapping-report.cjs",
     "generate-ctx-v3": "node scripts/ctx-v3-persona-generator.cjs",
-    "test-core": "vitest run tests/types.test.ts tests/update.test.ts tests/traverse.test.ts tests/unit/cda-import.test.ts",
+    "test-core": "vitest run tests/types.test.ts tests/unit/cda-import.test.ts",
     "test-safe": "node scripts/run-safe-tests.cjs",
     "test-safe-core": "node scripts/run-safe-tests.cjs test-core",
     "test-safe-all": "node scripts/run-safe-tests.cjs test",

@@ -1,4 +1,4 @@
-import { Node, Edge } from './types';
+import { Node, Edge } from './base-types';
 
 /**
  * Raw conceptual lexicon entry as it appears in the JSON file

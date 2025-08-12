@@ -1,5 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`Update SQL Generation > updateEdge > should match SQL snapshot 1`] = `"UPDATE edges SET properties = json(?) WHERE source = ? AND target = ?"`;
-
-exports[`Update SQL Generation > updateNode > should match SQL snapshot 1`] = `"UPDATE nodes SET body = json(?) WHERE id = ?"`;

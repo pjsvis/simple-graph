@@ -1,4 +1,4 @@
-import { Node } from './types';
+import { Node } from '../types/base-types';
 
 /**
  * Returns SQL to insert a node with JSON body

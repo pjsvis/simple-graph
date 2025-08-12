@@ -12,12 +12,14 @@
     "types": ["vitest/globals"],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./ts/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": [
-    "ts/**/*",
-    "tests/**/*"
+    "src/**/*",
+    "tests/**/*",
+    "scripts/**/*",
+    "config/**/*"
   ],
   "exclude": [
     "node_modules"
