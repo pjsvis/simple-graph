@@ -20,7 +20,10 @@
     "test:integration": "vitest run tests/integration",
     "view-images": "open outputs/images/index.html",
     "clean": "rm -rf outputs/visualizations/*.dot outputs/images/*.png outputs/images/*.svg",
-    "generate-persona": "node scripts/persona-generator.cjs"
+    "generate-persona": "node scripts/persona-generator.cjs",
+    "refactor-ids": "node scripts/id-refactor/run-refactor.cjs",
+    "id-mapping-report": "node scripts/id-refactor/generate-id-mapping-report.cjs",
+    "generate-ctx-v3": "node scripts/ctx-v3-persona-generator.cjs"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

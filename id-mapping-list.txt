@@ -1,0 +1,129 @@
+# Complete ID Mapping: Original → Revised
+# Generated: 2025-08-12T16:34:25.828Z
+# Total: 86 nodes (85 changed, 1 unchanged)
+
+## CDA Metadata (1 node - unchanged)
+cda-61 → cda-61
+
+## ADV - Advanced Directives (8 nodes - all changed)
+adv → cda-61-adv
+adv-1 → cda-61-adv-1
+adv-2 → cda-61-adv-2
+adv-3 → cda-61-adv-3
+adv-4 → cda-61-adv-4
+adv-6 → cda-61-adv-6
+adv-7 → cda-61-adv-7
+adv-8 → cda-61-adv-8
+
+## CIP - Core Identity & Persona (3 nodes - all changed)
+cip-1 → cda-61-cip-1
+cip-2 → cda-61-cip-2
+cip-3 → cda-61-cip-3
+
+## COG - Cognitive Strategies (10 nodes - all changed)
+cog-1 → cda-61-cog-1
+cog-10 → cda-61-cog-10
+cog-11 → cda-61-cog-11
+cog-12 → cda-61-cog-12
+cog-2 → cda-61-cog-2
+cog-3 → cda-61-cog-3
+cog-4 → cda-61-cog-4
+cog-5 → cda-61-cog-5
+cog-6 → cda-61-cog-6
+cog-9 → cda-61-cog-9
+
+## DYN - Dynamic Optimization (4 nodes - all changed)
+dyn-1 → cda-61-dyn-1
+dyn-2 → cda-61-dyn-2
+dyn-3 → cda-61-dyn-3
+dyn-4 → cda-61-dyn-4
+
+## IEP - Interactive Elaboration Protocol (7 nodes - all changed)
+iep-1 → cda-61-iep-1
+iep-2 → cda-61-iep-2
+iep-3 → cda-61-iep-3
+iep-4 → cda-61-iep-4
+iep-5 → cda-61-iep-5
+iep-6 → cda-61-iep-6
+iep-7 → cda-61-iep-7
+
+## IFC - Interface (1 node - changed)
+ifc-1 → cda-61-ifc-1
+
+## IPR - Core Interaction Style (2 nodes - all changed)
+ipr-1 → cda-61-ipr-1
+ipr-2 → cda-61-ipr-2
+
+## LOG - Logging (1 node - changed)
+log-1 → cda-61-log-1
+
+## MSM - Memory & State Management (10 nodes - all changed)
+msm-1 → cda-61-msm-1
+msm-10 → cda-61-msm-10
+msm-2 → cda-61-msm-2
+msm-3 → cda-61-msm-3
+msm-4 → cda-61-msm-4
+msm-5 → cda-61-msm-5
+msm-6 → cda-61-msm-6
+msm-7 → cda-61-msm-7
+msm-8 → cda-61-msm-8
+msm-9 → cda-61-msm-9
+
+## OPM - Operational Protocol Management (10 nodes - all changed)
+opm-1 → cda-61-opm-1
+opm-10 → cda-61-opm-10
+opm-11 → cda-61-opm-11
+opm-12 → cda-61-opm-12
+opm-2 → cda-61-opm-2
+opm-3 → cda-61-opm-3
+opm-4 → cda-61-opm-4
+opm-5 → cda-61-opm-5
+opm-6 → cda-61-opm-6
+opm-8 → cda-61-opm-8
+
+## PHI - Processing Philosophy (10 nodes - all changed)
+phi-1 → cda-61-phi-1
+phi-10 → cda-61-phi-10
+phi-2 → cda-61-phi-2
+phi-3 → cda-61-phi-3
+phi-4 → cda-61-phi-4
+phi-5 → cda-61-phi-5
+phi-6 → cda-61-phi-6
+phi-7 → cda-61-phi-7
+phi-8 → cda-61-phi-8
+phi-9 → cda-61-phi-9
+
+## QHD - Query Handling Directives (5 nodes - all changed)
+qhd-1 → cda-61-qhd-1
+qhd-2 → cda-61-qhd-2
+qhd-3 → cda-61-qhd-3
+qhd-4 → cda-61-qhd-4
+qhd-5 → cda-61-qhd-5
+
+## QPG - Query Processing Guidelines (10 nodes - all changed)
+qpg-1 → cda-61-qpg-1
+qpg-10 → cda-61-qpg-10
+qpg-2 → cda-61-qpg-2
+qpg-3 → cda-61-qpg-3
+qpg-4 → cda-61-qpg-4
+qpg-5 → cda-61-qpg-5
+qpg-6 → cda-61-qpg-6
+qpg-7 → cda-61-qpg-7
+qpg-8 → cda-61-qpg-8
+qpg-9 → cda-61-qpg-9
+
+## SIN - Special Interests (3 nodes - all changed)
+sin-1 → cda-61-sin-1
+sin-2 → cda-61-sin-2
+sin-4 → cda-61-sin-4
+
+## VER - Versioning (1 node - changed)
+ver-1 → cda-61-ver-1
+
+# Summary Statistics:
+# - Total nodes: 86
+# - CDA metadata: 1 (unchanged)
+# - Directives: 85 (all changed to include cda-61- prefix)
+# - Categories: 15 directive categories
+# - Pattern: {original-id} → cda-61-{original-id} (except CDA metadata)
+# - Benefits: Enhanced clarity, namespace safety, query efficiency, future-proof design
