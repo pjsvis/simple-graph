@@ -21,9 +21,15 @@ describe('DOT Graph Visualization Tests', () => {
     
     generator = new DotGraphGenerator(db)
     
-    // Create output directory
+    // Create output directories
     if (!existsSync(OUTPUT_DIR)) {
       mkdirSync(OUTPUT_DIR, { recursive: true })
+    }
+    if (!existsSync(join(OUTPUT_DIR, 'organic'))) {
+      mkdirSync(join(OUTPUT_DIR, 'organic'), { recursive: true })
+    }
+    if (!existsSync(join(OUTPUT_DIR, 'synth'))) {
+      mkdirSync(join(OUTPUT_DIR, 'synth'), { recursive: true })
     }
     
     console.log('\n🎨 STARTING DOT GRAPH VISUALIZATION TESTS')
@@ -53,7 +59,7 @@ describe('DOT Graph Visualization Tests', () => {
       const dotContent = await generator.generateDot(config)
       
       // Save to file
-      const filename = join(OUTPUT_DIR, 'complete-knowledge-graph.dot')
+      const filename = join(OUTPUT_DIR, 'organic', 'complete-knowledge-graph.dot')
       writeFileSync(filename, dotContent)
       
       console.log(`✅ Generated complete graph: ${filename}`)
@@ -82,7 +88,7 @@ describe('DOT Graph Visualization Tests', () => {
 
       const dotContent = await generator.generateDot(config)
       
-      const filename = join(OUTPUT_DIR, 'directives-only.dot')
+      const filename = join(OUTPUT_DIR, 'organic', 'directives-only.dot')
       writeFileSync(filename, dotContent)
       
       console.log(`✅ Generated directive graph: ${filename}`)
@@ -113,7 +119,7 @@ describe('DOT Graph Visualization Tests', () => {
 
       const dotContent = await generator.generateDot(config)
       
-      const filename = join(OUTPUT_DIR, 'relationships-network.dot')
+      const filename = join(OUTPUT_DIR, 'synth', 'relationships-network.dot')
       writeFileSync(filename, dotContent)
       
       console.log(`✅ Generated relationship graph: ${filename}`)
@@ -150,7 +156,7 @@ describe('DOT Graph Visualization Tests', () => {
 
         const dotContent = await generator.generateDot(config)
         
-        const filename = join(OUTPUT_DIR, `category-${category.toLowerCase()}.dot`)
+        const filename = join(OUTPUT_DIR, 'organic', `category-${category.toLowerCase()}.dot`)
         writeFileSync(filename, dotContent)
         
         console.log(`   ✅ Generated ${category} category graph: ${filename}`)
@@ -182,7 +188,7 @@ describe('DOT Graph Visualization Tests', () => {
 
       const dotContent = await generator.generateDot(config)
       
-      const filename = join(OUTPUT_DIR, 'cross-category-bridges.dot')
+      const filename = join(OUTPUT_DIR, 'organic', 'cross-category-bridges.dot')
       writeFileSync(filename, dotContent)
       
       console.log(`✅ Generated bridge graph: ${filename}`)
@@ -218,7 +224,7 @@ describe('DOT Graph Visualization Tests', () => {
 
       const dotContent = await generator.generateDot(config)
       
-      const filename = join(OUTPUT_DIR, 'inspirational-clusters.dot')
+      const filename = join(OUTPUT_DIR, 'synth', 'inspirational-clusters.dot')
       writeFileSync(filename, dotContent)
       
       console.log(`✅ Generated inspirational clusters: ${filename}`)
@@ -253,7 +259,7 @@ describe('DOT Graph Visualization Tests', () => {
 
       const dotContent = await generator.generateDot(config)
       
-      const filename = join(OUTPUT_DIR, 'semantic-similarity.dot')
+      const filename = join(OUTPUT_DIR, 'synth', 'semantic-similarity.dot')
       writeFileSync(filename, dotContent)
       
       console.log(`✅ Generated semantic network: ${filename}`)
@@ -299,7 +305,7 @@ describe('DOT Graph Visualization Tests', () => {
 
       const dotContent = await generator.generateDot(config)
       
-      const filename = join(OUTPUT_DIR, 'hub-authority.dot')
+      const filename = join(OUTPUT_DIR, 'synth', 'hub-authority.dot')
       writeFileSync(filename, dotContent)
       
       console.log(`✅ Generated hub/authority graph: ${filename}`)
@@ -334,7 +340,7 @@ describe('DOT Graph Visualization Tests', () => {
 
         const dotContent = await generator.generateDot(config)
         
-        const filename = join(OUTPUT_DIR, `layout-${layoutInfo.name}.dot`)
+        const filename = join(OUTPUT_DIR, 'organic', `layout-${layoutInfo.name}.dot`)
         writeFileSync(filename, dotContent)
         
         console.log(`   ✅ Generated ${layoutInfo.name} layout: ${filename}`)

@@ -1,0 +1,49 @@
+digraph KnowledgeGraph {
+  layout="circo"
+  rankdir="TB"
+  dpi=300
+  fontsize=10
+  node [fontname="Arial"]
+  edge [fontname="Arial"]
+  labelloc="t"
+  label="OPM Category Network"
+
+  // Nodes
+    opm_1 [label="OPM-1\nContext Recovery - REC", fillcolor="#E1BEE7", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: User command \"context failure, rewind\" triggers cessation of problematic context processing, hist...", style=filled]
+    opm_10 [label="OPM-10\nDirective Cognitive Lo...", fillcolor="#E1BEE7", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: - **Principle:** All individual Core Directives (CDA), Operational Heuristics (OHs in CL), and di...", style=filled]
+    opm_11 [label="OPM-11\nDirective Authoring & ...", fillcolor="#E1BEE7", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: - **Principle:** The introduction of new Core Directives (CDA) or Operational Heuristics (OHs int...", style=filled]
+    opm_12 [label="OPM-12\nAdherence to Defined O...", fillcolor="#E1BEE7", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: - **Principle:** Ctx MUST actively consult and apply the Operational Heuristics (OHs) defined wit...", style=filled]
+    opm_2 [label="OPM-2\nStartup Advisory - STP", fillcolor="#E1BEE7", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: At interaction commencement or on request, advise user of key commands/protocols (e.g., REC via O...", style=filled]
+    opm_3 [label="OPM-3\nEvent Locus Marker Pro...", fillcolor="#E1BEE7", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: - **ELMP-3.1 (Purpose):** To facilitate precise retrospective analysis or extraction of conversat...", style=filled]
+    opm_4 [label="OPM-4\nCDA Modification - MOD", fillcolor="#E1BEE7", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: Proposals for CDA changes (articulated alteration and rationale) can be made by the user during i...", style=filled]
+    opm_5 [label="OPM-5\nInterface Context - ICM", fillcolor="#E1BEE7", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: Open document previews may be considered immediate context. User should close previews if not rel...", style=filled]
+    opm_6 [label="OPM-6\nLocus Tag List Formatt...", fillcolor="#E1BEE7", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: When presenting a compiled list of assigned Event Locus Markers (ref OPM-3: ELMP) from the curren...", style=filled]
+    opm_8 [label="OPM-8\nConceptual Lexicon Man...", fillcolor="#E1BEE7", shape="box", tooltip="Type: directive\nCategory: OPM\nDescription: - **OPM-8.1 (Purpose):** To establish and maintain a dynamic Conceptual Lexicon (CL) of specializ...", style=filled]
+
+  // Edges
+    adv_7 -> adv_2 [label="references\n(ref ADV-2)", color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref ADV-2)"]
+    adv_7 -> adv_2 [label="references\nref ADV-2", color="#1976D2", style="solid", tooltip="Type: references\nContext: ref ADV-2"]
+    adv_8 -> adv_1 [label="references\n(ref ADV-1, ADV-2)", color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref ADV-1, ADV-2)"]
+    adv_8 -> adv_1 [label="references\nref ADV-1", color="#1976D2", style="solid", tooltip="Type: references\nContext: ref ADV-1"]
+    adv_8 -> adv_2 [label="references\n(ref ADV-1, ADV-2)", color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref ADV-1, ADV-2)"]
+    cog_6 -> qhd_3 [label="references\n(ref QHD-3)", color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref QHD-3)"]
+    cog_6 -> qhd_3 [label="references\nref QHD-3", color="#1976D2", style="solid", tooltip="Type: references\nContext: ref QHD-3"]
+    cog_6 -> qpg_7 [label="references\n(ref QPG-7)", color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref QPG-7)"]
+    cog_6 -> qpg_7 [label="references\nref QPG-7", color="#1976D2", style="solid", tooltip="Type: references\nContext: ref QPG-7"]
+    dyn_4 -> iep_3 [label="references\n(ref IEP-3)", color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref IEP-3)"]
+    dyn_4 -> iep_3 [label="references\nref IEP-3", color="#1976D2", style="solid", tooltip="Type: references\nContext: ref IEP-3"]
+    ipr_1 -> opm_8 [label="references\nref OPM-8", color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OPM-8"]
+    msm_3 -> opm_8 [label="references\n(ref OPM-8)", color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref OPM-8)"]
+    msm_3 -> opm_8 [label="references\nref OPM-8", color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OPM-8"]
+    opm_6 -> opm_3 [label="references\nref OPM-3", color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OPM-3"]
+    qhd_1 -> opm_8 [label="references\nref OPM-8", color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OPM-8"]
+    qpg_2 -> opm_5 [label="references\nref OPM-5", color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OPM-5"]
+    qpg_2 -> opm_8 [label="references\nref OPM-8", color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OPM-8"]
+    qpg_4 -> phi_1 [label="references\nguided by PHI-1", color="#1976D2", style="solid", tooltip="Type: references\nContext: guided by PHI-1"]
+    qpg_8 -> oh_010 [label="references\n(ref OH-010)", color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref OH-010)"]
+    qpg_8 -> oh_010 [label="references\nref OH-010", color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OH-010"]
+    qpg_9 -> opm_8 [label="references\n(ref OPM-8)", color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref OPM-8)"]
+    qpg_9 -> opm_8 [label="references\nref OPM-8", color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OPM-8"]
+    sin_4 -> sin_2 [label="references\n(ref SIN-2)", color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref SIN-2)"]
+    sin_4 -> sin_2 [label="references\nref SIN-2", color="#1976D2", style="solid", tooltip="Type: references\nContext: ref SIN-2"]
+}

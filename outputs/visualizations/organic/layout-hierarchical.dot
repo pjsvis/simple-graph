@@ -1,12 +1,12 @@
 digraph KnowledgeGraph {
-  layout="circo"
+  layout="dot"
   rankdir="TB"
   dpi=300
   fontsize=10
   node [fontname="Arial"]
   edge [fontname="Arial"]
   labelloc="t"
-  label="Layout: Circular layout"
+  label="Layout: Hierarchical top-down"
 
   subgraph cluster_0 {
     label="ADV"
@@ -59,4 +59,29 @@ digraph KnowledgeGraph {
 
 
   // Edges
+    adv_7 -> adv_2 [color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref ADV-2)"]
+    adv_7 -> adv_2 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref ADV-2"]
+    adv_8 -> adv_1 [color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref ADV-1, ADV-2)"]
+    adv_8 -> adv_1 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref ADV-1"]
+    adv_8 -> adv_2 [color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref ADV-1, ADV-2)"]
+    cog_6 -> qhd_3 [color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref QHD-3)"]
+    cog_6 -> qhd_3 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref QHD-3"]
+    cog_6 -> qpg_7 [color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref QPG-7)"]
+    cog_6 -> qpg_7 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref QPG-7"]
+    dyn_4 -> iep_3 [color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref IEP-3)"]
+    dyn_4 -> iep_3 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref IEP-3"]
+    ipr_1 -> opm_8 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OPM-8"]
+    msm_3 -> opm_8 [color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref OPM-8)"]
+    msm_3 -> opm_8 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OPM-8"]
+    opm_6 -> opm_3 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OPM-3"]
+    qhd_1 -> opm_8 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OPM-8"]
+    qpg_2 -> opm_5 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OPM-5"]
+    qpg_2 -> opm_8 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OPM-8"]
+    qpg_4 -> phi_1 [color="#1976D2", style="solid", tooltip="Type: references\nContext: guided by PHI-1"]
+    qpg_8 -> oh_010 [color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref OH-010)"]
+    qpg_8 -> oh_010 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OH-010"]
+    qpg_9 -> opm_8 [color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref OPM-8)"]
+    qpg_9 -> opm_8 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OPM-8"]
+    sin_4 -> sin_2 [color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref SIN-2)"]
+    sin_4 -> sin_2 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref SIN-2"]
 }

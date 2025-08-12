@@ -22,6 +22,12 @@ describe('Simple DOT Graph Test', () => {
     if (!existsSync(OUTPUT_DIR)) {
       mkdirSync(OUTPUT_DIR, { recursive: true })
     }
+    if (!existsSync(`${OUTPUT_DIR}/organic`)) {
+      mkdirSync(`${OUTPUT_DIR}/organic`, { recursive: true })
+    }
+    if (!existsSync(`${OUTPUT_DIR}/synth`)) {
+      mkdirSync(`${OUTPUT_DIR}/synth`, { recursive: true })
+    }
     
     console.log('\n🔍 DEBUGGING DOT GRAPH GENERATION')
     console.log('=' .repeat(50))
@@ -93,7 +99,7 @@ describe('Simple DOT Graph Test', () => {
       console.log('DOT content preview:', dotContent.substring(0, 200) + '...')
       
       // Save to file
-      const filename = `${OUTPUT_DIR}/simple-test.dot`
+      const filename = `${OUTPUT_DIR}/organic/simple-test.dot`
       writeFileSync(filename, dotContent)
       
       console.log(`✅ Generated simple graph: ${filename}`)
@@ -125,13 +131,13 @@ describe('Simple DOT Graph Test', () => {
   node2 -> node3 [label="guides", color="#1976D2"]
 }`
 
-    const filename = `${OUTPUT_DIR}/minimal-example.dot`
+    const filename = `${OUTPUT_DIR}/organic/minimal-example.dot`
     writeFileSync(filename, minimalDot)
-    
+
     console.log(`✅ Generated minimal example: ${filename}`)
     console.log('\n📋 To render this graph:')
-    console.log(`   dot -Tsvg ${filename} -o ${OUTPUT_DIR}/minimal-example.svg`)
-    console.log(`   dot -Tpng ${filename} -o ${OUTPUT_DIR}/minimal-example.png`)
+    console.log(`   dot -Tsvg ${filename} -o ${OUTPUT_DIR}/organic/minimal-example.svg`)
+    console.log(`   dot -Tpng ${filename} -o ${OUTPUT_DIR}/organic/minimal-example.png`)
     
     expect(minimalDot).toContain('digraph KnowledgeGraph')
   })
