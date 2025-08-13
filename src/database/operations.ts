@@ -384,20 +384,36 @@ export async function searchNodes(
  * 
  * @param connection - Database connection
  * @returns Promise that resolves to graph statistics
+ * @throws {DatabaseOperationError} When database operation fails
  */
 export async function getGraphStats(connection: DatabaseConnection): Promise<GraphStats> {
-  const [nodeCount, edgeCount, nodeTypes, edgeTypes] = await Promise.all([
-    connection.get('SELECT COUNT(*) as count FROM nodes'),
-    connection.get('SELECT COUNT(*) as count FROM edges'),
-    connection.all("SELECT json_extract(body, '$.node_type') as type, COUNT(*) as count FROM nodes GROUP BY type"),
-    connection.all("SELECT json_extract(properties, '$.type') as type, COUNT(*) as count FROM edges GROUP BY type")
-  ])
+  try {
+    // Input validation
+    if (!connection) {
+      throw new DatabaseOperationError('Database connection is required')
+    }
 
-  return {
-    nodeCount: nodeCount.count,
-    edgeCount: edgeCount.count,
-    nodeTypes: Object.fromEntries(nodeTypes.map(row => [row.type || 'unknown', row.count])),
-    edgeTypes: Object.fromEntries(edgeTypes.map(row => [row.type || 'unknown', row.count]))
+    const [nodeCount, edgeCount, nodeTypes, edgeTypes] = await Promise.all([
+      connection.get('SELECT COUNT(*) as count FROM nodes'),
+      connection.get('SELECT COUNT(*) as count FROM edges'),
+      connection.all("SELECT json_extract(body, '$.node_type') as type, COUNT(*) as count FROM nodes GROUP BY type"),
+      connection.all("SELECT json_extract(properties, '$.type') as type, COUNT(*) as count FROM edges GROUP BY type")
+    ])
+
+    const stats: GraphStats = {
+      nodeCount: nodeCount?.count || 0,
+      edgeCount: edgeCount?.count || 0,
+      nodeTypes: Object.fromEntries(nodeTypes.map(row => [row.type || 'unknown', row.count])),
+      edgeTypes: Object.fromEntries(edgeTypes.map(row => [row.type || 'unknown', row.count]))
+    }
+    
+    errorLogger.debug(`Graph statistics retrieved`, stats)
+    return stats
+    
+  } catch (error) {
+    const dbError = mapSQLiteError(error)
+    errorLogger.error('Failed to get graph statistics', dbError)
+    throw dbError
   }
 }
 
@@ -465,6 +481,7 @@ export async function batchInsertEdges(connection: DatabaseConnection, edges: Ed
     await insertEdge(connection, edge)
   }
 }
+
 
 
 
