@@ -634,6 +634,53 @@ export async function batchInsertNodes(
 }
 
 /**
+ * Helper function for sequential batch execution without transactions
+ */
+async function executeSequentialBatch(
+  connection: DatabaseConnection,
+  sql: string,
+  paramSets: any[][],
+  options: { continueOnError?: boolean } = {}
+): Promise<{
+  successful: number
+  failed: number
+  results: any[]
+  errors: Array<{ index: number; error: string; params: any[] }>
+}> {
+  const { continueOnError = false } = options
+  const results: any[] = []
+  const errors: Array<{ index: number; error: string; params: any[] }> = []
+  let successful = 0
+  let failed = 0
+
+  for (let i = 0; i < paramSets.length; i++) {
+    try {
+      const result = await connection.run(sql, paramSets[i])
+      results.push(result)
+      successful++
+    } catch (error) {
+      failed++
+      const errorInfo = {
+        index: i,
+        error: error.message || 'Unknown error',
+        params: paramSets[i]
+      }
+      errors.push(errorInfo)
+      
+      if (!continueOnError) {
+        throw new DatabaseOperationError(
+          `Sequential batch operation failed at index ${i}`,
+          error,
+          { errorInfo }
+        )
+      }
+    }
+  }
+
+  return { successful, failed, results, errors }
+}
+
+/**
  * Batch insert edges
  * 
  * @param connection - Database connection
@@ -706,6 +753,7 @@ export async function batchInsertEdges(connection: DatabaseConnection, edges: Ed
     throw dbError
   }
 }
+
 
 
 
