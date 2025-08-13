@@ -188,14 +188,46 @@ export async function getNodeById(connection: DatabaseConnection, nodeId: string
  * @param connection - Database connection
  * @param nodeType - Type of nodes to retrieve
  * @returns Promise that resolves to array of nodes
+ * @throws {DatabaseOperationError} When database operation fails
  */
 export async function getNodesByType(connection: DatabaseConnection, nodeType: string): Promise<Node[]> {
-  const results = await connection.all(
-    "SELECT body FROM nodes WHERE json_extract(body, '$.node_type') = ?",
-    [nodeType]
-  )
-  
-  return results.map(row => JSON.parse(row.body))
+  try {
+    // Input validation
+    if (!connection) {
+      throw new DatabaseOperationError('Database connection is required')
+    }
+    
+    if (!nodeType || typeof nodeType !== 'string' || nodeType.trim().length === 0) {
+      throw new DatabaseOperationError('Valid node type is required')
+    }
+
+    const results = await connection.all(
+      "SELECT body FROM nodes WHERE json_extract(body, '$.node_type') = ?",
+      [nodeType.trim()]
+    )
+    
+    const nodes: Node[] = []
+    for (const row of results) {
+      try {
+        nodes.push(JSON.parse(row.body))
+      } catch (parseError) {
+        errorLogger.warn(`Failed to parse node data, skipping`, { error: parseError.message, body: row.body })
+        continue
+      }
+    }
+    
+    errorLogger.debug(`Retrieved ${nodes.length} nodes of type: ${nodeType}`)
+    return nodes
+    
+  } catch (error) {
+    if (error instanceof DatabaseOperationError) {
+      throw error
+    }
+    
+    const dbError = mapSQLiteError(error)
+    errorLogger.error(`Failed to get nodes by type: ${nodeType}`, dbError)
+    throw dbError
+  }
 }
 
 /**
@@ -345,6 +377,7 @@ export async function batchInsertEdges(connection: DatabaseConnection, edges: Ed
     await insertEdge(connection, edge)
   }
 }
+
 
 
 
