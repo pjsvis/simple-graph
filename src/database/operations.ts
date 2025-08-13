@@ -681,15 +681,22 @@ async function executeSequentialBatch(
 }
 
 /**
- * Batch insert edges
+ * Batch insert edges with transaction support and prepared statements
  * 
  * @param connection - Database connection
  * @param edges - Array of edges to insert
- * @returns Promise that resolves when all edges are inserted
+ * @param options - Batch operation options
+ * @returns Promise that resolves to batch operation result
  * @throws {DatabaseOperationError} When database operation fails
  * @throws {InvalidEdgeError} When any edge data is invalid
  */
-export async function batchInsertEdges(connection: DatabaseConnection, edges: Edge[]): Promise<void> {
+export async function batchInsertEdges(
+  connection: DatabaseConnection, 
+  edges: Edge[], 
+  options: BatchOptions = {}
+): Promise<BatchResult> {
+  const startTime = Date.now()
+  
   try {
     // Input validation
     if (!connection) {
@@ -702,8 +709,23 @@ export async function batchInsertEdges(connection: DatabaseConnection, edges: Ed
 
     if (edges.length === 0) {
       errorLogger.debug('Batch insert edges: empty array provided')
-      return
+      return {
+        successful: 0,
+        failed: 0,
+        total: 0,
+        errors: [],
+        duration: Date.now() - startTime,
+        chunksProcessed: 0
+      }
     }
+
+    // Set default options
+    const {
+      chunkSize = 1000,
+      continueOnError = false,
+      useTransaction = true,
+      timeout = 300000 // 5 minutes default
+    } = options
 
     // Validate all edges before starting insertion
     const validationErrors: string[] = []
@@ -718,30 +740,67 @@ export async function batchInsertEdges(connection: DatabaseConnection, edges: Ed
       throw new InvalidEdgeError(`Batch validation failed for ${validationErrors.length} edges`, edges, { validationErrors })
     }
 
-    // Insert edges sequentially (will be improved with transactions in next task)
-    let successCount = 0
-    const errors: any[] = []
+    errorLogger.info(`Starting batch insert of ${edges.length} edges`, { 
+      chunkSize, 
+      continueOnError, 
+      useTransaction 
+    })
 
-    for (const edge of edges) {
-      try {
-        await insertEdge(connection, edge)
-        successCount++
-      } catch (error) {
-        errors.push({ source: edge.source, target: edge.target, error: error.message })
-        // Continue with other edges for now
-      }
+    // Prepare parameter sets for batch execution
+    const paramSets = edges.map(edge => getInsertEdgeParams(edge))
+    const sql = insertEdgeFromObject(edges[0]) // Use first edge to get SQL template
+
+    let result: {
+      successful: number
+      failed: number
+      results: any[]
+      errors: Array<{ index: number; error: string; params: any[] }>
     }
 
-    if (errors.length > 0) {
-      errorLogger.warn(`Batch insert completed with ${errors.length} errors out of ${edges.length} edges`, { errors })
+    if (useTransaction) {
+      // Use transaction-based batch execution with prepared statements
+      result = await executeBatchWithPreparedStatement(
+        connection,
+        sql,
+        paramSets,
+        { chunkSize, continueOnError }
+      )
     } else {
-      errorLogger.info(`Batch insert completed successfully: ${successCount} edges inserted`)
+      // Fallback to sequential execution without transaction
+      result = await executeSequentialBatch(connection, sql, paramSets, { continueOnError })
     }
 
-    // If there were errors, throw them
-    if (errors.length > 0) {
-      throw new DatabaseOperationError(`Batch insert failed for ${errors.length} out of ${edges.length} edges`, undefined, { errors })
+    const duration = Date.now() - startTime
+    const chunksProcessed = Math.ceil(edges.length / chunkSize)
+
+    const batchResult: BatchResult = {
+      successful: result.successful,
+      failed: result.failed,
+      total: edges.length,
+      errors: result.errors.map(err => ({
+        index: err.index,
+        error: err.error,
+        item: edges[err.index]
+      })),
+      duration,
+      chunksProcessed
     }
+
+    if (result.failed > 0) {
+      errorLogger.warn(`Batch insert completed with ${result.failed} errors out of ${edges.length} edges`, batchResult)
+      
+      if (!continueOnError) {
+        throw new DatabaseOperationError(
+          `Batch insert failed for ${result.failed} out of ${edges.length} edges`,
+          undefined,
+          batchResult
+        )
+      }
+    } else {
+      errorLogger.info(`Batch insert completed successfully: ${result.successful} edges inserted in ${duration}ms`)
+    }
+
+    return batchResult
     
   } catch (error) {
     if (error instanceof DatabaseOperationError || error instanceof InvalidEdgeError) {
@@ -753,6 +812,7 @@ export async function batchInsertEdges(connection: DatabaseConnection, edges: Ed
     throw dbError
   }
 }
+
 
 
 
