@@ -95,11 +95,43 @@ export async function insertNode(connection: DatabaseConnection, node: Node): Pr
  * @param connection - Database connection
  * @param edge - Edge to insert
  * @returns Promise that resolves to the result
+ * @throws {InvalidEdgeError} When edge data is invalid
+ * @throws {EdgeAlreadyExistsError} When edge already exists
+ * @throws {DatabaseOperationError} When database operation fails
  */
 export async function insertEdge(connection: DatabaseConnection, edge: Edge): Promise<any> {
-  const sql = insertEdgeFromObject(edge)
-  const params = getInsertEdgeParams(edge)
-  return connection.run(sql, params)
+  try {
+    // Input validation
+    if (!connection) {
+      throw new DatabaseOperationError('Database connection is required')
+    }
+
+    const validationErrors = ValidationUtils.validateEdge(edge)
+    if (validationErrors.length > 0) {
+      throw new InvalidEdgeError(`Edge validation failed: ${validationErrors.join(', ')}`, edge, { validationErrors })
+    }
+
+    const sql = insertEdgeFromObject(edge)
+    const params = getInsertEdgeParams(edge)
+    
+    const result = await connection.run(sql, params)
+    
+    errorLogger.debug(`Edge inserted successfully: ${edge.source} -> ${edge.target}`, { 
+      source: edge.source, 
+      target: edge.target, 
+      changes: result.changes 
+    })
+    return result
+    
+  } catch (error) {
+    if (error instanceof InvalidEdgeError) {
+      throw error
+    }
+    
+    const dbError = mapSQLiteError(error, { source: edge?.source, target: edge?.target })
+    errorLogger.error(`Failed to insert edge: ${edge?.source} -> ${edge?.target}`, dbError, { edge })
+    throw dbError
+  }
 }
 
 /**
@@ -281,6 +313,7 @@ export async function batchInsertEdges(connection: DatabaseConnection, edges: Ed
     await insertEdge(connection, edge)
   }
 }
+
 
 
 
