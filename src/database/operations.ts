@@ -29,10 +29,23 @@ import {
  * 
  * @param connection - Database connection
  * @returns Promise that resolves when schema is created
+ * @throws {DatabaseOperationError} When schema creation fails
  */
 export async function initializeDatabase(connection: DatabaseConnection): Promise<void> {
-  const schema = createSchema()
-  await connection.exec(schema)
+  try {
+    if (!connection) {
+      throw new DatabaseOperationError('Database connection is required')
+    }
+
+    const schema = createSchema()
+    await connection.exec(schema)
+    
+    errorLogger.info('Database schema initialized successfully')
+  } catch (error) {
+    const dbError = mapSQLiteError(error)
+    errorLogger.error('Failed to initialize database schema', dbError, { schema: 'nodes, edges' })
+    throw dbError
+  }
 }
 
 /**
@@ -240,4 +253,5 @@ export async function batchInsertEdges(connection: DatabaseConnection, edges: Ed
     await insertEdge(connection, edge)
   }
 }
+
 
