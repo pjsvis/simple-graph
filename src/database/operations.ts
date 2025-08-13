@@ -54,11 +54,39 @@ export async function initializeDatabase(connection: DatabaseConnection): Promis
  * @param connection - Database connection
  * @param node - Node to insert
  * @returns Promise that resolves to the result
+ * @throws {InvalidNodeError} When node data is invalid
+ * @throws {NodeAlreadyExistsError} When node with same ID already exists
+ * @throws {DatabaseOperationError} When database operation fails
  */
 export async function insertNode(connection: DatabaseConnection, node: Node): Promise<any> {
-  const sql = insertNodeFromObject(node)
-  const params = getInsertNodeParams(node)
-  return connection.run(sql, params)
+  try {
+    // Input validation
+    if (!connection) {
+      throw new DatabaseOperationError('Database connection is required')
+    }
+
+    const validationErrors = ValidationUtils.validateNode(node)
+    if (validationErrors.length > 0) {
+      throw new InvalidNodeError(`Node validation failed: ${validationErrors.join(', ')}`, node, { validationErrors })
+    }
+
+    const sql = insertNodeFromObject(node)
+    const params = getInsertNodeParams(node)
+    
+    const result = await connection.run(sql, params)
+    
+    errorLogger.debug(`Node inserted successfully: ${node.id}`, { nodeId: node.id, changes: result.changes })
+    return result
+    
+  } catch (error) {
+    if (error instanceof InvalidNodeError) {
+      throw error
+    }
+    
+    const dbError = mapSQLiteError(error, { nodeId: node?.id })
+    errorLogger.error(`Failed to insert node: ${node?.id}`, dbError, { node })
+    throw dbError
+  }
 }
 
 /**
@@ -253,5 +281,6 @@ export async function batchInsertEdges(connection: DatabaseConnection, edges: Ed
     await insertEdge(connection, edge)
   }
 }
+
 
 
