@@ -140,14 +140,46 @@ export async function insertEdge(connection: DatabaseConnection, edge: Edge): Pr
  * @param connection - Database connection
  * @param nodeId - Node ID to find
  * @returns Promise that resolves to the node or null
+ * @throws {DatabaseOperationError} When database operation fails
  */
 export async function getNodeById(connection: DatabaseConnection, nodeId: string): Promise<Node | null> {
-  const result = await connection.get(
-    'SELECT body FROM nodes WHERE id = ?',
-    [nodeId]
-  )
-  
-  return result ? JSON.parse(result.body) : null
+  try {
+    // Input validation
+    if (!connection) {
+      throw new DatabaseOperationError('Database connection is required')
+    }
+    
+    if (!nodeId || typeof nodeId !== 'string' || nodeId.trim().length === 0) {
+      throw new DatabaseOperationError('Valid node ID is required')
+    }
+
+    const result = await connection.get(
+      'SELECT body FROM nodes WHERE id = ?',
+      [nodeId.trim()]
+    )
+    
+    if (!result) {
+      errorLogger.debug(`Node not found: ${nodeId}`)
+      return null
+    }
+
+    try {
+      const node = JSON.parse(result.body)
+      errorLogger.debug(`Node retrieved successfully: ${nodeId}`)
+      return node
+    } catch (parseError) {
+      throw new DatabaseOperationError(`Failed to parse node data for ID: ${nodeId}`, parseError)
+    }
+    
+  } catch (error) {
+    if (error instanceof DatabaseOperationError) {
+      throw error
+    }
+    
+    const dbError = mapSQLiteError(error, { nodeId })
+    errorLogger.error(`Failed to get node by ID: ${nodeId}`, dbError)
+    throw dbError
+  }
 }
 
 /**
@@ -313,6 +345,7 @@ export async function batchInsertEdges(connection: DatabaseConnection, edges: Ed
     await insertEdge(connection, edge)
   }
 }
+
 
 
 
