@@ -3,12 +3,26 @@
  * 
  * This module provides high-level database operations for managing nodes and edges.
  * Designed for easy integration with external systems like Groq-CLI.
+ * 
+ * Enhanced with comprehensive error handling, input validation, and structured logging.
  */
 
 import { DatabaseConnection, Node, Edge, GraphStats } from '../types/base-types'
 import { createSchema } from './schema'
 import { insertNodeFromObject, getInsertNodeParams } from './insert-node'
 import { insertEdgeFromObject, getInsertEdgeParams } from './insert-edge'
+import {
+  DatabaseOperationError,
+  NodeAlreadyExistsError,
+  NodeNotFoundError,
+  EdgeAlreadyExistsError,
+  InvalidNodeError,
+  InvalidEdgeError,
+  TransactionError,
+  ValidationUtils,
+  mapSQLiteError,
+  errorLogger
+} from './errors'
 
 /**
  * Initialize database with schema
@@ -226,3 +240,4 @@ export async function batchInsertEdges(connection: DatabaseConnection, edges: Ed
     await insertEdge(connection, edge)
   }
 }
+
