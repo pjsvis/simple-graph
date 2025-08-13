@@ -501,15 +501,22 @@ export async function traverseGraph(
 }
 
 /**
- * Batch insert nodes
+ * Batch insert nodes with transaction support and prepared statements
  * 
  * @param connection - Database connection
  * @param nodes - Array of nodes to insert
- * @returns Promise that resolves when all nodes are inserted
+ * @param options - Batch operation options
+ * @returns Promise that resolves to batch operation result
  * @throws {DatabaseOperationError} When database operation fails
  * @throws {InvalidNodeError} When any node data is invalid
  */
-export async function batchInsertNodes(connection: DatabaseConnection, nodes: Node[]): Promise<void> {
+export async function batchInsertNodes(
+  connection: DatabaseConnection, 
+  nodes: Node[], 
+  options: BatchOptions = {}
+): Promise<BatchResult> {
+  const startTime = Date.now()
+  
   try {
     // Input validation
     if (!connection) {
@@ -522,8 +529,23 @@ export async function batchInsertNodes(connection: DatabaseConnection, nodes: No
 
     if (nodes.length === 0) {
       errorLogger.debug('Batch insert nodes: empty array provided')
-      return
+      return {
+        successful: 0,
+        failed: 0,
+        total: 0,
+        errors: [],
+        duration: Date.now() - startTime,
+        chunksProcessed: 0
+      }
     }
+
+    // Set default options
+    const {
+      chunkSize = 1000,
+      continueOnError = false,
+      useTransaction = true,
+      timeout = 300000 // 5 minutes default
+    } = options
 
     // Validate all nodes before starting insertion
     const validationErrors: string[] = []
@@ -538,30 +560,67 @@ export async function batchInsertNodes(connection: DatabaseConnection, nodes: No
       throw new InvalidNodeError(`Batch validation failed for ${validationErrors.length} nodes`, nodes, { validationErrors })
     }
 
-    // Insert nodes sequentially (will be improved with transactions in next task)
-    let successCount = 0
-    const errors: any[] = []
+    errorLogger.info(`Starting batch insert of ${nodes.length} nodes`, { 
+      chunkSize, 
+      continueOnError, 
+      useTransaction 
+    })
 
-    for (const node of nodes) {
-      try {
-        await insertNode(connection, node)
-        successCount++
-      } catch (error) {
-        errors.push({ nodeId: node.id, error: error.message })
-        // Continue with other nodes for now
-      }
+    // Prepare parameter sets for batch execution
+    const paramSets = nodes.map(node => getInsertNodeParams(node))
+    const sql = insertNodeFromObject(nodes[0]) // Use first node to get SQL template
+
+    let result: {
+      successful: number
+      failed: number
+      results: any[]
+      errors: Array<{ index: number; error: string; params: any[] }>
     }
 
-    if (errors.length > 0) {
-      errorLogger.warn(`Batch insert completed with ${errors.length} errors out of ${nodes.length} nodes`, { errors })
+    if (useTransaction) {
+      // Use transaction-based batch execution with prepared statements
+      result = await executeBatchWithPreparedStatement(
+        connection,
+        sql,
+        paramSets,
+        { chunkSize, continueOnError }
+      )
     } else {
-      errorLogger.info(`Batch insert completed successfully: ${successCount} nodes inserted`)
+      // Fallback to sequential execution without transaction
+      result = await executeSequentialBatch(connection, sql, paramSets, { continueOnError })
     }
 
-    // If there were errors, throw them
-    if (errors.length > 0) {
-      throw new DatabaseOperationError(`Batch insert failed for ${errors.length} out of ${nodes.length} nodes`, undefined, { errors })
+    const duration = Date.now() - startTime
+    const chunksProcessed = Math.ceil(nodes.length / chunkSize)
+
+    const batchResult: BatchResult = {
+      successful: result.successful,
+      failed: result.failed,
+      total: nodes.length,
+      errors: result.errors.map(err => ({
+        index: err.index,
+        error: err.error,
+        item: nodes[err.index]
+      })),
+      duration,
+      chunksProcessed
     }
+
+    if (result.failed > 0) {
+      errorLogger.warn(`Batch insert completed with ${result.failed} errors out of ${nodes.length} nodes`, batchResult)
+      
+      if (!continueOnError) {
+        throw new DatabaseOperationError(
+          `Batch insert failed for ${result.failed} out of ${nodes.length} nodes`,
+          undefined,
+          batchResult
+        )
+      }
+    } else {
+      errorLogger.info(`Batch insert completed successfully: ${result.successful} nodes inserted in ${duration}ms`)
+    }
+
+    return batchResult
     
   } catch (error) {
     if (error instanceof DatabaseOperationError || error instanceof InvalidNodeError) {
@@ -647,6 +706,7 @@ export async function batchInsertEdges(connection: DatabaseConnection, edges: Ed
     throw dbError
   }
 }
+
 
 
 
