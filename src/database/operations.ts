@@ -314,21 +314,69 @@ export async function getEdgesForNode(
  * @param searchTerm - Term to search for
  * @param fields - Fields to search in (defaults to common text fields)
  * @returns Promise that resolves to array of matching nodes
+ * @throws {DatabaseOperationError} When database operation fails
  */
 export async function searchNodes(
   connection: DatabaseConnection, 
   searchTerm: string,
   fields: string[] = ['title', 'description', 'term', 'definition']
 ): Promise<Node[]> {
-  const conditions = fields.map(field => 
-    `json_extract(body, '$.${field}') LIKE ?`
-  ).join(' OR ')
-  
-  const sql = `SELECT body FROM nodes WHERE ${conditions}`
-  const params = fields.map(() => `%${searchTerm}%`)
-  
-  const results = await connection.all(sql, params)
-  return results.map(row => JSON.parse(row.body))
+  try {
+    // Input validation
+    if (!connection) {
+      throw new DatabaseOperationError('Database connection is required')
+    }
+    
+    if (!searchTerm || typeof searchTerm !== 'string' || searchTerm.trim().length === 0) {
+      throw new DatabaseOperationError('Valid search term is required')
+    }
+
+    if (!Array.isArray(fields) || fields.length === 0) {
+      throw new DatabaseOperationError('At least one search field is required')
+    }
+
+    // Validate field names to prevent SQL injection
+    const validFieldPattern = /^[a-zA-Z_][a-zA-Z0-9_]*$/
+    for (const field of fields) {
+      if (!validFieldPattern.test(field)) {
+        throw new DatabaseOperationError(`Invalid field name: ${field}`)
+      }
+    }
+
+    const conditions = fields.map(field => 
+      `json_extract(body, '$.${field}') LIKE ?`
+    ).join(' OR ')
+    
+    const sql = `SELECT body FROM nodes WHERE ${conditions}`
+    const params = fields.map(() => `%${searchTerm.trim()}%`)
+    
+    const results = await connection.all(sql, params)
+    
+    const nodes: Node[] = []
+    for (const row of results) {
+      try {
+        nodes.push(JSON.parse(row.body))
+      } catch (parseError) {
+        errorLogger.warn(`Failed to parse node data during search, skipping`, { 
+          error: parseError.message, 
+          body: row.body 
+        })
+        continue
+      }
+    }
+    
+    errorLogger.debug(`Search found ${nodes.length} nodes for term: ${searchTerm}`, { fields })
+    return nodes
+    
+  } catch (error) {
+    if (error instanceof DatabaseOperationError) {
+      throw error
+    }
+    
+    const dbError = mapSQLiteError(error)
+    errorLogger.error(`Failed to search nodes for term: ${searchTerm}`, dbError, { fields })
+    throw dbError
+  }
 }
 
 /**
@@ -417,6 +465,7 @@ export async function batchInsertEdges(connection: DatabaseConnection, edges: Ed
     await insertEdge(connection, edge)
   }
 }
+
 
 
 
