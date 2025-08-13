@@ -2,12 +2,13 @@
  * Database Connection Module for Knowledge Graph
  * 
  * This module provides a standardized interface for connecting to SQLite databases
- * with high-concurrency settings. Perfect for integration with external systems.
+ * with high-concurrency settings and transaction management. Perfect for integration with external systems.
  */
 
 import sqlite3 from 'sqlite3'
 import { promisify } from 'util'
 import { DatabaseConfig, DatabaseConnection } from '../types/base-types'
+import { TransactionError, DatabaseOperationError, errorLogger } from './errors'
 
 /**
  * Default high-concurrency database configuration
@@ -158,3 +159,4 @@ export async function getDatabaseStats(connection: DatabaseConnection): Promise<
     tableCount: tableResult.length
   }
 }
+
