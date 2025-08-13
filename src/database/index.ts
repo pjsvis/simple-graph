@@ -49,7 +49,11 @@ export {
   createMemoryDatabase,
   testConnection,
   getDatabaseStats,
-  DEFAULT_DB_CONFIG
+  DEFAULT_DB_CONFIG,
+  withTransaction,
+  withBatchTransaction,
+  executeBatchWithPreparedStatement,
+  PreparedStatement
 } from './connection'
 
 // Schema management
@@ -228,4 +232,5 @@ export async function connectToLoom(
   const connection = await connectToTheLoom(dbPath, readonly)
   return new KnowledgeGraph(connection)
 }
+
 
