@@ -505,10 +505,71 @@ export async function traverseGraph(
  * @param connection - Database connection
  * @param nodes - Array of nodes to insert
  * @returns Promise that resolves when all nodes are inserted
+ * @throws {DatabaseOperationError} When database operation fails
+ * @throws {InvalidNodeError} When any node data is invalid
  */
 export async function batchInsertNodes(connection: DatabaseConnection, nodes: Node[]): Promise<void> {
-  for (const node of nodes) {
-    await insertNode(connection, node)
+  try {
+    // Input validation
+    if (!connection) {
+      throw new DatabaseOperationError('Database connection is required')
+    }
+    
+    if (!Array.isArray(nodes)) {
+      throw new DatabaseOperationError('Nodes must be an array')
+    }
+
+    if (nodes.length === 0) {
+      errorLogger.debug('Batch insert nodes: empty array provided')
+      return
+    }
+
+    // Validate all nodes before starting insertion
+    const validationErrors: string[] = []
+    for (let i = 0; i < nodes.length; i++) {
+      const nodeErrors = ValidationUtils.validateNode(nodes[i])
+      if (nodeErrors.length > 0) {
+        validationErrors.push(`Node ${i} (${nodes[i]?.id || 'unknown'}): ${nodeErrors.join(', ')}`)
+      }
+    }
+
+    if (validationErrors.length > 0) {
+      throw new InvalidNodeError(`Batch validation failed for ${validationErrors.length} nodes`, nodes, { validationErrors })
+    }
+
+    // Insert nodes sequentially (will be improved with transactions in next task)
+    let successCount = 0
+    const errors: any[] = []
+
+    for (const node of nodes) {
+      try {
+        await insertNode(connection, node)
+        successCount++
+      } catch (error) {
+        errors.push({ nodeId: node.id, error: error.message })
+        // Continue with other nodes for now
+      }
+    }
+
+    if (errors.length > 0) {
+      errorLogger.warn(`Batch insert completed with ${errors.length} errors out of ${nodes.length} nodes`, { errors })
+    } else {
+      errorLogger.info(`Batch insert completed successfully: ${successCount} nodes inserted`)
+    }
+
+    // If there were errors, throw them
+    if (errors.length > 0) {
+      throw new DatabaseOperationError(`Batch insert failed for ${errors.length} out of ${nodes.length} nodes`, undefined, { errors })
+    }
+    
+  } catch (error) {
+    if (error instanceof DatabaseOperationError || error instanceof InvalidNodeError) {
+      throw error
+    }
+    
+    const dbError = mapSQLiteError(error)
+    errorLogger.error(`Failed to batch insert nodes`, dbError, { nodeCount: nodes?.length })
+    throw dbError
   }
 }
 
@@ -518,12 +579,74 @@ export async function batchInsertNodes(connection: DatabaseConnection, nodes: No
  * @param connection - Database connection
  * @param edges - Array of edges to insert
  * @returns Promise that resolves when all edges are inserted
+ * @throws {DatabaseOperationError} When database operation fails
+ * @throws {InvalidEdgeError} When any edge data is invalid
  */
 export async function batchInsertEdges(connection: DatabaseConnection, edges: Edge[]): Promise<void> {
-  for (const edge of edges) {
-    await insertEdge(connection, edge)
+  try {
+    // Input validation
+    if (!connection) {
+      throw new DatabaseOperationError('Database connection is required')
+    }
+    
+    if (!Array.isArray(edges)) {
+      throw new DatabaseOperationError('Edges must be an array')
+    }
+
+    if (edges.length === 0) {
+      errorLogger.debug('Batch insert edges: empty array provided')
+      return
+    }
+
+    // Validate all edges before starting insertion
+    const validationErrors: string[] = []
+    for (let i = 0; i < edges.length; i++) {
+      const edgeErrors = ValidationUtils.validateEdge(edges[i])
+      if (edgeErrors.length > 0) {
+        validationErrors.push(`Edge ${i} (${edges[i]?.source || 'unknown'} -> ${edges[i]?.target || 'unknown'}): ${edgeErrors.join(', ')}`)
+      }
+    }
+
+    if (validationErrors.length > 0) {
+      throw new InvalidEdgeError(`Batch validation failed for ${validationErrors.length} edges`, edges, { validationErrors })
+    }
+
+    // Insert edges sequentially (will be improved with transactions in next task)
+    let successCount = 0
+    const errors: any[] = []
+
+    for (const edge of edges) {
+      try {
+        await insertEdge(connection, edge)
+        successCount++
+      } catch (error) {
+        errors.push({ source: edge.source, target: edge.target, error: error.message })
+        // Continue with other edges for now
+      }
+    }
+
+    if (errors.length > 0) {
+      errorLogger.warn(`Batch insert completed with ${errors.length} errors out of ${edges.length} edges`, { errors })
+    } else {
+      errorLogger.info(`Batch insert completed successfully: ${successCount} edges inserted`)
+    }
+
+    // If there were errors, throw them
+    if (errors.length > 0) {
+      throw new DatabaseOperationError(`Batch insert failed for ${errors.length} out of ${edges.length} edges`, undefined, { errors })
+    }
+    
+  } catch (error) {
+    if (error instanceof DatabaseOperationError || error instanceof InvalidEdgeError) {
+      throw error
+    }
+    
+    const dbError = mapSQLiteError(error)
+    errorLogger.error(`Failed to batch insert edges`, dbError, { edgeCount: edges?.length })
+    throw dbError
   }
 }
+
 
 
 
