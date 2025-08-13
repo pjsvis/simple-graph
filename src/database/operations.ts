@@ -237,34 +237,74 @@ export async function getNodesByType(connection: DatabaseConnection, nodeType: s
  * @param nodeId - Node ID
  * @param direction - Direction of edges ('outgoing', 'incoming', 'both')
  * @returns Promise that resolves to array of edges
+ * @throws {DatabaseOperationError} When database operation fails
  */
 export async function getEdgesForNode(
   connection: DatabaseConnection, 
   nodeId: string, 
   direction: 'outgoing' | 'incoming' | 'both' = 'both'
 ): Promise<Edge[]> {
-  let sql: string
-  
-  switch (direction) {
-    case 'outgoing':
-      sql = 'SELECT source, target, properties FROM edges WHERE source = ?'
-      break
-    case 'incoming':
-      sql = 'SELECT source, target, properties FROM edges WHERE target = ?'
-      break
-    case 'both':
-      sql = 'SELECT source, target, properties FROM edges WHERE source = ? OR target = ?'
-      break
+  try {
+    // Input validation
+    if (!connection) {
+      throw new DatabaseOperationError('Database connection is required')
+    }
+    
+    if (!nodeId || typeof nodeId !== 'string' || nodeId.trim().length === 0) {
+      throw new DatabaseOperationError('Valid node ID is required')
+    }
+
+    if (!['outgoing', 'incoming', 'both'].includes(direction)) {
+      throw new DatabaseOperationError('Direction must be "outgoing", "incoming", or "both"')
+    }
+
+    let sql: string
+    
+    switch (direction) {
+      case 'outgoing':
+        sql = 'SELECT source, target, properties FROM edges WHERE source = ?'
+        break
+      case 'incoming':
+        sql = 'SELECT source, target, properties FROM edges WHERE target = ?'
+        break
+      case 'both':
+        sql = 'SELECT source, target, properties FROM edges WHERE source = ? OR target = ?'
+        break
+    }
+    
+    const params = direction === 'both' ? [nodeId.trim(), nodeId.trim()] : [nodeId.trim()]
+    const results = await connection.all(sql, params)
+    
+    const edges: Edge[] = []
+    for (const row of results) {
+      try {
+        edges.push({
+          source: row.source,
+          target: row.target,
+          properties: row.properties ? JSON.parse(row.properties) : {}
+        })
+      } catch (parseError) {
+        errorLogger.warn(`Failed to parse edge properties, skipping`, { 
+          error: parseError.message, 
+          source: row.source, 
+          target: row.target 
+        })
+        continue
+      }
+    }
+    
+    errorLogger.debug(`Retrieved ${edges.length} edges for node: ${nodeId} (${direction})`)
+    return edges
+    
+  } catch (error) {
+    if (error instanceof DatabaseOperationError) {
+      throw error
+    }
+    
+    const dbError = mapSQLiteError(error)
+    errorLogger.error(`Failed to get edges for node: ${nodeId}`, dbError, { direction })
+    throw dbError
   }
-  
-  const params = direction === 'both' ? [nodeId, nodeId] : [nodeId]
-  const results = await connection.all(sql, params)
-  
-  return results.map(row => ({
-    source: row.source,
-    target: row.target,
-    properties: row.properties ? JSON.parse(row.properties) : {}
-  }))
 }
 
 /**
@@ -377,6 +417,7 @@ export async function batchInsertEdges(connection: DatabaseConnection, edges: Ed
     await insertEdge(connection, edge)
   }
 }
+
 
 
 
