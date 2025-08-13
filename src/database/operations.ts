@@ -425,6 +425,7 @@ export async function getGraphStats(connection: DatabaseConnection): Promise<Gra
  * @param maxDepth - Maximum traversal depth
  * @param direction - Direction to traverse
  * @returns Promise that resolves to array of visited nodes
+ * @throws {DatabaseOperationError} When database operation fails
  */
 export async function traverseGraph(
   connection: DatabaseConnection,
@@ -432,28 +433,70 @@ export async function traverseGraph(
   maxDepth: number = 3,
   direction: 'outgoing' | 'incoming' | 'both' = 'outgoing'
 ): Promise<Node[]> {
-  const visited = new Set<string>()
-  const result: Node[] = []
-  
-  async function traverse(nodeId: string, depth: number) {
-    if (depth > maxDepth || visited.has(nodeId)) return
+  try {
+    // Input validation
+    if (!connection) {
+      throw new DatabaseOperationError('Database connection is required')
+    }
     
-    visited.add(nodeId)
-    const node = await getNodeById(connection, nodeId)
-    if (node) result.push(node)
+    if (!startNodeId || typeof startNodeId !== 'string' || startNodeId.trim().length === 0) {
+      throw new DatabaseOperationError('Valid start node ID is required')
+    }
+
+    if (typeof maxDepth !== 'number' || maxDepth < 0 || maxDepth > 10) {
+      throw new DatabaseOperationError('Max depth must be a number between 0 and 10')
+    }
+
+    if (!['outgoing', 'incoming', 'both'].includes(direction)) {
+      throw new DatabaseOperationError('Direction must be "outgoing", "incoming", or "both"')
+    }
+
+    const visited = new Set<string>()
+    const result: Node[] = []
     
-    const edges = await getEdgesForNode(connection, nodeId, direction)
-    
-    for (const edge of edges) {
-      const nextNodeId = direction === 'incoming' ? edge.source : edge.target
-      if (!visited.has(nextNodeId)) {
-        await traverse(nextNodeId, depth + 1)
+    async function traverse(nodeId: string, depth: number) {
+      if (depth > maxDepth || visited.has(nodeId)) return
+      
+      visited.add(nodeId)
+      
+      try {
+        const node = await getNodeById(connection, nodeId)
+        if (node) result.push(node)
+        
+        const edges = await getEdgesForNode(connection, nodeId, direction)
+        
+        for (const edge of edges) {
+          const nextNodeId = direction === 'incoming' ? edge.source : edge.target
+          if (!visited.has(nextNodeId)) {
+            await traverse(nextNodeId, depth + 1)
+          }
+        }
+      } catch (error) {
+        errorLogger.warn(`Error during traversal at node ${nodeId}, depth ${depth}`, { error: error.message })
+        // Continue traversal despite individual node errors
       }
     }
+    
+    await traverse(startNodeId.trim(), 0)
+    
+    errorLogger.debug(`Graph traversal completed`, { 
+      startNodeId, 
+      maxDepth, 
+      direction, 
+      nodesVisited: result.length 
+    })
+    
+    return result
+    
+  } catch (error) {
+    if (error instanceof DatabaseOperationError) {
+      throw error
+    }
+    
+    const dbError = mapSQLiteError(error)
+    errorLogger.error(`Failed to traverse graph from node: ${startNodeId}`, dbError, { maxDepth, direction })
+    throw dbError
   }
-  
-  await traverse(startNodeId, 0)
-  return result
 }
 
 /**
@@ -481,6 +524,7 @@ export async function batchInsertEdges(connection: DatabaseConnection, edges: Ed
     await insertEdge(connection, edge)
   }
 }
+
 
 
 
