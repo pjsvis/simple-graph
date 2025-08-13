@@ -4,7 +4,8 @@
  * Quick test to validate the transaction management system
  */
 
-const { createKnowledgeGraph } = require('./src/database/index.ts')
+import { createKnowledgeGraph } from './src/database/index.js'
+import { batchInsertNodes, batchInsertEdges } from './src/database/operations.js'
 
 async function testTransactionSystem() {
   console.log('🧪 Testing Transaction Management System...')
@@ -75,3 +76,4 @@ async function testTransactionSystem() {
 
 // Run the test
 testTransactionSystem()
+
