@@ -26,7 +26,7 @@ class PNGRenderer {
   }
 
   /**
-   * Render priority DOT files to PNG
+   * Render priority DOT files to PNG and SVG
    */
   renderPriorityPNGs() {
     if (!this.checkGraphviz()) {
@@ -37,26 +37,32 @@ class PNGRenderer {
       process.exit(1)
     }
 
-    console.log('🎨 RENDERING PRIORITY PNG FILES')
+    console.log('🎨 RENDERING PRIORITY PNG & SVG FILES')
     console.log('=' .repeat(50))
 
-    // Create output directory
+    // Create output directories
     if (!existsSync(this.outputDir)) {
       mkdirSync(this.outputDir, { recursive: true })
+    }
+    if (!existsSync(join(this.outputDir, 'svg'))) {
+      mkdirSync(join(this.outputDir, 'svg'), { recursive: true })
     }
 
     // Priority files to render (most useful visualizations)
     const priorityFiles = [
-      { file: 'minimal-example.dot', description: 'Simple example for testing' },
-      { file: 'complete-knowledge-graph.dot', description: 'Full network overview' },
-      { file: 'directives-only.dot', description: 'Directive network only' },
-      { file: 'hub-authority.dot', description: 'Central hub nodes' },
-      { file: 'cross-category-bridges.dot', description: 'Inter-category connections' },
-      { file: 'semantic-similarity.dot', description: 'Semantic relationships' },
-      { file: 'inspirational-clusters.dot', description: 'Inspirational source groups' },
-      { file: 'category-adv.dot', description: 'Advanced Directives category' },
-      { file: 'category-cog.dot', description: 'Cognitive Strategies category' },
-      { file: 'layout-force-directed.dot', description: 'Force-directed layout example' }
+      { file: 'organic/minimal-example.dot', description: 'Simple example for testing' },
+      { file: 'organic/complete-knowledge-graph.dot', description: 'Full network overview' },
+      { file: 'organic/directives-only.dot', description: 'Directive network only' },
+      { file: 'synth/hub-authority.dot', description: 'Central hub nodes' },
+      { file: 'organic/cross-category-bridges.dot', description: 'Inter-category connections' },
+      { file: 'synth/semantic-similarity.dot', description: 'Semantic relationships' },
+      { file: 'synth/inspirational-clusters.dot', description: 'Inspirational source groups' },
+      { file: 'organic/category-adv.dot', description: 'Advanced Directives category' },
+      { file: 'organic/category-cog.dot', description: 'Cognitive Strategies category' },
+      { file: 'organic/layout-force-directed.dot', description: 'Force-directed layout example' },
+      { file: 'organic/layout-circular.dot', description: 'Circular layout' },
+      { file: 'organic/layout-hierarchical.dot', description: 'Hierarchical layout' },
+      { file: 'organic/layout-radial.dot', description: 'Radial layout' }
     ]
 
     let successCount = 0
@@ -102,21 +108,28 @@ class PNGRenderer {
   }
 
   /**
-   * Render a single DOT file to PNG
+   * Render a single DOT file to PNG and SVG
    */
   renderToPNG(inputPath, description) {
     const baseName = basename(inputPath, '.dot')
-    const outputPath = join(this.outputDir, `${baseName}.png`)
-    
+    const pngPath = join(this.outputDir, `${baseName}.png`)
+    const svgPath = join(this.outputDir, 'svg', `${baseName}.svg`)
+
     console.log(`🎨 Rendering: ${baseName}`)
     console.log(`   📝 ${description}`)
-    
+
     // High-quality PNG rendering with reasonable size limits
-    const command = `dot -Tpng -Gdpi=300 -Gsize="16,12!" -Gratio=fill "${inputPath}" -o "${outputPath}"`
-    
+    const pngCommand = `dot -Tpng -Gdpi=300 -Gsize="16,12!" -Gratio=fill "${inputPath}" -o "${pngPath}"`
+
+    // SVG rendering (scalable)
+    const svgCommand = `dot -Tsvg "${inputPath}" -o "${svgPath}"`
+
     try {
-      execSync(command, { stdio: 'pipe' })
+      execSync(pngCommand, { stdio: 'pipe' })
       console.log(`   ✅ Generated: ${baseName}.png`)
+
+      execSync(svgCommand, { stdio: 'pipe' })
+      console.log(`   ✅ Generated: ${baseName}.svg`)
     } catch (error) {
       throw new Error(`Graphviz rendering failed: ${error.message}`)
     }

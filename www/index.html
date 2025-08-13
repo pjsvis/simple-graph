@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Loom - Knowledge Graph Explorer</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="icon" href="assets/favicon.ico">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>🧠 The Loom</h1>
+                <span class="nav-subtitle">Knowledge Graph Explorer</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#overview" class="nav-link">Overview</a></li>
+                <li><a href="#visualizations" class="nav-link">Visualizations</a></li>
+                <li><a href="#data" class="nav-link">Data</a></li>
+                <li><a href="#api" class="nav-link">API</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section id="hero" class="hero">
+            <div class="container">
+                <h1>The Loom Knowledge Graph</h1>
+                <p class="hero-subtitle">
+                    Explore the interconnected web of Core Directive Arrays (CDA) and Conceptual Lexicon (CL) 
+                    that powers advanced AI persona engineering.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat-card">
+                        <div class="stat-number">85</div>
+                        <div class="stat-label">CDA Directives</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">134</div>
+                        <div class="stat-label">Lexicon Terms</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">24</div>
+                        <div class="stat-label">Relationships</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">93</div>
+                        <div class="stat-label">Categories</div>
+                    </div>
+                </div>
+                <div class="hero-actions">
+                    <a href="#visualizations" class="btn btn-primary">Explore Visualizations</a>
+                    <a href="#data" class="btn btn-secondary">Browse Data</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Overview Section -->
+        <section id="overview" class="section">
+            <div class="container">
+                <h2>System Overview</h2>
+                <div class="overview-grid">
+                    <div class="overview-card">
+                        <h3>🎯 Core Directive Array (CDA)</h3>
+                        <p>
+                            A structured collection of 85 operational directives organized into 15 categories,
+                            defining the behavioral parameters and interaction protocols for AI personas.
+                        </p>
+                        <ul>
+                            <li>Processing Philosophy (PHI)</li>
+                            <li>Query Processing Guidelines (QPG)</li>
+                            <li>Cognitive Strategies (COG)</li>
+                            <li>Operational Protocol Management (OPM)</li>
+                        </ul>
+                    </div>
+                    <div class="overview-card">
+                        <h3>📚 Conceptual Lexicon (CL)</h3>
+                        <p>
+                            A dynamic glossary of 134 specialized terms, neologisms, and operational heuristics
+                            that provide contextual clarity and consistency across interactions.
+                        </p>
+                        <ul>
+                            <li>Operational Heuristics (20 entries)</li>
+                            <li>Core Concepts (4 entries)</li>
+                            <li>Interaction Referents (4 entries)</li>
+                            <li>93 unique categories total</li>
+                        </ul>
+                    </div>
+                    <div class="overview-card">
+                        <h3>🔗 Knowledge Graph</h3>
+                        <p>
+                            An interconnected network representing relationships between directives, concepts,
+                            and operational principles, enabling sophisticated reasoning and context awareness.
+                        </p>
+                        <ul>
+                            <li>Node-edge graph structure</li>
+                            <li>Cross-reference analysis</li>
+                            <li>Hierarchical categorization</li>
+                            <li>Version tracking</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Visualizations Section -->
+        <section id="visualizations" class="section">
+            <div class="container">
+                <h2>Interactive Visualizations</h2>
+                <p class="section-subtitle">
+                    Explore the knowledge graph through various visual representations and analytical views.
+                </p>
+                
+                <div class="viz-categories">
+                    <div class="viz-category">
+                        <h3>🌐 Organic Views</h3>
+                        <p>Natural representations of the knowledge structure</p>
+                        <div class="viz-grid" id="organic-visualizations">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="viz-category">
+                        <h3>🔬 Analytical Views</h3>
+                        <p>Synthesized insights and analytical perspectives</p>
+                        <div class="viz-grid" id="synth-visualizations">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Data Section -->
+        <section id="data" class="section">
+            <div class="container">
+                <h2>Data Explorer</h2>
+                <div class="data-grid">
+                    <div class="data-card">
+                        <h3>📋 CDA Directives</h3>
+                        <p>Browse the complete Core Directive Array</p>
+                        <a href="data/cda-directives.html" class="btn btn-outline">Explore CDA</a>
+                    </div>
+                    <div class="data-card">
+                        <h3>📖 Conceptual Lexicon</h3>
+                        <p>Search and browse lexicon terms</p>
+                        <a href="data/conceptual-lexicon.html" class="btn btn-outline">Browse Lexicon</a>
+                    </div>
+                    <div class="data-card">
+                        <h3>🔗 Relationships</h3>
+                        <p>Explore connections and references</p>
+                        <a href="data/relationships.html" class="btn btn-outline">View Relationships</a>
+                    </div>
+                    <div class="data-card">
+                        <h3>📊 Statistics</h3>
+                        <p>Analytical insights and metrics</p>
+                        <a href="data/statistics.html" class="btn btn-outline">View Stats</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- API Section -->
+        <section id="api" class="section">
+            <div class="container">
+                <h2>Integration & API</h2>
+                <div class="api-grid">
+                    <div class="api-card">
+                        <h3>🔧 Database Module</h3>
+                        <p>Ready for Groq-CLI integration</p>
+                        <pre><code>import { createKnowledgeGraph } from './database'
+const kg = await createKnowledgeGraph('the-loom.db')</code></pre>
+                        <a href="docs/groq-cli-integration.html" class="btn btn-outline">Integration Guide</a>
+                    </div>
+                    <div class="api-card">
+                        <h3>📁 Export Formats</h3>
+                        <p>Multiple data export options</p>
+                        <ul>
+                            <li><a href="exports/the-loom-v2.db">SQLite Database</a></li>
+                            <li><a href="exports/cda-directives.json">CDA JSON</a></li>
+                            <li><a href="exports/conceptual-lexicon.json">Lexicon JSON</a></li>
+                            <li><a href="exports/knowledge-graph.dot">DOT Graph</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 The Loom Knowledge Graph. Built with TypeScript, SQLite, and Graphviz.</p>
+            <p>
+                <a href="https://github.com/pjsvis/simple-graph">GitHub Repository</a> | 
+                <a href="docs/architecture.html">Documentation</a> |
+                <a href="docs/api.html">API Reference</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

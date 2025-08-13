@@ -24,19 +24,23 @@
     "refactor-ids": "node scripts/id-refactor/run-refactor.cjs",
     "id-mapping-report": "node scripts/id-refactor/generate-id-mapping-report.cjs",
     "generate-ctx-v3": "node scripts/ctx-v3-persona-generator.cjs",
-    "test-core": "vitest run tests/types.test.ts tests/unit/cda-import.test.ts",
+    "test-core": "vitest run tests/types.test.ts tests/unit/cda-import.test.ts tests/unit/conceptual-lexicon-import.test.ts",
     "test-safe": "node scripts/run-safe-tests.cjs",
     "test-safe-core": "node scripts/run-safe-tests.cjs test-core",
     "test-safe-all": "node scripts/run-safe-tests.cjs test",
     "test-db-init": "node scripts/test-database-manager.cjs init",
     "test-db-cleanup": "node scripts/test-database-manager.cjs cleanup",
-    "test-db-verify": "node scripts/test-database-manager.cjs verify"
+    "test-db-verify": "node scripts/test-database-manager.cjs verify",
+    "web-serve": "live-server www --port=8080 --open=/index.html",
+    "web-build": "node scripts/build-web-assets.cjs",
+    "web-deploy": "npm run web-build && npm run web-serve"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
     "@types/sqlite3": "^3.1.11",
     "@vitest/coverage-v8": "^1.0.0",
     "@vitest/ui": "^1.0.0",
+    "live-server": "^1.2.2",
     "typescript": "^5.0.0",
     "vitest": "^1.0.0"
   },

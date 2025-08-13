@@ -40,8 +40,6 @@ digraph KnowledgeGraph {
     qpg_2 -> opm_5 [label="references\nref OPM-5", color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OPM-5"]
     qpg_2 -> opm_8 [label="references\nref OPM-8", color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OPM-8"]
     qpg_4 -> phi_1 [label="references\nguided by PHI-1", color="#1976D2", style="solid", tooltip="Type: references\nContext: guided by PHI-1"]
-    qpg_8 -> oh_010 [label="references\n(ref OH-010)", color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref OH-010)"]
-    qpg_8 -> oh_010 [label="references\nref OH-010", color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OH-010"]
     qpg_9 -> opm_8 [label="references\n(ref OPM-8)", color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref OPM-8)"]
     qpg_9 -> opm_8 [label="references\nref OPM-8", color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OPM-8"]
     sin_4 -> sin_2 [label="references\n(ref SIN-2)", color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref SIN-2)"]

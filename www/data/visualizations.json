@@ -1,0 +1,18 @@
+{
+  "organic": [
+    "complete-knowledge-graph",
+    "directives-only",
+    "layout-force-directed",
+    "layout-hierarchical",
+    "layout-circular",
+    "layout-radial"
+  ],
+  "synth": [
+    "hub-authority",
+    "semantic-similarity",
+    "cross-category-bridges",
+    "inspirational-clusters",
+    "category-phi",
+    "category-cog"
+  ]
+}
