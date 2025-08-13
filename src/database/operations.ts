@@ -7,10 +7,11 @@
  * Enhanced with comprehensive error handling, input validation, and structured logging.
  */
 
-import { DatabaseConnection, Node, Edge, GraphStats } from '../types/base-types'
+import { DatabaseConnection, Node, Edge, GraphStats, BatchOptions, BatchResult } from '../types/base-types'
 import { createSchema } from './schema'
 import { insertNodeFromObject, getInsertNodeParams } from './insert-node'
 import { insertEdgeFromObject, getInsertEdgeParams } from './insert-edge'
+import { withTransaction, executeBatchWithPreparedStatement } from './connection'
 import {
   DatabaseOperationError,
   NodeAlreadyExistsError,
@@ -646,6 +647,7 @@ export async function batchInsertEdges(connection: DatabaseConnection, edges: Ed
     throw dbError
   }
 }
+
 
 
 
