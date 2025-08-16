@@ -1,0 +1,22 @@
+# Docket: Project Cassandra
+
+## Objective
+
+To identify and potentially capitalize on market volatility arising from the increasing fragility of the Russian economy and its impact on the global supply chains for energy, agricultural commodities, and critical industrial metals.
+
+## Core Thesis
+
+The ongoing, systematic degradation of Russia's core economic infrastructure, particularly its oil refining capacity, represents a long-tail risk that is currently being under-priced by global markets. We predict that a gradual decline in Russian supply will trigger a non-linear, highly volatile market reaction. This project, codenamed **Cassandra**, is designed to monitor the leading indicators of this instability and identify key investment opportunities that will benefit from the resulting supply chain realignment.
+
+-----
+
+## List of Briefs
+
+1.  **Brief \#001: Key Indicator Scraper:**
+      * **Objective:** Build an automated agent to scrape and track our three key strategic indicators (Brent-Urals Spread, Crack Spread, Black Sea Shipping Rates).
+2.  **Brief \#002: Company Financial Health Analysis:**
+      * **Objective:** Conduct a deep-dive financial analysis of the companies on our "Primary Beneficiaries" watchlist to ensure they are fundamentally sound.
+3.  **Brief \#003: Charting & Technical Analysis Setup:**
+      * **Objective:** Establish a technical analysis dashboard for our target companies, monitoring for key buy/sell signals based on standard chart indicators.
+4.  **Brief \#004: Downstream Bellwether Monitoring:**
+      * **Objective:** Create a system to monitor the quarterly reports and market sentiment of key downstream "bellwether" companies for early signs of supply chain stress.

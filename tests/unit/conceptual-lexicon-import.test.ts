@@ -17,7 +17,7 @@ import type {
 } from '../../src/types/cl-types'
 
 const DB_FILE = 'conceptual-lexicon-import-test.db'
-const LEXICON_FILE = 'cda-matrix-ref/conceptual-lexicon.json'
+const LEXICON_FILE = '.ctx/conceptual-lexicon.json'
 
 describe('Conceptual Lexicon Import Tests', () => {
   let db: Database

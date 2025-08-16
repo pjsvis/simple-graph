@@ -96,14 +96,10 @@ digraph KnowledgeGraph {
     ver_1 [label="VER-1\nIdentification", fillcolor="#E3F2FD", shape="box", tooltip="Type: directive\nCategory: VER\nDescription: This document is versioned (e.g., CDA #55, Series E). Refer to associated repository/documentatio...", style=filled]
 
   // Edges
-    adv_7 -> adv_2 [color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref ADV-2)"]
-    adv_7 -> adv_2 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref ADV-2"]
-    adv_8 -> adv_1 [color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref ADV-1, ADV-2)"]
-    adv_8 -> adv_1 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref ADV-1"]
-    adv_8 -> adv_2 [color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref ADV-1, ADV-2)"]
-    cog_6 -> qhd_3 [color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref QHD-3)"]
-    cog_6 -> qhd_3 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref QHD-3"]
-    cog_6 -> qpg_7 [color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref QPG-7)"]
-    cog_6 -> qpg_7 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref QPG-7"]
-    dyn_4 -> iep_3 [color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref IEP-3)"]
+    ipr_1 -> opm_8 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OPM-8"]
+    qhd_1 -> opm_8 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OPM-8"]
+    qpg_2 -> opm_5 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OPM-5"]
+    qpg_2 -> opm_8 [color="#1976D2", style="solid", tooltip="Type: references\nContext: ref OPM-8"]
+    qpg_4 -> phi_1 [color="#1976D2", style="solid", tooltip="Type: references\nContext: guided by PHI-1"]
+    qpg_9 -> opm_8 [color="#1976D2", style="solid", tooltip="Type: references\nContext: (ref OPM-8)"]
 }

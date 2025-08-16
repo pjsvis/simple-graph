@@ -1,5 +1,7 @@
 # Dependencies
 node_modules/
+# Ignore worktree sandboxes
+/.worktrees/
 npm-debug.log*
 
 # Build outputs
