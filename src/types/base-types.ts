@@ -81,3 +81,30 @@ export interface GraphStats {
   nodeTypes: Record<string, number>;
   edgeTypes: Record<string, number>;
 }
+
+/**
+ * Batch operation options
+ */
+export interface BatchOptions {
+  chunkSize?: number;           // Number of items to process per chunk (default: 1000)
+  continueOnError?: boolean;    // Whether to continue processing on individual failures (default: false)
+  useTransaction?: boolean;     // Whether to wrap operations in a transaction (default: true)
+  timeout?: number;            // Timeout for the entire batch operation in milliseconds
+}
+
+/**
+ * Batch operation result
+ */
+export interface BatchResult {
+  successful: number;          // Number of successful operations
+  failed: number;             // Number of failed operations
+  total: number;              // Total number of operations attempted
+  errors: Array<{             // Details of failed operations
+    index: number;            // Index of the failed item in the original array
+    error: string;            // Error message
+    item?: any;               // The item that failed (optional, for debugging)
+  }>;
+  duration: number;           // Total execution time in milliseconds
+  chunksProcessed: number;    // Number of chunks processed
+}
+

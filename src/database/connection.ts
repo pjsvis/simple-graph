@@ -2,12 +2,13 @@
  * Database Connection Module for Knowledge Graph
  * 
  * This module provides a standardized interface for connecting to SQLite databases
- * with high-concurrency settings. Perfect for integration with external systems.
+ * with high-concurrency settings and transaction management. Perfect for integration with external systems.
  */
 
 import sqlite3 from 'sqlite3'
 import { promisify } from 'util'
 import { DatabaseConfig, DatabaseConnection } from '../types/base-types'
+import { TransactionError, DatabaseOperationError, errorLogger } from './errors'
 
 /**
  * Default high-concurrency database configuration
@@ -158,3 +159,222 @@ export async function getDatabaseStats(connection: DatabaseConnection): Promise<
     tableCount: tableResult.length
   }
 }
+
+/**
+ * Transaction management utilities
+ */
+
+/**
+ * Execute a function within a database transaction
+ * 
+ * @param connection - Database connection
+ * @param fn - Function to execute within the transaction
+ * @returns Promise that resolves to the function result
+ * @throws {TransactionError} When transaction fails
+ */
+export async function withTransaction<T>(
+  connection: DatabaseConnection,
+  fn: (connection: DatabaseConnection) => Promise<T>
+): Promise<T> {
+  try {
+    errorLogger.debug('Starting database transaction')
+    
+    // Begin transaction
+    await connection.run('BEGIN TRANSACTION')
+    
+    try {
+      // Execute the function within the transaction
+      const result = await fn(connection)
+      
+      // Commit transaction
+      await connection.run('COMMIT')
+      errorLogger.debug('Transaction committed successfully')
+      
+      return result
+      
+    } catch (error) {
+      // Rollback transaction on error
+      try {
+        await connection.run('ROLLBACK')
+        errorLogger.debug('Transaction rolled back due to error')
+      } catch (rollbackError) {
+        errorLogger.error('Failed to rollback transaction', rollbackError)
+        throw new TransactionError(
+          'Transaction failed and rollback also failed',
+          rollbackError,
+          { originalError: error.message }
+        )
+      }
+      
+      // Re-throw the original error
+      if (error instanceof Error) {
+        throw new TransactionError(`Transaction failed: ${error.message}`, error)
+      } else {
+        throw new TransactionError('Transaction failed with unknown error', undefined, { error })
+      }
+    }
+    
+  } catch (error) {
+    if (error instanceof TransactionError) {
+      throw error
+    }
+    
+    errorLogger.error('Failed to start transaction', error)
+    throw new TransactionError('Failed to start transaction', error)
+  }
+}
+
+/**
+ * Execute multiple operations within a single transaction
+ * 
+ * @param connection - Database connection
+ * @param operations - Array of operations to execute
+ * @returns Promise that resolves to array of results
+ * @throws {TransactionError} When transaction fails
+ */
+export async function withBatchTransaction<T>(
+  connection: DatabaseConnection,
+  operations: Array<(connection: DatabaseConnection) => Promise<T>>
+): Promise<T[]> {
+  return withTransaction(connection, async (txConnection) => {
+    const results: T[] = []
+    
+    for (let i = 0; i < operations.length; i++) {
+      try {
+        const result = await operations[i](txConnection)
+        results.push(result)
+      } catch (error) {
+        errorLogger.error(`Batch operation ${i} failed`, error)
+        throw error
+      }
+    }
+    
+    return results
+  })
+}
+
+/**
+ * Prepared statement interface for batch operations
+ */
+export interface PreparedStatement {
+  run(params: any[]): Promise<any>
+  finalize(): Promise<void>
+}
+
+/**
+ * Create a prepared statement for batch operations
+ * 
+ * @param connection - Database connection
+ * @param sql - SQL statement to prepare
+ * @returns Promise that resolves to prepared statement
+ */
+export async function createPreparedStatement(
+  connection: DatabaseConnection,
+  sql: string
+): Promise<PreparedStatement> {
+  try {
+    // Note: This is a simplified implementation
+    // In a real implementation, we would use the underlying sqlite3 prepare method
+    // For now, we'll simulate prepared statements with regular queries
+    
+    return {
+      async run(params: any[]): Promise<any> {
+        return connection.run(sql, params)
+      },
+      
+      async finalize(): Promise<void> {
+        // In a real implementation, this would finalize the prepared statement
+        // For now, this is a no-op
+        return Promise.resolve()
+      }
+    }
+    
+  } catch (error) {
+    throw new DatabaseOperationError(`Failed to create prepared statement: ${sql}`, error)
+  }
+}
+
+/**
+ * Execute a batch operation with prepared statements within a transaction
+ * 
+ * @param connection - Database connection
+ * @param sql - SQL statement to prepare
+ * @param paramSets - Array of parameter sets to execute
+ * @param options - Batch execution options
+ * @returns Promise that resolves to batch results
+ */
+export async function executeBatchWithPreparedStatement<T = any>(
+  connection: DatabaseConnection,
+  sql: string,
+  paramSets: any[][],
+  options: {
+    chunkSize?: number
+    continueOnError?: boolean
+  } = {}
+): Promise<{
+  successful: number
+  failed: number
+  results: T[]
+  errors: Array<{ index: number; error: string; params: any[] }>
+}> {
+  const { chunkSize = 1000, continueOnError = false } = options
+  
+  return withTransaction(connection, async (txConnection) => {
+    const results: T[] = []
+    const errors: Array<{ index: number; error: string; params: any[] }> = []
+    let successful = 0
+    let failed = 0
+    
+    // Process in chunks to avoid memory issues with large batches
+    for (let chunkStart = 0; chunkStart < paramSets.length; chunkStart += chunkSize) {
+      const chunkEnd = Math.min(chunkStart + chunkSize, paramSets.length)
+      const chunk = paramSets.slice(chunkStart, chunkEnd)
+      
+      errorLogger.debug(`Processing batch chunk ${chunkStart}-${chunkEnd} of ${paramSets.length}`)
+      
+      const stmt = await createPreparedStatement(txConnection, sql)
+      
+      try {
+        for (let i = 0; i < chunk.length; i++) {
+          const globalIndex = chunkStart + i
+          const params = chunk[i]
+          
+          try {
+            const result = await stmt.run(params)
+            results.push(result)
+            successful++
+          } catch (error) {
+            failed++
+            const errorInfo = {
+              index: globalIndex,
+              error: error.message || 'Unknown error',
+              params
+            }
+            errors.push(errorInfo)
+            
+            if (!continueOnError) {
+              throw new DatabaseOperationError(
+                `Batch operation failed at index ${globalIndex}`,
+                error,
+                { errorInfo }
+              )
+            }
+          }
+        }
+      } finally {
+        await stmt.finalize()
+      }
+    }
+    
+    errorLogger.info(`Batch operation completed: ${successful} successful, ${failed} failed`)
+    
+    return {
+      successful,
+      failed,
+      results,
+      errors
+    }
+  })
+}
+
+

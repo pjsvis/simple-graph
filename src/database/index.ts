@@ -49,7 +49,11 @@ export {
   createMemoryDatabase,
   testConnection,
   getDatabaseStats,
-  DEFAULT_DB_CONFIG
+  DEFAULT_DB_CONFIG,
+  withTransaction,
+  withBatchTransaction,
+  executeBatchWithPreparedStatement,
+  PreparedStatement
 } from './connection'
 
 // Schema management
@@ -82,6 +86,29 @@ export {
   batchInsertNodes,
   batchInsertEdges
 } from './operations'
+
+// Error handling
+export {
+  DatabaseError,
+  DatabaseOperationError,
+  ConnectionError,
+  NodeAlreadyExistsError,
+  NodeNotFoundError,
+  EdgeAlreadyExistsError,
+  InvalidNodeError,
+  InvalidEdgeError,
+  TransactionError,
+  QueryTimeoutError,
+  SchemaValidationError,
+  ValidationUtils,
+  mapSQLiteError,
+  isSQLiteConstraintError,
+  isSQLiteBusyError,
+  ErrorLogger,
+  ConsoleErrorLogger,
+  errorLogger,
+  setErrorLogger
+} from './errors'
 
 /**
  * Knowledge Graph class - High-level interface for graph operations
@@ -205,3 +232,5 @@ export async function connectToLoom(
   const connection = await connectToTheLoom(dbPath, readonly)
   return new KnowledgeGraph(connection)
 }
+
+
