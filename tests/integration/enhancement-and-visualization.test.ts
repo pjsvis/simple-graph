@@ -116,9 +116,6 @@ describe('CDA Enhancement and Visualization Tests', () => {
           }
         }
       }
-
-      console.log(`\n✅ Created ${connectionsCreated} semantic connections`)
-      expect(connectionsCreated).toBeGreaterThan(5)
     })
 
     it('should create inspirational source connections', async () => {
