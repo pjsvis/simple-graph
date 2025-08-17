@@ -19,7 +19,7 @@ async function main() {
           console.error('Error: getNode requires an ID.');
           process.exit(1);
         }
-        const nodeResult = await graph.nodes.get(parseInt(id, 10));
+        const nodeResult = await graph.nodes.get(id);
         console.log(JSON.stringify(nodeResult, null, 2));
         break;
       case 'find':
@@ -27,7 +27,7 @@ async function main() {
           console.error('Error: find requires a query string.');
           process.exit(1);
         }
-        const findResult = await graph.nodes.find(query);
+                const findResult = await graph.nodes.search(query);
         console.log(JSON.stringify(findResult, null, 2));
         break;
       case 'forNode':
@@ -35,7 +35,7 @@ async function main() {
           console.error('Error: forNode requires an ID.');
           process.exit(1);
         }
-        const edgeResult = await graph.edges.forNode(parseInt(id, 10));
+        const edgeResult = await graph.edges.forNode(id);
         console.log(JSON.stringify(edgeResult, null, 2));
         break;
       default:
@@ -43,7 +43,7 @@ async function main() {
         process.exit(1);
     }
   } catch (error) {
-    console.error(`Error: ${error.message}`);
+        console.error(`Error: ${(error as Error).message}`);
     process.exit(1);
   } finally {
     if (graph) {

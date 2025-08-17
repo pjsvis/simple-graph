@@ -1,8 +1,22 @@
-- in the website we need to show different numbers in the dashboard section
-- we want to see counts of directives, neologisms, heuristics, connections, categories, tags, etc- many of the Drenered DOT graphs do not look good
-- we should reduce the graphs down to the ones that CTX requires
-- 
-- the SVG file links need fixed up
-- is there a native DOT viewer, say an npm package
-- when we view the PNG images we cannot see the whole image
-- 
+- the following test errors and then a whole bunch of dependent tests fail
+
+=== begins ===
+
+tests\integration\cda-comprehensive-analysis.test.ts:
+16 |     })
+17 |     graph = await SimpleGraph.connect({ path: testDbFile })
+18 |
+19 |     // Import CDA data into the test database
+20 |     const { importCda } = await import('../../src/parsers/cda-parser')
+21 |     await importCda(graph, 'data/source/core-directive-array.md')
+               ^
+TypeError: importCda is not a function. (In 'importCda(graph, "data/source/core-directive-array.md")', 'importCda' is undefined)
+      at <anonymous> (D:\dev\simple-graph\tests\integration\cda-comprehensive-analysis.test.ts:21:11)       
+✗ Core Directive Array Comprehensive Analysis > 1. Directive Patterns and Relationships Analysis > should analyze directive patterns and relationship structures [204.00ms]
+
+# Unhandled error between tests
+-------------------------------
+19 |   if (custom)
+20 |     return validateFunction(custom, "custom"), def
+
+=== ends ===
