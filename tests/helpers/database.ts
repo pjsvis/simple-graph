@@ -1,83 +1,71 @@
-import sqlite3 from 'sqlite3'
-import { promisify } from 'util'
-import { unlink } from 'fs/promises'
-import { existsSync } from 'fs'
+import sqlite3 from 'sqlite3';
+import { promisify } from 'util';
+import { unlink } from 'fs/promises';
+import { existsSync } from 'fs';
 
 // Helper to promisify sqlite3 methods
 export interface Database {
-  run: (sql: string, params?: any[]) => Promise<sqlite3.RunResult>
-  get: (sql: string, params?: any[]) => Promise<any>
-  all: (sql: string, params?: any[]) => Promise<any[]>
-  exec: (sql: string) => Promise<void>
-  close: () => Promise<void>
+  run: (sql: string, params?: any[]) => Promise<sqlite3.RunResult>;
+  get: (sql: string, params?: any[]) => Promise<any>;
+  all: (sql: string, params?: any[]) => Promise<any[]>;
+  exec: (sql: string) => Promise<void>;
+  close: () => Promise<void>;
+  dbPath?: string; // Expose path for reference
 }
 
 export interface DatabaseConfig {
-  type: 'memory' | 'file' | 'test-safe'
-  filename?: string
-  cleanup?: boolean // Whether to delete file after tests
-  useTestDatabase?: boolean // Whether to use the safe test database
+  type: 'memory' | 'file';
+  filename?: string; // Required for type 'file' unless a temp name is desired
+  cleanup?: boolean; // Whether to delete file after tests
 }
 
-export function createDatabase(config: DatabaseConfig = { type: 'memory' }): Database {
-  let dbPath: string
+export function createDatabase(config: DatabaseConfig): Database {
+  let dbPath: string;
+  let isTemporaryFile = false;
 
   if (config.type === 'memory') {
-    dbPath = ':memory:'
-  } else if (config.type === 'test-safe') {
-    // Use the safe test database path
-    dbPath = config.useTestDatabase ? 'data/databases/test-run.db' : 'cda-import-test.db'
-  } else {
-    dbPath = config.filename || 'test-graph.db'
+    dbPath = ':memory:';
+  } else { // type is 'file'
+    if (config.filename) {
+      dbPath = config.filename;
+    } else {
+      // Create a unique temporary filename for ingestion tests
+      dbPath = `temp-db-${Date.now()}.db`;
+      isTemporaryFile = true;
+    }
   }
 
-  const db = new sqlite3.Database(dbPath)
+  const db = new sqlite3.Database(dbPath);
 
-  // Configure high-concurrency settings immediately after connection
+  // Configure high-concurrency settings
   db.serialize(() => {
-    // Enable Write-Ahead Logging for improved concurrency
-    db.run("PRAGMA journal_mode=WAL;")
-
-    // Set busy timeout to 5 seconds to handle concurrent access
-    db.run("PRAGMA busy_timeout = 5000;")
-
-    // Set synchronous mode to NORMAL for better performance
-    db.run("PRAGMA synchronous = NORMAL;")
-
-    // Enable foreign key constraints
-    db.run("PRAGMA foreign_keys = ON;")
-  })
+    db.run("PRAGMA journal_mode=WAL;");
+    db.run("PRAGMA busy_timeout = 5000;");
+    db.run("PRAGMA synchronous = NORMAL;");
+    db.run("PRAGMA foreign_keys = ON;");
+  });
 
   const database: Database = {
     run: promisify(db.run.bind(db)),
     get: promisify(db.get.bind(db)),
     all: promisify(db.all.bind(db)),
     exec: promisify(db.exec.bind(db)),
+    dbPath: dbPath,
     close: async () => {
-      await promisify(db.close.bind(db))()
+      await promisify(db.close.bind(db))();
 
-      // Clean up file if requested
-      if (config.type === 'file' && config.cleanup && config.filename) {
+      // Clean up file if it's a temporary file or if cleanup is explicitly requested
+      if (config.type === 'file' && (isTemporaryFile || config.cleanup)) {
         try {
-          if (existsSync(config.filename)) {
-            await unlink(config.filename)
+          if (existsSync(dbPath)) {
+            await unlink(dbPath);
           }
         } catch (error) {
-          console.warn(`Failed to cleanup database file: ${error}`)
+          console.warn(`Failed to cleanup database file: ${error}`);
         }
       }
-    }
-  }
+    },
+  };
 
-  return database
-}
-
-export async function cleanupDatabase(filename: string) {
-  try {
-    if (existsSync(filename)) {
-      await unlink(filename)
-    }
-  } catch (error) {
-    console.warn(`Failed to cleanup database file: ${error}`)
-  }
+  return database;
 }

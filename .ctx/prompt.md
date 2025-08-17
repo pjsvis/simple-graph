@@ -1,3 +1,8 @@
-- examine the current source code changes
-- provide a second opinion on code quality and applicability
-  
+- in the website we need to show different numbers in the dashboard section
+- we want to see counts of directives, neologisms, heuristics, connections, categories, tags, etc- many of the Drenered DOT graphs do not look good
+- we should reduce the graphs down to the ones that CTX requires
+- 
+- the SVG file links need fixed up
+- is there a native DOT viewer, say an npm package
+- when we view the PNG images we cannot see the whole image
+- 

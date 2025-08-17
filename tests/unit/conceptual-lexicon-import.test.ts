@@ -1,49 +1,48 @@
-import { describe, it, expect, beforeAll, afterAll } from 'vitest'
-import { createDatabase, cleanupDatabase, type Database } from '../helpers/database'
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { createDatabase, type Database } from '../helpers/database';
 
 // Import our SQL generation functions
-import { createSchema } from '../../src/database/schema'
-import { insertNodeFromObject, getInsertNodeParams } from '../../src/database/insert-node'
-import { insertEdgeFromObject, getInsertEdgeParams } from '../../src/database/insert-edge'
+import { createSchema } from '../../src/database/schema';
+import {
+  insertNodeFromObject,
+  getInsertNodeParams,
+} from '../../src/database/insert-node';
+import {
+  insertEdgeFromObject,
+  getInsertEdgeParams,
+} from '../../src/database/insert-edge';
 
 // Import conceptual lexicon parser and types
-import { ConceptualLexiconParser } from '../../src/parsers/conceptual-lexicon-parser'
+import { ConceptualLexiconParser } from '../../src/parsers/conceptual-lexicon-parser';
 import type {
   TermNode,
   CategoryNode,
   VersionNode,
   CategoryMembership,
-  VersionMembership
-} from '../../src/types/cl-types'
+  VersionMembership,
+} from '../../src/types/cl-types';
 
-const DB_FILE = 'conceptual-lexicon-import-test.db'
-const LEXICON_FILE = '.ctx/conceptual-lexicon.json'
+const LEXICON_FILE = '.ctx/conceptual-lexicon.json';
 
 describe('Conceptual Lexicon Import Tests', () => {
-  let db: Database
+  let db: Database;
 
   beforeAll(async () => {
-    // Clean up any existing file
-    await cleanupDatabase(DB_FILE)
-    
-    // Create file database (no cleanup so we can inspect it)
-    db = createDatabase({ 
-      type: 'file', 
-      filename: DB_FILE, 
-      cleanup: false // Keep the file for inspection
-    })
+    // Create a temporary file-based database for the ingestion test.
+    db = createDatabase({ type: 'file' });
     
     // Create the schema
-    await db.exec(createSchema())
+    await db.exec(createSchema());
     
-    console.log(`\n📚 Starting Conceptual Lexicon import from ${LEXICON_FILE}`)
-  })
+    console.log(`\n📚 Starting Conceptual Lexicon import from ${LEXICON_FILE} into ${db.dbPath}`);
+  });
 
   afterAll(async () => {
-    await db.close()
-    console.log(`\n📁 Database file created: ${DB_FILE}`)
-    console.log('You can now open this file with a DB manager to inspect the Conceptual Lexicon data!')
-  })
+    // The helper automatically cleans up the temporary database on close
+    await db.close();
+    console.log(`\n✅ Test database closed and cleaned up.`);
+  });
+
 
   it('should parse the conceptual lexicon JSON file', async () => {
     console.log('\n🔍 STEP 1: PARSING CONCEPTUAL LEXICON JSON')

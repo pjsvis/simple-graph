@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import type { Node, NodeRow, Edge, EdgeRow } from '../ts/types'
+import type { Node, NodeRow, Edge, EdgeRow } from '../src/types/base-types'
 
 describe('Type Definitions', () => {
   describe('Node interface', () => {

@@ -1,10 +1,10 @@
-import { defineConfig } from 'vitest/config'
+import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
     globals: true,
     environment: 'node',
-    include: ['tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    include: ['**/*.test.ts'],
     exclude: ['node_modules', 'dist'],
     testTimeout: 60000, // 60 seconds for long-running tests
     coverage: {
@@ -14,13 +14,13 @@ export default defineConfig({
         'node_modules/',
         'tests/',
         '**/*.d.ts',
-        '**/*.config.*'
-      ]
-    }
+        '**/*.config.*',
+      ],
+    },
   },
   resolve: {
     alias: {
-      '@': '/ts'
-    }
-  }
-})
+      '@': '/ts',
+    },
+  },
+});

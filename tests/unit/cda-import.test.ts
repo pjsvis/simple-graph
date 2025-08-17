@@ -1,50 +1,50 @@
-import { describe, it, expect, beforeAll, afterAll } from 'vitest'
-import { createDatabase, cleanupDatabase, type Database } from '../helpers/database'
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { createDatabase, type Database } from '../helpers/database';
 
 // Import our SQL generation functions
-import { createSchema } from '../../src/database/schema'
-import { insertNodeFromObject, getInsertNodeParams } from '../../src/database/insert-node'
-import { insertEdgeFromObject, getInsertEdgeParams } from '../../src/database/insert-edge'
+import { createSchema } from '../../src/database/schema';
+import {
+  insertNodeFromObject,
+  getInsertNodeParams,
+} from '../../src/database/insert-node';
+import {
+  insertEdgeFromObject,
+  getInsertEdgeParams,
+} from '../../src/database/insert-edge';
 
 // Import CDA types and parser
-import { CDAParser } from '../../src/parsers/cda-parser'
-import { ConceptualLexiconUtils } from '../../src/types/cl-types'
+import { CDAParser } from '../../src/parsers/cda-parser';
+import { ConceptualLexiconUtils } from '../../src/types/cl-types';
 import type {
   CDANode,
   DirectiveNode,
   CoreConceptNode,
   CDAMembership,
-  DirectiveRelationship
-} from '../../src/types/cl-types'
+  DirectiveRelationship,
+} from '../../src/types/cl-types';
 
-const DB_FILE = 'cda-import-test.db'
-const CDA_FILE = 'data/source/core-directive-array.md'
+const CDA_FILE = 'data/source/core-directive-array.md';
 
 describe('Core Directive Array Import Tests', () => {
-  let db: Database
+  let db: Database;
 
   beforeAll(async () => {
-    // Clean up any existing file
-    await cleanupDatabase(DB_FILE)
-    
-    // Create file database (no cleanup so we can inspect it)
-    db = createDatabase({ 
-      type: 'file', 
-      filename: DB_FILE, 
-      cleanup: false // Keep the file for inspection
-    })
+    // Create a temporary file-based database for the ingestion test.
+    // The helper will automatically generate a unique name and handle cleanup.
+    db = createDatabase({ type: 'file' });
     
     // Create the schema
-    await db.exec(createSchema())
+    await db.exec(createSchema());
     
-    console.log(`\n📋 Starting Core Directive Array import from ${CDA_FILE}`)
-  })
+    console.log(`\n📋 Starting Core Directive Array import from ${CDA_FILE} into ${db.dbPath}`);
+  });
 
   afterAll(async () => {
-    await db.close()
-    console.log(`\n📁 Database file created: ${DB_FILE}`)
-    console.log('You can now open this file with a DB manager to inspect the CDA data!')
-  })
+    // The cleanup is handled automatically by the close method for temporary dbs
+    await db.close();
+    console.log(`\n✅ Test database closed and cleaned up.`);
+  });
+
 
   it('should parse the core directive array markdown file', async () => {
     console.log('\n🔍 STEP 1: PARSING MARKDOWN FILE')
