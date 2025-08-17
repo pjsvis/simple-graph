@@ -54,13 +54,13 @@ explorer rendered-graphs
 
 ```bash
 # Render all DOT files to PNG (19 files)
-npm run render-png-all
+bun run render-png-all
 
 # Create/update thumbnails
-npm run render-thumbnails
+bun run render-thumbnails
 
 # Render priority files only (10 files)
-npm run render-png
+bun run render-png
 ```
 
 ### **📋 Key Insights from PNG Visualizations**

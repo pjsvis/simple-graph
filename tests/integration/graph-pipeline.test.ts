@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { SimpleGraph } from '../../src/SimpleGraph';
 import { existsSync, mkdirSync, rmSync, readFileSync } from 'fs';
 import { join } from 'path';
@@ -8,8 +8,8 @@ const TEST_OUTPUT_DIR = 'outputs/test-visualizations';
 describe('Graph Visualization via SimpleGraph API', () => {
     let graph: SimpleGraph;
 
-    beforeAll(async () => {
-        // Connect to a new in-memory database for these tests
+    beforeEach(async () => {
+        // Connect to a new in-memory database for each test
         graph = await SimpleGraph.connect();
         
         // Add some data for visualization
@@ -24,7 +24,7 @@ describe('Graph Visualization via SimpleGraph API', () => {
         }
     });
 
-    afterAll(async () => {
+    afterEach(async () => {
         await graph.close();
         if (existsSync(TEST_OUTPUT_DIR)) {
             rmSync(TEST_OUTPUT_DIR, { recursive: true, force: true });

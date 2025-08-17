@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { exec } from 'child_process';
 import { promisify } from 'util';
 import { createDatabase, type Database } from '../helpers/database';
@@ -6,21 +6,22 @@ import { SimpleGraph } from '../../src/SimpleGraph';
 
 const execPromise = promisify(exec);
 
-const TEST_DB_FILE = 'test-cli-integration.db';
-const CLI_PATH = './src/cli.ts'; // Point to the TypeScript file
+const CLI_PATH = 'D:/dev/simple-graph/src/cli.ts'; // Point to the TypeScript file
 
 describe('CLI Integration Tests', () => {
   let db: Database;
   let graph: SimpleGraph;
+  let testDbFile: string;
 
-  beforeAll(async () => {
-    // Create a fresh database for integration tests
+  beforeEach(async () => {
+    // Create a unique database file for each test
+    testDbFile = `test-cli-integration-${Date.now()}.db`;
     db = createDatabase({
       type: 'file',
-      filename: TEST_DB_FILE,
+      filename: testDbFile,
       cleanup: true, // Clean up after tests
     });
-    graph = await SimpleGraph.connect({ path: TEST_DB_FILE });
+    graph = await SimpleGraph.connect({ path: testDbFile });
 
     // Insert some initial data for testing (genesis node is created by schema)
     await graph.nodes.add({ id: '1', type: 'person', properties: { name: 'Alice' } });
@@ -28,15 +29,17 @@ describe('CLI Integration Tests', () => {
     await graph.edges.add({ from: '1', to: '2', type: 'knows' });
   });
 
-  afterAll(async () => {
+  afterEach(async () => {
     await graph.close();
-    db.close(); // Close the database connection
+    // Add a small delay to ensure file handle is released before cleanup
+    await new Promise(resolve => setTimeout(resolve, 100));
+    db.close(); // Close the database connection and clean up file
   });
 
   // Helper function to run cli.js with the test database path
   const runCliCommand = async (command: string) => {
-    return execPromise(`npx ts-node ${CLI_PATH} ${command}`, {
-      env: { ...process.env, SIMPLE_GRAPH_DB_PATH: TEST_DB_FILE },
+    return execPromise(`npx ts-node --esm --project tsconfig.json ${CLI_PATH} ${command}`, {
+      env: { ...process.env, SIMPLE_GRAPH_DB_PATH: testDbFile },
     });
   };
 

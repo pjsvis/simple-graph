@@ -46,7 +46,7 @@ You must execute the following steps in this exact order. Do not proceed to the 
 
 ### Step 5: Run the Build and Verify the Output
 
-- Execute the command `npm run build`.
+- Execute the command `bun run build`.
 - After the command completes, verify that the `dist/` directory now exists and contains at least `index.js` and `index.d.ts`.
 
 ---
@@ -54,6 +54,6 @@ You must execute the following steps in this exact order. Do not proceed to the 
 ## Acceptance Criteria
 
 - The `dist/` directory must exist and contain the compiled output.
-- The `npm run build` command must complete without errors.
+- The `bun run build` command must complete without errors.
 - The `package.json` and `tsconfig.json` files must be updated as specified.
 - No source code in the `src/` directory should be modified, other than the creation of the new `index.ts` file.

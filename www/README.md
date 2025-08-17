@@ -12,8 +12,8 @@ This web interface provides an interactive way to explore The Loom knowledge gra
 ## Local Development
 
 ```bash
-npm run web-serve    # Start development server
-npm run web-build    # Rebuild assets
+bun run web-serve    # Start development server
+bun run web-build    # Rebuild assets
 ```
 
 ## Files

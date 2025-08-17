@@ -228,16 +228,16 @@ simple-graph/
 
 ```bash
 # Create the new structure
-npm run reorganize
+bun run reorganize
 
 # Update all import paths
-npm run fix-imports
+bun run fix-imports
 
 # Run tests to verify migration
-npm test
+bun test
 
 # Update documentation
-npm run update-docs
+bun run update-docs
 ```
 
 ### **Manual Verification Steps**

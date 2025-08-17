@@ -1,28 +1,34 @@
-
-import { describe, it, expect, beforeAll, afterAll } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { createDatabase, type Database } from '../helpers/database'
 import { insertEdgeFromObject, getInsertEdgeParams } from '../../src/database/insert-edge'
 import type { DirectiveRelationship } from '../../src/types/cl-types'
 import { DotGraphGenerator, type DotGraphConfig } from '../../src/visualization/dot-generator'
 import { writeFileSync, mkdirSync, existsSync } from 'fs'
 import { join } from 'path'
+import { SimpleGraph } from '../../src/SimpleGraph'
 
-const SOURCE_DB_FILE = 'cda-import-test.db'
 const OUTPUT_DIR = 'outputs/visualizations'
 
 describe('CDA Enhancement and Visualization Tests', () => {
   let db: Database
+  let graph: SimpleGraph
   let generator: DotGraphGenerator
+  let testDbFile: string
 
-  beforeAll(async () => {
-    // Open the existing CDA database for enhancement
+  beforeEach(async () => {
+    testDbFile = `cda-enhancement-test-${Date.now()}.db`
     db = createDatabase({
       type: 'file',
-      filename: SOURCE_DB_FILE,
-      cleanup: false
+      filename: testDbFile,
+      cleanup: true
     })
+    graph = await SimpleGraph.connect({ path: testDbFile })
 
-    generator = new DotGraphGenerator(db)
+    // Import CDA data into the test database
+    const { importCda } = await import('../../src/parsers/cda-parser')
+    await importCda(graph, 'data/source/core-directive-array.md')
+
+    generator = new DotGraphGenerator(graph) // Use the graph object
 
     // Create output directories
     if (!existsSync(OUTPUT_DIR)) {
@@ -39,12 +45,13 @@ describe('CDA Enhancement and Visualization Tests', () => {
     console.log('=' .repeat(60))
   })
 
-  afterAll(async () => {
-    await db.close()
+  afterEach(async () => {
+    await graph.close()
+    await new Promise(resolve => setTimeout(resolve, 100)); // Small delay for file release
+    db.close()
     console.log('\n🎯 CDA Enhancement Complete!')
-    console.log(`📁 Enhanced database: ${SOURCE_DB_FILE}`)
-    console.log(`\n📁 DOT files generated in: ${OUTPUT_DIR}/
-`)
+    console.log(`📁 Enhanced database: ${testDbFile}`)
+    console.log(`\n📁 DOT files generated in: ${OUTPUT_DIR}/\n`)
     console.log('🎯 Use Graphviz to render: dot -Tsvg input.dot -o output.svg')
   })
 

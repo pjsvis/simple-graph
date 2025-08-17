@@ -89,7 +89,7 @@ class SafeTestRunner {
     console.log('=' .repeat(40))
     
     const testCommand = process.argv[2] || 'test-core'
-    console.log(`Running: npm run ${testCommand}`)
+    console.log(`Running: bun run ${testCommand}`)
     
     return new Promise((resolve, reject) => {
       const testProcess = spawn('npm', ['run', testCommand], {

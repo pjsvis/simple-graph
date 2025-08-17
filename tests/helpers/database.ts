@@ -60,6 +60,15 @@ export function createDatabase(config: DatabaseConfig): Database {
           if (existsSync(dbPath)) {
             await unlink(dbPath);
           }
+          // Also clean up WAL and SHM files if they exist
+          const walPath = `${dbPath}-wal`;
+          const shmPath = `${dbPath}-shm`;
+          if (existsSync(walPath)) {
+            await unlink(walPath);
+          }
+          if (existsSync(shmPath)) {
+            await unlink(shmPath);
+          }
         } catch (error) {
           console.warn(`Failed to cleanup database file: ${error}`);
         }

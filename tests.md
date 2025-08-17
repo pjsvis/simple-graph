@@ -1961,3 +1961,4 @@ This might cause false positive tests. Resolve unhandled errors to make sure you
 
 [1m[7m[31m FAIL [39m[27m[22m[31m Tests failed. Watching for file changes...[39m
        [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+^C

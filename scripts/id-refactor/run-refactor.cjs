@@ -154,7 +154,7 @@ class RefactorOrchestrator {
     console.log('')
     console.log('🔍 NEXT STEPS:')
     console.log('   1. Run comprehensive validation tests:')
-    console.log('      npm test -- tests/integration/id-refactor-validation.test.ts')
+    console.log('      bun test tests/integration/id-refactor-validation.test.ts')
     console.log('')
     console.log('   2. Update application configuration to use new database:')
     console.log('      - Update database path references')

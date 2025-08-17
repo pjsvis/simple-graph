@@ -49,10 +49,10 @@ This visualizer transforms our enhanced CDA knowledge graph into beautiful, inte
 
 ```bash
 # Generate all visualization files
-npm run test:run dot-graph-visualization.test.ts
+bun run test:run dot-graph-visualization.test.ts
 
 # Or run the simple test for basic files
-npm run test:run dot-graph-simple.test.ts
+bun run test:run dot-graph-simple.test.ts
 ```
 
 ### **2. Install Graphviz**
@@ -85,10 +85,10 @@ dot -Tpdf graph-visualizations/complete-knowledge-graph.dot -o complete-graph.pd
 
 ```bash
 # Render all graphs to multiple formats
-npm run render-graphs
+bun run render-graphs
 
 # Generate visualizations and render them
-npm run generate-visualizations
+bun run generate-visualizations
 ```
 
 ## 🎨 Visualization Features

@@ -1,18 +1,30 @@
-import { describe, it, expect, beforeAll } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { createDatabase, type Database } from '../helpers/database'
-
-const CDA_DB_FILE = 'cda-import-test.db'
+import { SimpleGraph } from '../../src/SimpleGraph'
 
 describe('Core Directive Array Comprehensive Analysis', () => {
   let db: Database
+  let graph: SimpleGraph
+  let testDbFile: string
 
-  beforeAll(async () => {
-    // Open the existing CDA database file
-    db = createDatabase({ 
-      type: 'file', 
-      filename: CDA_DB_FILE, 
-      cleanup: false
+  beforeEach(async () => {
+    testDbFile = `cda-analysis-test-${Date.now()}.db`
+    db = createDatabase({
+      type: 'file',
+      filename: testDbFile,
+      cleanup: true
     })
+    graph = await SimpleGraph.connect({ path: testDbFile })
+
+    // Import CDA data into the test database
+    const { importCda } = await import('../../src/parsers/cda-parser')
+    await importCda(graph, 'data/source/core-directive-array.md')
+  })
+
+  afterEach(async () => {
+    await graph.close()
+    await new Promise(resolve => setTimeout(resolve, 100)); // Small delay for file release
+    db.close()
   })
 
   describe('1. Directive Patterns and Relationships Analysis', () => {
@@ -75,7 +87,7 @@ describe('Core Directive Array Comprehensive Analysis', () => {
         JOIN nodes t ON e.target = t.id
         WHERE json_extract(s.body, '$.node_type') = 'directive'
           AND json_extract(t.body, '$.node_type') = 'directive'
-          AND json_extract(e.properties, '$.type') NOT IN ('belongs_to_cda')
+          AND json_extract(s.body, '$.category') = json_extract(t.body, '$.category')
         GROUP BY source_category, target_category
         ORDER BY connection_count DESC
       `)
@@ -189,7 +201,7 @@ describe('Core Directive Array Comprehensive Analysis', () => {
 
       console.log('\n📡 Authority Directives (Reference Many Others):')
       authorityDirectives.forEach((dir, index) => {
-        console.log(`   ${index + 1}. ${dir.directive_id}: "${dir.title}"`)
+        console.log(`   ${index + 1}. ${dir.directive_id}: "${dir.title}" `)
         console.log(`      Category: ${dir.category}`)
         console.log(`      Outgoing References: ${dir.outgoing_references}`)
         console.log('')
@@ -215,8 +227,8 @@ describe('Core Directive Array Comprehensive Analysis', () => {
 
       console.log('\n🌉 Bridge Directives (Cross-Category Connectors):')
       bridgeDirectives.forEach((dir, index) => {
-        console.log(`   ${index + 1}. ${dir.directive_id}: "${dir.title}"`)
-        console.log(`      Source Category: ${dir.source_category}`)
+        console.log(`   ${index + 1}. ${dir.directive_id}: "${dir.title}" `)
+        console.log(`      Source Category: ${dir.category}`)
         console.log(`      Categories Referenced: ${dir.categories_referenced}`)
         console.log('')
       })
@@ -297,7 +309,7 @@ describe('Core Directive Array Comprehensive Analysis', () => {
       const ohReferences = await db.all(`
         SELECT
           json_extract(s.body, '$.directive_id') as directive_id,
-          json_extract(s.body, '$.title') as directive_title,
+          json_extract(s.body, '$.title') as title,
           json_extract(s.body, '$.category') as category,
           json_extract(t.body, '$.directive_id') as oh_reference,
           json_extract(e.properties, '$.context') as context
@@ -311,8 +323,8 @@ describe('Core Directive Array Comprehensive Analysis', () => {
 
       console.log('\n🔗 Directive → OH References:')
       ohReferences.forEach(ref => {
-        console.log(`   ${ref.directive_id} (${ref.category}): References ${ref.oh_reference}`)
-        console.log(`      "${ref.directive_title}"`)
+        console.log(`   ${ref.directive_id}: References ${ref.oh_reference}`)
+        console.log(`      "${ref.title}" `)
         console.log(`      Context: ${ref.context}`)
         console.log('')
       })
@@ -359,7 +371,7 @@ describe('Core Directive Array Comprehensive Analysis', () => {
 
       console.log('\n💡 Potential OH Integration Opportunities:')
       potentialIntegrations.forEach((dir, index) => {
-        console.log(`   ${index + 1}. ${dir.directive_id}: "${dir.title}"`)
+        console.log(`   ${index + 1}. ${dir.directive_id}: "${dir.title}" `)
         console.log(`      Category: ${dir.category}`)
         console.log(`      Description mentions "operational" but no OH references`)
         console.log('')
@@ -393,7 +405,7 @@ describe('Core Directive Array Comprehensive Analysis', () => {
 
       console.log('\n📏 Directive Complexity by Category:')
       directiveComplexity.forEach(cat => {
-        console.log(`   ${cat.category}:`)
+        console.log(`   ${cat.category} (${cat.category_title}):`)
         console.log(`      Count: ${cat.directive_count} directives`)
         console.log(`      Avg Length: ${Math.round(cat.avg_description_length)} chars`)
         console.log(`      Range: ${cat.min_length} - ${cat.max_length} chars`)
@@ -540,11 +552,9 @@ describe('Core Directive Array Comprehensive Analysis', () => {
     })
   })
 
-  afterAll(async () => {
-    await db.close()
-    console.log('\n' + '='.repeat(60))
-    console.log('📊 COMPREHENSIVE CDA ANALYSIS COMPLETE')
-    console.log('='.repeat(60))
-    console.log('🎯 Ready for knowledge graph integration and enhancement!')
+  afterEach(async () => {
+    await graph.close()
+    await new Promise(resolve => setTimeout(resolve, 100)); // Small delay for file release
+    db.close()
   })
 })

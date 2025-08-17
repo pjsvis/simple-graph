@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { SimpleGraph } from './SimpleGraph';
+import { SimpleGraph } from './SimpleGraph.js';
 
 async function main() {
   const args = process.argv.slice(2);
