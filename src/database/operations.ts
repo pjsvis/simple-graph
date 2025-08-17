@@ -226,3 +226,17 @@ export async function batchInsertEdges(connection: DatabaseConnection, edges: Ed
     await insertEdge(connection, edge)
   }
 }
+
+/**
+ * Delete a node by ID
+ *
+ * @param connection - Database connection
+ * @param nodeId - Node ID to delete
+ * @returns Promise that resolves when the node is deleted
+ */
+export async function deleteNode(connection: DatabaseConnection, nodeId: string): Promise<any> {
+  if (nodeId === '0') {
+    throw new Error('The genesis node cannot be deleted.');
+  }
+  return connection.run('DELETE FROM nodes WHERE id = ?', [nodeId]);
+}

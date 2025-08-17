@@ -47,5 +47,15 @@ CREATE TRIGGER IF NOT EXISTS nodes_after_update AFTER UPDATE ON nodes BEGIN
     INSERT INTO nodes_fts(nodes_fts, rowid, body) VALUES ('delete', old.rowid, old.body);
     INSERT INTO nodes_fts(rowid, body) VALUES (new.rowid, new.body);
 END;
+
+-- Insert the genesis node if it doesn't exist
+INSERT INTO nodes (body)
+SELECT json_object(
+    'id', '0',
+    'label', 'System',
+    'body', 'This is the genesis node, the root of the graph.',
+    'createdAt', strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+)
+WHERE NOT EXISTS (SELECT 1 FROM nodes WHERE id = '0');
 `;
 }
