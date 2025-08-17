@@ -1,23 +1,22 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { createDatabase, type Database } from '../helpers/database';
-import { initializeDatabase, getNodeById, deleteNode } from '../../src/database/operations';
+import { SimpleGraph } from '../../src/SimpleGraph';
+import { Node } from '../../src/types/base-types';
 
-describe('Database Operations', () => {
-    let db: Database;
+describe('Database Operations via SimpleGraph API', () => {
+    let graph: SimpleGraph;
 
     beforeAll(async () => {
-        // Create a new in-memory database for each test suite
-        db = createDatabase({ type: 'memory' });
-        await initializeDatabase(db);
+        // Connect to a new in-memory database for each test suite
+        graph = await SimpleGraph.connect();
     });
 
     afterAll(async () => {
-        await db.close();
+        await graph.close();
     });
 
     describe('Genesis Node', () => {
         it('should create the genesis node upon initialization', async () => {
-            const genesisNode = await getNodeById(db, '0');
+            const genesisNode = await graph.nodes.get('0');
             expect(genesisNode).toBeDefined();
             expect(genesisNode).not.toBeNull();
             expect(genesisNode?.id).toBe('0');
@@ -27,26 +26,27 @@ describe('Database Operations', () => {
         });
 
         it('should prevent the genesis node from being deleted', async () => {
-            await expect(deleteNode(db, '0')).rejects.toThrow('The genesis node cannot be deleted.');
+            await expect(graph.nodes.delete('0')).rejects.toThrow('The genesis node cannot be deleted.');
         });
     });
 
-    describe('deleteNode', () => {
-        it('should delete a regular node', async () => {
-            // Insert a node to delete
-            const node = { id: 'test-node', label: 'Test' };
-            const body = JSON.stringify(node);
-            await db.run('INSERT INTO nodes (body) VALUES (?)', [body]);
+    describe('Node Operations', () => {
+        it('should add and delete a regular node', async () => {
+            const node: Node = { id: 'test-node', label: 'Test', body: 'Test node body' };
+            
+            // Add the node
+            await graph.nodes.add(node);
 
             // Verify it exists
-            const insertedNode = await getNodeById(db, 'test-node');
+            const insertedNode = await graph.nodes.get('test-node');
             expect(insertedNode).toBeDefined();
+            expect(insertedNode?.label).toBe('Test');
 
             // Delete it
-            await deleteNode(db, 'test-node');
+            await graph.nodes.delete('test-node');
 
             // Verify it's gone
-            const deletedNode = await getNodeById(db, 'test-node');
+            const deletedNode = await graph.nodes.get('test-node');
             expect(deletedNode).toBeNull();
         });
     });

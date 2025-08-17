@@ -1,10 +1,4 @@
-// Use our test database interface
-interface Database {
-  all(query: string, ...params: any[]): any[]
-  get(query: string, ...params: any[]): any
-  run(query: string, ...params: any[]): any
-  close(): Promise<void>
-}
+import { DatabaseConnection } from '../types/base-types';
 
 /**
  * Configuration for DOT graph generation
@@ -45,6 +39,9 @@ export interface DotGraphConfig {
   fontSize?: number
   dpi?: number
 }
+
+// ... (rest of the file is the same, just the Database interface is removed)
+
 
 /**
  * Default configuration for DOT graph generation

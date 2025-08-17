@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "vitest",
+    "test-persist": "vitest > tests.md 2>&1",
     "test:run": "vitest run",
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",
@@ -33,14 +34,15 @@
     "test-db-verify": "node scripts/test-database-manager.cjs verify",
     "web-serve": "live-server www --port=8080 --open=/index.html",
     "web-build": "node scripts/build-web-assets.cjs",
-    "web-deploy": "npm run web-build && npm run web-serve"
+        "web-deploy": "npm run web-build && npm run web-serve"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0",
+    "@types/node": "^24.3.0",
     "@types/sqlite3": "^3.1.11",
     "@vitest/coverage-v8": "^1.0.0",
     "@vitest/ui": "^1.0.0",
     "live-server": "^1.2.2",
+    "ts-node": "^10.9.2",
     "typescript": "^5.0.0",
     "vitest": "^1.0.0"
   },
@@ -53,6 +55,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "sqlite3": "^5.1.7"
+    "sqlite3": "^5.1.7",
+    "undici": "^7.14.0"
   }
 }

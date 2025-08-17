@@ -1,60 +1,49 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { generateVisualization } from '../../src/analysis/graph-pipeline';
-import { isGraphvizInstalled, renderDotToImage } from '../../src/visualization/renderers/graphviz-renderer';
-import { existsSync, mkdirSync, rmSync, readFileSync, writeFileSync } from 'fs';
+import { SimpleGraph } from '../../src/SimpleGraph';
+import { existsSync, mkdirSync, rmSync, readFileSync } from 'fs';
 import { join } from 'path';
 
-const DB_FILE = 'cda-import-test.db';
 const TEST_OUTPUT_DIR = 'outputs/test-visualizations';
 
-describe('Graph Generation Pipeline Tests', () => {
+describe('Graph Visualization via SimpleGraph API', () => {
+    let graph: SimpleGraph;
 
-  beforeAll(() => {
-    if (!existsSync(TEST_OUTPUT_DIR)) {
-      mkdirSync(TEST_OUTPUT_DIR, { recursive: true });
-    }
-  });
+    beforeAll(async () => {
+        // Connect to a new in-memory database for these tests
+        graph = await SimpleGraph.connect();
+        
+        // Add some data for visualization
+        await graph.nodes.add({ id: 'a', label: 'A' });
+        await graph.nodes.add({ id: 'b', label: 'B' });
+        await graph.nodes.add({ id: 'c', label: 'C' });
+        await graph.edges.add({ source: 'a', target: 'b' });
+        await graph.edges.add({ source: 'b', target: 'c' });
 
-  afterAll(() => {
-    if (existsSync(TEST_OUTPUT_DIR)) {
-      rmSync(TEST_OUTPUT_DIR, { recursive: true, force: true });
-    }
-  });
+        if (!existsSync(TEST_OUTPUT_DIR)) {
+            mkdirSync(TEST_OUTPUT_DIR, { recursive: true });
+        }
+    });
 
-  it('should generate and render a simple graph successfully', async () => {
-    const simpleDot = 'digraph { a -> b -> c; }';
-    const dotPath = join(TEST_OUTPUT_DIR, 'simple-graph.dot');
+    afterAll(async () => {
+        await graph.close();
+        if (existsSync(TEST_OUTPUT_DIR)) {
+            rmSync(TEST_OUTPUT_DIR, { recursive: true, force: true });
+        }
+    });
 
-    // Test .dot file generation
-    writeFileSync(dotPath, simpleDot, 'utf-8');
-    expect(existsSync(dotPath)).toBe(true);
-    const content = readFileSync(dotPath, 'utf-8');
-    expect(content).toBe(simpleDot);
+    it('should generate a mind map and render it successfully', async () => {
+        const dot = await graph.visualize.mindMap({ startNodeId: 'a', depth: 2 });
+        expect(dot).toContain('digraph G');
+        expect(dot).toContain('"a" -> "b"');
+        expect(dot).toContain('"b" -> "c"');
 
-    // Test rendering to SVG and PNG
-    const graphvizInstalled = await isGraphvizInstalled();
-    if (!graphvizInstalled) {
-      console.warn('Graphviz not found, skipping image rendering test.');
-      return;
-    }
+        const svgPath = join(TEST_OUTPUT_DIR, 'mind-map.svg');
+        await graph.visualize.render(dot, { format: 'svg', path: svgPath });
+        expect(existsSync(svgPath)).toBe(true);
+    });
 
-    // --- Test SVG ---
-    const svgPath = join(TEST_OUTPUT_DIR, 'simple-graph.svg');
-    await renderDotToImage(simpleDot, 'svg', svgPath);
-    expect(existsSync(svgPath)).toBe(true);
-
-    // --- Test PNG ---
-    const pngPath = join(TEST_OUTPUT_DIR, 'simple-graph.png');
-    await renderDotToImage(simpleDot, 'png', pngPath);
-    expect(existsSync(pngPath)).toBe(true);
-  }, 10000);
-
-  it('should throw an error for an invalid graph type', async () => {
-    const outputPath = join(TEST_OUTPUT_DIR, 'invalid.dot');
-    
-    // @ts-expect-error - Intentionally passing an invalid type for testing
-    const promise = generateVisualization(DB_FILE, 'invalid-graph-type', 'dot', outputPath);
-
-    await expect(promise).rejects.toThrow('Invalid graph type: invalid-graph-type');
-  });
+    it('should throw an error for an invalid canned graph type', async () => {
+        // @ts-expect-error - Intentionally passing an invalid type
+        await expect(graph.visualize.cannedGraph('invalid-type')).rejects.toThrow('Invalid graph type: invalid-type');
+    });
 });

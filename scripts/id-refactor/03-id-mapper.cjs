@@ -101,6 +101,11 @@ class IDMapper {
    * @returns {boolean} True if valid
    */
   validateNewId(newId) {
+    // Explicitly allow genesis node ID
+    if (newId === '0') {
+      return true;
+    }
+
     // Valid patterns:
     // - cda-61 (CDA metadata)
     // - cda-61-cip-1 (CDA directive)

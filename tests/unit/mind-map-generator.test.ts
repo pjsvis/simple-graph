@@ -1,28 +1,24 @@
 
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { generateMindMap } from '../../src/visualization/mind-map-generator';
-import { createDatabase, type Database } from '../helpers/database';
+import { SimpleGraph } from '../../src/SimpleGraph';
 
-// This test runs against the static, pre-populated test database.
 const DB_FILE = 'cda-import-test.db';
 
-describe('generateMindMap against live test data', () => {
-    let db: Database;
+describe('Mind Map Generation via SimpleGraph API', () => {
+    let graph: SimpleGraph;
 
     beforeAll(async () => {
         // Connect to the existing test database file
-        db = createDatabase({ type: 'file', filename: DB_FILE, cleanup: false });
+        graph = await SimpleGraph.connect({ path: DB_FILE });
     });
 
     afterAll(async () => {
-        await db.close();
+        await graph.close();
     });
 
-    // This is a read-only test that runs against the test database.
-    // It passes its own database connection to the generator function.
     it('should generate a mind map from a real node', async () => {
         // Dynamically select a well-connected node to avoid brittle tests
-        const startNodeResult = await db.get(`
+        const [startNodeResult] = await graph.query.raw(`
             SELECT s.source AS id, n.body
             FROM edges AS s
             JOIN nodes AS n ON s.source = n.id
@@ -35,7 +31,7 @@ describe('generateMindMap against live test data', () => {
         const startNodeLabel = JSON.parse(startNodeResult.body).label;
 
         // Find a target node connected to the start node
-        const targetNodeResult = await db.get(`
+        const [targetNodeResult] = await graph.query.raw(`
             SELECT e.target, n.body
             FROM edges AS e
             JOIN nodes AS n ON e.target = n.id
@@ -47,8 +43,7 @@ describe('generateMindMap against live test data', () => {
         const targetNodeLabel = JSON.parse(targetNodeResult.body).label;
 
         const depth = 1;
-        // Pass the test database connection to the generator
-        const dot = await generateMindMap(startNodeId, depth, db);
+        const dot = await graph.visualize.mindMap({ startNodeId, depth });
 
         // Basic DOT structure validation
         expect(dot).toContain('digraph G {');
@@ -70,7 +65,7 @@ describe('generateMindMap against live test data', () => {
         const startNodeId = 'non-existent-node';
         const depth = 2;
 
-        const dot = await generateMindMap(startNodeId, depth, db);
+        const dot = await graph.visualize.mindMap({ startNodeId, depth });
 
         // Should just be an empty graph definition
         expect(dot).toContain('digraph G {');

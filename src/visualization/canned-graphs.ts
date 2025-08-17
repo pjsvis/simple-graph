@@ -1,9 +1,7 @@
-
-import type { Database } from '../../database/connection';
-import { DotGraphGenerator, type DotGraphConfig } from './dot-generator';
+import type { DotGraphConfig } from './dot-generator';
 import type { GraphType } from '../types/visualization-types';
 
-const GRAPH_RECIPES: Record<GraphType, Partial<DotGraphConfig>> = {
+export const GRAPH_RECIPES: Record<GraphType, Partial<DotGraphConfig>> = {
   'complete': {
     title: 'Complete CDA Knowledge Graph',
     layout: 'dot',
@@ -188,23 +186,3 @@ const GRAPH_RECIPES: Record<GraphType, Partial<DotGraphConfig>> = {
     showEdgeLabels: false
   }
 };
-
-/**
- * Generates a DOT graph string for a specified canned graph type.
- * @param {GraphType} graphType The type of canned graph to generate.
- * @param {Database} db The database connection instance.
- * @returns {Promise<string>} A promise that resolves with the DOT graph string.
- */
-export async function generateCannedDotGraph(
-  graphType: GraphType,
-  db: Database
-): Promise<string> {
-  const config = GRAPH_RECIPES[graphType];
-  if (!config) {
-    throw new Error(`Invalid graph type: ${graphType}`);
-  }
-
-  const generator = new DotGraphGenerator(db);
-  const dotContent = await generator.generateDot(config);
-  return dotContent;
-}

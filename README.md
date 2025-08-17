@@ -43,6 +43,10 @@ npm run test:unit     # Unit tests only
 npm run test:integration  # Integration tests only
 ```
 
+## ⚙️ Environment Variables
+
+- `SIMPLE_GRAPH_DB_PATH`: Specifies the absolute path to the SQLite database file that the CLI (`src/cli.ts`) should connect to. If not set, the CLI defaults to `cda-import-test.db`.
+
 ## 📊 Analysis
 
 The system provides comprehensive analysis of:

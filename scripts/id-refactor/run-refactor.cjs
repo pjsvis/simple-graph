@@ -177,35 +177,25 @@ class RefactorOrchestrator {
     console.log('=' .repeat(30))
     console.log('')
     console.log('Check node counts:')
-    console.log(`sqlite3 ${this.sourceDb} "SELECT COUNT(*) as source_nodes FROM nodes"`)
-    console.log(`sqlite3 ${this.targetDb} "SELECT COUNT(*) as target_nodes FROM nodes"`)
+    console.log(`sqlite3 ${this.sourceDb}`);
+    console.log(`SELECT COUNT(*) FROM nodes;`)
+    console.log(`SELECT COUNT(*) FROM edges;`)
     console.log('')
-    console.log('Check ID formats:')
-    console.log(`sqlite3 ${this.sourceDb} "SELECT json_extract(body, '$.id') FROM nodes WHERE json_extract(body, '$.node_type') = 'directive' LIMIT 3"`)
-    console.log(`sqlite3 ${this.targetDb} "SELECT json_extract(body, '$.id') FROM nodes WHERE json_extract(body, '$.node_type') = 'directive' LIMIT 3"`)
-    console.log('')
-    console.log('Check for dangling edges:')
-    console.log(`sqlite3 ${this.targetDb} "SELECT COUNT(*) FROM edges e WHERE NOT EXISTS (SELECT 1 FROM nodes n WHERE json_extract(n.body, '$.id') = e.source) OR NOT EXISTS (SELECT 1 FROM nodes n WHERE json_extract(n.body, '$.id') = e.target)"`)
+    console.log('Check node counts in target database:')
+    console.log(`sqlite3 ${this.targetDb}`);
+    console.log(`SELECT COUNT(*) FROM nodes;`)
+    console.log(`SELECT COUNT(*) FROM edges;`)
   }
 }
 
-// Run refactor if called directly
-if (require.main === module) {
-  const orchestrator = new RefactorOrchestrator()
-  
-  // Show monitoring commands first
-  orchestrator.showMonitoringCommands()
-  
-  // Execute refactor
-  orchestrator.executeRefactor()
-    .then(() => {
-      console.log('\n🎯 Refactoring completed successfully!')
-      process.exit(0)
-    })
-    .catch((error) => {
-      console.error('\n💥 Refactoring failed:', error.message)
-      process.exit(1)
-    })
-}
-
-module.exports = { RefactorOrchestrator }
+// Execute the refactoring workflow
+const orchestrator = new RefactorOrchestrator()
+orchestrator.executeRefactor()
+  .then(() => {
+    console.log('\nRefactoring workflow completed.')
+    orchestrator.showMonitoringCommands()
+  })
+  .catch((error) => {
+    console.error('\nRefactoring workflow failed unexpectedly:', error)
+    process.exit(1)
+  })
