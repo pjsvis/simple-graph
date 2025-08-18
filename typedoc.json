@@ -1,0 +1,19 @@
+{
+  "entryPoints": [
+    "src/index.ts",
+    "src/SimpleGraph.ts",
+    "src/api/EdgeManager.ts",
+    "src/api/NodeManager.ts",
+    "src/api/QueryManager.ts",
+    "src/api/VisualizationManager.ts",
+  "src/types/base-types.ts",
+  "src/types/cl-types.ts",
+  "src/types/visualization-types.ts"
+  ],
+  "out": "docs/api",
+  "tsconfig": "tsconfig.json",
+  "includeVersion": true,
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeExternals": true
+}

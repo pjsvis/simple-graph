@@ -23,11 +23,23 @@ export class VisualizationManager {
         this.query = new QueryManager(connection);
     }
 
+    /**
+     * Generate a mind map visualization starting from a given node.
+     * Use this to explore the graph structure from a specific entry point.
+     * @param options Options including start node ID and traversal depth.
+     * @returns DOT-format string representing the mind map.
+     */
     public async mindMap(options: MindMapOptions): Promise<string> {
         // Pass this.connection to generateMindMap
         return generateMindMap(options.startNodeId, options.depth, this.connection);
     }
 
+    /**
+     * Generate a pre-configured ("canned") graph visualization.
+     * Use this to quickly create standard graph views (e.g., overview, category map).
+     * @param type The type of canned graph to generate.
+     * @returns DOT-format string representing the graph.
+     */
     public async cannedGraph(type: GraphType): Promise<string> {
         const config = GRAPH_RECIPES[type];
         if (!config) {
@@ -40,6 +52,13 @@ export class VisualizationManager {
         return dotContent;
     }
 
+    /**
+     * Render a DOT-format graph to an image file (SVG or PNG).
+     * Use this to produce visual output for documentation or presentations.
+     * Requires Graphviz to be installed on the system.
+     * @param dot DOT-format graph string.
+     * @param options Render options including format and output path.
+     */
     public async render(dot: string, options: RenderOptions): Promise<void> {
         if (!(await isGraphvizInstalled())) {
             throw new Error('Graphviz is not installed. Please install it to render graphs.');

@@ -2,21 +2,40 @@ import { DatabaseConnection, Node, GraphStats } from '../types/base-types';
 import { NodeManager } from './NodeManager';
 import { EdgeManager } from './EdgeManager';
 
+/**
+ * Options for traversing the graph.
+ */
 export interface TraverseOptions {
+    /** Start node ID for traversal. */
     startNodeId: string;
+    /** Maximum depth to traverse. */
     maxDepth?: number;
+    /** Direction of traversal ('incoming', 'outgoing', or 'both'). */
     direction?: 'incoming' | 'outgoing' | 'both';
 }
 
+/**
+ * Provides advanced query and analysis methods for the graph database.
+ * Includes raw SQL queries, graph statistics, traversal, and specialized analysis.
+ */
 export class QueryManager {
     private nodes: NodeManager;
     private edges: EdgeManager;
 
+    /**
+     * @param connection Database connection instance.
+     */
     constructor(private connection: DatabaseConnection) {
         this.nodes = new NodeManager(connection);
         this.edges = new EdgeManager(connection);
     }
 
+  /**
+   * Run a raw SQL SELECT query and return results.
+   * Use this for direct database reads. Only SELECT statements are allowed for safety.
+   * @param sql SQL query string (must be SELECT).
+   * @param params Query parameters.
+   */
     public async raw(sql: string, params?: any[]): Promise<any[]> {
         // Basic protection against write operations
         if (!sql.trim().toUpperCase().startsWith('SELECT')) {
@@ -25,10 +44,20 @@ export class QueryManager {
         return this.connection.all(sql, params);
     }
 
+  /**
+   * Run a SQL query (any type).
+   * Use this for direct database writes or updates. Use with caution.
+   * @param sql SQL query string.
+   * @param params Query parameters.
+   */
     public async run(sql: string, params?: any[]): Promise<any> {
         return this.connection.run(sql, params);
     }
 
+  /**
+   * Get graph statistics (node/edge counts, type breakdowns).
+   * Returns a summary of the graph structure, including counts and type breakdowns.
+   */
     public async stats(): Promise<GraphStats> {
         const [nodeCount, edgeCount, nodeTypes, edgeTypes] = await Promise.all([
             this.connection.get('SELECT COUNT(*) as count FROM nodes'),
@@ -45,6 +74,12 @@ export class QueryManager {
         };
     }
 
+  /**
+   * Traverse the graph from a start node, following edges up to a given depth.
+   * Use this to explore the graph structure programmatically.
+   * @param options Traverse options.
+   * @returns Array of visited nodes.
+   */
     public async traverse(options: TraverseOptions): Promise<Node[]> {
         const { startNodeId, maxDepth = 3, direction = 'outgoing' } = options;
         const visited = new Set<string>();
@@ -71,6 +106,10 @@ export class QueryManager {
         return result;
     }
 
+  /**
+   * Get relationship type statistics for edges.
+   * Returns a breakdown of edge types and their frequency in the graph.
+   */
     public async getRelationshipStats(): Promise<any[]> {
       const query = `
         SELECT
@@ -88,6 +127,11 @@ export class QueryManager {
       return this.raw(query);
     }
 
+  /**
+   * Get connectivity statistics for directive nodes.
+   * Returns the most connected nodes and their categories.
+   * @param limit Maximum number of results.
+   */
     public async getConnectivityStats(limit: number = 15): Promise<any[]> {
       const query = `
         SELECT
@@ -109,6 +153,10 @@ export class QueryManager {
       return this.raw(query, [limit]);
     }
 
+  /**
+   * Get statistics for intra-category connections between directives.
+   * Returns how often nodes within the same category are connected.
+   */
     public async getIntraCategoryConnections(): Promise<any[]> {
       const query = `
         SELECT
@@ -127,6 +175,11 @@ export class QueryManager {
       return this.raw(query);
     }
 
+  /**
+   * Get hub directives (nodes with many incoming references).
+   * Returns nodes that act as central hubs in the graph.
+   * @param limit Maximum number of results.
+   */
     public async getHubDirectives(limit: number = 10): Promise<any[]> {
       const query = `
         SELECT
@@ -147,6 +200,11 @@ export class QueryManager {
       return this.raw(query, [limit]);
     }
 
+  /**
+   * Get authority directives (nodes with many outgoing references).
+   * Returns nodes that act as authorities, referencing many others.
+   * @param limit Maximum number of results.
+   */
     public async getAuthorityDirectives(limit: number = 10): Promise<any[]> {
       const query = `
         SELECT
@@ -166,6 +224,11 @@ export class QueryManager {
       return this.raw(query, [limit]);
     }
 
+  /**
+   * Get bridge directives (nodes that connect multiple categories).
+   * Returns nodes that link different categories together.
+   * @param limit Maximum number of results.
+   */
     public async getBridgeDirectives(limit: number = 10): Promise<any[]> {
       const query = `
         SELECT 
@@ -186,6 +249,10 @@ export class QueryManager {
       return this.raw(query, [limit]);
     }
 
+  /**
+   * Get edges that reference nodes not present in the database.
+   * Returns relationships that are missing one or both endpoints.
+   */
     public async getDanglingEdges(): Promise<any[]> {
       const query = `
         SELECT source, target, properties
@@ -199,6 +266,13 @@ export class QueryManager {
       return this.raw(query);
     }
 
+  /**
+   * Validate node IDs against a set of patterns.
+   * Use this to check that node IDs conform to expected formats.
+   * @param nodeType Node type to validate.
+   * @param idPatterns Array of regex patterns.
+   * @returns Array of validation results.
+   */
     public async validateNodeIdsByPattern(nodeType: string, idPatterns: string[]): Promise<{ id: string; isValid: boolean }[]> {
       const query = `
         SELECT json_extract(body, '$.id') as id
