@@ -177,7 +177,7 @@ export class DotGraphGenerator {
       ORDER BY node_type, category, id
     `
 
-    const rows = await this.db.all(query, ...params)
+    const rows = await this.db.raw(query, ...params)
 
     // Handle case where rows might not be an array
     if (!Array.isArray(rows)) {
@@ -263,7 +263,7 @@ export class DotGraphGenerator {
       ${limitClause}
     `
 
-    const rows = await this.db.all(query, ...params)
+    const rows = await this.db.raw(query, ...params)
 
     // Handle case where rows might not be an array
     if (!Array.isArray(rows)) {

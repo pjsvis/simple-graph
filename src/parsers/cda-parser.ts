@@ -7,6 +7,8 @@ import type {
   CoreConceptNode
 } from '../types/cl-types';
 import { ConceptualLexiconUtils } from '../types/cl-types';
+import { SimpleGraph } from '../SimpleGraph';
+import { Node } from '../types/base-types';
 
 /**
  * Parser for Core Directive Array markdown files
@@ -55,7 +57,7 @@ export class CDAParser {
       
       // Remove quotes if present
       if ((value.startsWith('"') && value.endsWith('"')) || 
-          (value.startsWith("'") && value.endsWith("'"))) {
+          (value.startsWith("'"') && value.endsWith("'"'))) {
         value = value.slice(1, -1);
       }
       
@@ -155,7 +157,7 @@ export class CDAParser {
           let desc = trimmed.replace('description:', '').trim();
           // Remove quotes
           if ((desc.startsWith('"') && desc.endsWith('"')) || 
-              (desc.startsWith("'") && desc.endsWith("'"))) {
+              (desc.startsWith("'"') && desc.endsWith("'"'))) {
             desc = desc.slice(1, -1);
           }
           currentDirective.description = desc;
@@ -278,5 +280,25 @@ export class CDAParser {
       cda_version: cdaVersion,
       node_type: 'core_concept'
     }));
+  }
+}
+
+export async function importCda(graph: SimpleGraph, filePath: string): Promise<void> {
+  const fileContent = readFileSync(filePath, 'utf-8');
+  const cdaFile = CDAParser.parseMarkdownFile(filePath);
+
+  const cdaNode = CDAParser.createCDANode(cdaFile);
+  const directiveNodes = CDAParser.createDirectiveNodes(cdaFile.core_directives, cdaFile.cda_version);
+  const coreConcepts = CDAParser.extractCoreConcepts(fileContent);
+  const coreConceptNodes = CDAParser.createCoreConceptNodes(coreConcepts, cdaFile.cda_version);
+
+  const allNodes: Node[] = [
+    cdaNode,
+    ...directiveNodes,
+    ...coreConceptNodes,
+  ];
+
+  for (const node of allNodes) {
+    await graph.nodes.add(node);
   }
 }

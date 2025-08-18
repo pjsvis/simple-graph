@@ -1,5 +1,6 @@
 import { DatabaseConnection, Node } from '../types/base-types';
 import { insertNodeFromObject, getInsertNodeParams } from '../database/insert-node';
+import { searchNodes } from '../database/search';
 
 export interface FindNodesQuery {
     label?: string;
@@ -67,13 +68,10 @@ export class NodeManager {
     }
 
     public async search(query: string): Promise<Node[]> {
-        const results = await this.connection.all(
-            `SELECT n.body
-             FROM nodes_fts fts
-             JOIN nodes n ON fts.rowid = n.rowid
-             WHERE fts.body MATCH ?`,
-            [query]
-        );
-        return results.map((row: any) => JSON.parse(row.body));
+        const nodeIds = await searchNodes(this.connection, query);
+        if (nodeIds.length === 0) return [];
+
+        const nodes = await Promise.all(nodeIds.map(id => this.get(id)));
+        return nodes.filter((node): node is Node => node !== null);
     }
 }

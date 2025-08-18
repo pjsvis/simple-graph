@@ -11,7 +11,7 @@ import { DatabaseConnection } from '../types/base-types';
  * @param query - The search query.
  * @returns A promise that resolves to an array of node IDs that match the search query.
  */
-export async function fullTextSearch(connection: DatabaseConnection, query: string): Promise<string[]> {
+export async function searchNodes(connection: DatabaseConnection, query: string): Promise<string[]> {
   const results = await connection.all(
     `SELECT n.id
      FROM nodes_fts fts

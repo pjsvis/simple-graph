@@ -4,6 +4,8 @@
   "description": "A simple graph database with TypeScript SQL functions",
   "type": "module",
   "scripts": {
+    "prebuild": "rm -rf ./dist",
+    "build": "bun build ./src/SimpleGraph.ts ./src/cli.ts --outdir ./dist --target bun",
     "test": "bun test",
     "test-persist": "bun test > tests.md 2>&1",
     "test:run": "bun test",

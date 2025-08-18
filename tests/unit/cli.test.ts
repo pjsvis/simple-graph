@@ -1,4 +1,4 @@
-import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { vi, describe, it, expect, beforeEach, afterEach } from 'bun:test';
 import { SimpleGraph } from '../../src/SimpleGraph';
 
 // Mock SimpleGraph to prevent actual database connections
@@ -31,7 +31,7 @@ vi.mock('../../src/SimpleGraph', () => ({
   },
 }));
 
-describe.skip('cli.js', () => {
+describe('cli.js', () => {
   let logSpy: ReturnType<typeof vi.spyOn>;
   let errorSpy: ReturnType<typeof vi.spyOn>;
   let exitSpy: ReturnType<typeof vi.spyOn>;

@@ -19,8 +19,8 @@ export const DEFAULT_DB_CONFIG: Required<DatabaseConfig> = {
   timeout: 5000,
   pragmas: {
     journal_mode: 'WAL',
-    busy_timeout: 5000,
-    synchronous: 'NORMAL',
+    busy_timeout: 10000,
+    synchronous: 'FULL',
     foreign_keys: 'ON'
   }
 }

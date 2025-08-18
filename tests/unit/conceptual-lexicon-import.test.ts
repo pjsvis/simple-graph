@@ -137,30 +137,38 @@ describe('Conceptual Lexicon Import Tests using SimpleGraph API', () => {
 
     const processed = ConceptualLexiconParser.processLexiconFile(LEXICON_FILE);
     
-    let categoryMembershipCount = 0;
-    for (const membership of processed.categoryMemberships) {
-      await graph.edges.add(membership);
-      categoryMembershipCount++;
-    }
-    
-    console.log(`✅ Created ${categoryMembershipCount} category membership edges`);
-    
-    let versionMembershipCount = 0;
-    for (const membership of processed.versionMemberships) {
-      await graph.edges.add(membership);
-      versionMembershipCount++;
-    }
-    
-    console.log(`✅ Created ${versionMembershipCount} version membership edges`);
+    await graph.query.run('BEGIN TRANSACTION');
+    try {
+      let categoryMembershipCount = 0;
+      for (const membership of processed.categoryMemberships) {
+        await graph.edges.add(membership);
+        categoryMembershipCount++;
+      }
+      
+      console.log(`✅ Created ${categoryMembershipCount} category membership edges`);
+      
+      let versionMembershipCount = 0;
+      for (const membership of processed.versionMemberships) {
+        await graph.edges.add(membership);
+        versionMembershipCount++;
+      }
+      
+      console.log(`✅ Created ${versionMembershipCount} version membership edges`);
 
-    const [edgeCount] = await graph.query.raw('SELECT COUNT(*) as count FROM edges');
-    const expectedEdges = categoryMembershipCount + versionMembershipCount;
-    
-    console.log(`📊 Total edges: ${edgeCount.count} (expected: ${expectedEdges})`);
-    
-    expect(categoryMembershipCount).toBe(processed.termNodes.length);
-    expect(versionMembershipCount).toBe(processed.termNodes.length);
-    expect(edgeCount.count).toBe(expectedEdges);
+      await graph.query.run('COMMIT');
+
+      const [edgeCount] = await graph.query.raw('SELECT COUNT(*) as count FROM edges');
+      const expectedEdges = categoryMembershipCount + versionMembershipCount;
+      
+      console.log(`📊 Total edges: ${edgeCount.count} (expected: ${expectedEdges})`);
+      
+      expect(categoryMembershipCount).toBe(processed.termNodes.length);
+      expect(versionMembershipCount).toBe(processed.termNodes.length);
+      expect(edgeCount.count).toBe(expectedEdges);
+    } catch (e) {
+      await graph.query.run('ROLLBACK');
+      throw e;
+    }
   });
 
   it('should analyze CDA references in lexicon entries', async () => {

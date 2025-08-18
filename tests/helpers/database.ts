@@ -40,8 +40,8 @@ export function createDatabase(config: DatabaseConfig): Database {
   // Configure high-concurrency settings
   db.serialize(() => {
     db.run("PRAGMA journal_mode=WAL;");
-    db.run("PRAGMA busy_timeout = 5000;");
-    db.run("PRAGMA synchronous = NORMAL;");
+    db.run("PRAGMA busy_timeout = 10000;");
+    db.run("PRAGMA synchronous = FULL;");
     db.run("PRAGMA foreign_keys = ON;");
   });
 
@@ -54,23 +54,24 @@ export function createDatabase(config: DatabaseConfig): Database {
     close: async () => {
       await promisify(db.close.bind(db))();
 
-      // Clean up file if it's a temporary file or if cleanup is explicitly requested
       if (config.type === 'file' && (isTemporaryFile || config.cleanup)) {
-        try {
-          if (existsSync(dbPath)) {
-            await unlink(dbPath);
+        const filesToDelete = [dbPath, `${dbPath}-wal`, `${dbPath}-shm`];
+        for (const file of filesToDelete) {
+          for (let i = 0; i < 5; i++) { // Retry up to 5 times
+            try {
+              if (existsSync(file)) {
+                await unlink(file);
+              }
+              break; // Success, exit retry loop
+            } catch (error: any) {
+              if (error.code === 'EBUSY' && i < 4) {
+                await new Promise(resolve => setTimeout(resolve, 100)); // Wait 100ms before retrying
+              } else {
+                console.warn(`Failed to cleanup database file ${file}: ${error}`);
+                break; // Give up on this file
+              }
+            }
           }
-          // Also clean up WAL and SHM files if they exist
-          const walPath = `${dbPath}-wal`;
-          const shmPath = `${dbPath}-shm`;
-          if (existsSync(walPath)) {
-            await unlink(walPath);
-          }
-          if (existsSync(shmPath)) {
-            await unlink(shmPath);
-          }
-        } catch (error) {
-          console.warn(`Failed to cleanup database file: ${error}`);
         }
       }
     },

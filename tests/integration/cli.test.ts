@@ -43,10 +43,14 @@ describe('CLI Integration Tests', () => {
   });
 
   afterEach(async () => {
-    await graph.close();
-    // Add a small delay to ensure file handle is released before cleanup
-    await new Promise(resolve => setTimeout(resolve, 100));
-    db.close(); // Close the database connection and clean up file
+    if (graph) {
+      await graph.close();
+    }
+    if (db) {
+      // Add a small delay to ensure file handle is released before cleanup
+      await new Promise(resolve => setTimeout(resolve, 100));
+      db.close(); // Close the database connection and clean up file
+    }
   });
 
   afterAll(async () => {

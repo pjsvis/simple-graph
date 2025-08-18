@@ -2,14 +2,15 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { SimpleGraph } from '../../src/SimpleGraph';
 
-const DB_FILE = 'cda-import-test.db';
-
 describe('Mind Map Generation via SimpleGraph API', () => {
     let graph: SimpleGraph;
 
     beforeAll(async () => {
-        // Connect to the existing test database file
-        graph = await SimpleGraph.connect({ path: DB_FILE });
+        // Connect to a clean in-memory database and add test data
+        graph = await SimpleGraph.connect(); // In-memory by default
+        await graph.nodes.add({ id: 'nodeA', label: 'Node A' });
+        await graph.nodes.add({ id: 'nodeB', label: 'Node B' });
+        await graph.edges.add({ source: 'nodeA', target: 'nodeB' });
     });
 
     afterAll(async () => {

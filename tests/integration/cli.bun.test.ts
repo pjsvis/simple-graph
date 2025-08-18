@@ -20,7 +20,7 @@ describe('CLI Integration Tests', () => {
     compiledCliPath = `temp-cli-${Date.now()}.js`; // Assign unique name here
     console.log(`[DEBUG] compiledCliPath in beforeAll: ${compiledCliPath}`);
     try {
-      await execPromise(`bun build ${CLI_PATH} --outfile ${compiledCliPath}`);
+      await execPromise(`bun build ${CLI_PATH} --outfile ${compiledCliPath} --target bun --external sqlite3`);
     } catch (error) {
       console.error('CLI compilation failed:', error);
       process.exit(1);
@@ -44,10 +44,14 @@ describe('CLI Integration Tests', () => {
   });
 
   afterEach(async () => {
-    await graph.close();
-    // Add a small delay to ensure file handle is released before cleanup
-    await new Promise(resolve => setTimeout(resolve, 500));
-    db.close(); // Close the database connection and clean up file
+    if (graph) {
+      await graph.close();
+    }
+    if (db) {
+      // Add a small delay to ensure file handle is released before cleanup
+      await new Promise(resolve => setTimeout(resolve, 500));
+      db.close(); // Close the database connection and clean up file
+    }
   });
 
   afterAll(async () => {
@@ -61,7 +65,7 @@ describe('CLI Integration Tests', () => {
 
   // Helper function to run cli.js with the test database path
   const runCliCommand = async (command: string) => {
-    return execPromise(`node ${compiledCliPath} ${command}`, {
+    return execPromise(`bun run ${compiledCliPath} ${command}`, {
       env: { ...process.env, SIMPLE_GRAPH_DB_PATH: testDbFile },
     });
   };

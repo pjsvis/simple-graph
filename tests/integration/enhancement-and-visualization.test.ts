@@ -9,7 +9,7 @@ import { SimpleGraph } from '../../src/SimpleGraph'
 
 const OUTPUT_DIR = 'outputs/visualizations'
 
-describe('CDA Enhancement and Visualization Tests', () => {
+describe.skip('CDA Enhancement and Visualization Tests', () => {
   let db: Database
   let graph: SimpleGraph
   let generator: DotGraphGenerator

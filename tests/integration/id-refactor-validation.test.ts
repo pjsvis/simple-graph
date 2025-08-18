@@ -1,32 +1,47 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest'
 import { createDatabase, type Database } from '../helpers/database'
 
-const SOURCE_DB = 'cda-import-test.db'
-const TARGET_DB = 'data/databases/the-loom-v2.db'
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { createDatabase, type Database } from '../helpers/database';
+import { rm } from 'fs/promises';
+import { exec } from 'child_process';
+import { promisify } from 'util';
+
+const execPromise = promisify(exec);
+
+const SOURCE_DB_PATH = 'cda-import-test.db';
+const TARGET_DB_PATH = 'data/databases/the-loom-v2.db';
 
 describe('ID Refactor Validation Tests', () => {
-  let sourceDb: Database
-  let targetDb: Database
+  let sourceDb: Database;
+  let targetDb: Database;
 
   beforeAll(async () => {
-    // Connect to both databases
-    sourceDb = createDatabase({ 
-      type: 'file', 
-      filename: SOURCE_DB, 
-      cleanup: false 
-    })
-    
-    targetDb = createDatabase({
-      type: 'file',
-      filename: TARGET_DB,
-      cleanup: false
-    })
-  })
+    // 1. Clean up old DB files to ensure a fresh run
+    await rm(SOURCE_DB_PATH, { force: true });
+    await rm(TARGET_DB_PATH, { force: true });
+
+    // 2. Create and populate a pristine source database
+    const initialSourceDb = createDatabase({ type: 'file', filename: SOURCE_DB_PATH, cleanup: false });
+    await initialSourceDb.exec('CREATE TABLE IF NOT EXISTS nodes (id TEXT PRIMARY KEY, body TEXT);');
+    await initialSourceDb.exec('CREATE TABLE IF NOT EXISTS edges (source TEXT, target TEXT, properties TEXT);');
+    await initialSourceDb.exec("INSERT INTO nodes (id, body) VALUES ('ipr-1', '{\"id\":\"ipr-1\", \"node_type\":\"directive\"}');");
+    await initialSourceDb.exec("INSERT INTO nodes (id, body) VALUES ('opm-8', '{\"id\":\"opm-8\", \"node_type\":\"directive\"}');");
+    await initialSourceDb.close();
+
+    // 3. Run the refactor script
+    await execPromise('bun run scripts/id-refactor/run-refactor.cjs');
+
+    // 4. Connect to the newly created/refactored databases for testing
+    sourceDb = createDatabase({ type: 'file', filename: SOURCE_DB_PATH, cleanup: true });
+    targetDb = createDatabase({ type: 'file', filename: TARGET_DB_PATH, cleanup: true });
+  }, 30000); // Increase timeout for setup
 
   afterAll(async () => {
-    if (sourceDb) await sourceDb.close()
-    if (targetDb) await targetDb.close()
-  })
+    if (sourceDb) await sourceDb.close();
+    if (targetDb) await targetDb.close();
+  });
+
 
   describe('Database Integrity', () => {
     it('should preserve node and edge counts', async () => {

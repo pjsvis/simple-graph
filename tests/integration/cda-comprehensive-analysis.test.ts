@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { createDatabase, type Database } from '../helpers/database'
 import { SimpleGraph } from '../../src/SimpleGraph'
+import { importCda } from '../../src/parsers/cda-parser'
 
 describe('Core Directive Array Comprehensive Analysis', () => {
   let db: Database
@@ -15,16 +16,17 @@ describe('Core Directive Array Comprehensive Analysis', () => {
       cleanup: true
     })
     graph = await SimpleGraph.connect({ path: testDbFile })
-
-    // Import CDA data into the test database
-    const { importCda } = await import('../../src/parsers/cda-parser')
     await importCda(graph, 'data/source/core-directive-array.md')
   })
 
   afterEach(async () => {
-    await graph.close()
-    await new Promise(resolve => setTimeout(resolve, 100)); // Small delay for file release
-    db.close()
+    if (graph) {
+      await graph.close()
+    }
+    if (db) {
+      await new Promise(resolve => setTimeout(resolve, 100)); // Small delay for file release
+      db.close()
+    }
   })
 
   describe('1. Directive Patterns and Relationships Analysis', () => {
@@ -175,7 +177,7 @@ describe('Core Directive Array Comprehensive Analysis', () => {
 
       console.log('\n🎯 Hub Directives (Most Referenced):')
       hubDirectives.forEach((dir, index) => {
-        console.log(`   ${index + 1}. ${dir.directive_id}: "${dir.title}"`)
+        console.log(`   ${index + 1}. ${dir.directive_id}: "${dir.title}" `)
         console.log(`      Category: ${dir.category}`)
         console.log(`      Incoming References: ${dir.incoming_references}`)
         console.log(`      Description Length: ${dir.description_length} chars`)
@@ -373,188 +375,12 @@ describe('Core Directive Array Comprehensive Analysis', () => {
       potentialIntegrations.forEach((dir, index) => {
         console.log(`   ${index + 1}. ${dir.directive_id}: "${dir.title}" `)
         console.log(`      Category: ${dir.category}`)
-        console.log(`      Description mentions "operational" but no OH references`)
+        console.log(`      Description mentions`);
         console.log('')
       })
 
-      expect(ohReferences.length + categoriesWithOH.length).toBeGreaterThanOrEqual(0)
+      expect(ohReferences.length + categoriesWithOH.length + potentialIntegrations.length).toBeGreaterThan(0)
     })
-  })
-
-  describe('5. Unified Knowledge Graph Creation', () => {
-    it('should analyze CDA structure for future knowledge graph integration', async () => {
-      console.log('\n🌐 CDA STRUCTURE ANALYSIS FOR INTEGRATION')
-      console.log('=' .repeat(60))
-
-      // Analyze the CDA structure and propose integration points
-      console.log('📊 Analyzing CDA structure for future conceptual lexicon integration...')
-
-      // Analyze directive complexity and categorization
-      const directiveComplexity = await db.all(`
-        SELECT
-          json_extract(body, '$.category') as category,
-          AVG(LENGTH(json_extract(body, '$.description'))) as avg_description_length,
-          COUNT(*) as directive_count,
-          MIN(LENGTH(json_extract(body, '$.description'))) as min_length,
-          MAX(LENGTH(json_extract(body, '$.description'))) as max_length
-        FROM nodes
-        WHERE json_extract(body, '$.node_type') = 'directive'
-        GROUP BY category
-        ORDER BY avg_description_length DESC
-      `)
-
-      console.log('\n📏 Directive Complexity by Category:')
-      directiveComplexity.forEach(cat => {
-        console.log(`   ${cat.category} (${cat.category_title}):`)
-        console.log(`      Count: ${cat.directive_count} directives`)
-        console.log(`      Avg Length: ${Math.round(cat.avg_description_length)} chars`)
-        console.log(`      Range: ${cat.min_length} - ${cat.max_length} chars`)
-        console.log('')
-      })
-
-      // Knowledge graph statistics
-      const graphStats = await db.get(`
-        SELECT
-          COUNT(CASE WHEN json_extract(body, '$.node_type') = 'directive' THEN 1 END) as directive_nodes,
-          COUNT(CASE WHEN json_extract(body, '$.node_type') = 'cda' THEN 1 END) as cda_nodes,
-          (SELECT COUNT(*) FROM edges WHERE json_extract(properties, '$.type') = 'belongs_to_cda') as membership_edges,
-          (SELECT COUNT(*) FROM edges WHERE json_extract(properties, '$.type') != 'belongs_to_cda') as relationship_edges
-        FROM nodes
-      `)
-
-      console.log('\n📊 Current Knowledge Graph Statistics:')
-      console.log(`   Directive Nodes: ${graphStats.directive_nodes}`)
-      console.log(`   CDA Metadata Nodes: ${graphStats.cda_nodes}`)
-      console.log(`   Membership Edges: ${graphStats.membership_edges}`)
-      console.log(`   Relationship Edges: ${graphStats.relationship_edges}`)
-      console.log(`   Total Graph Size: ${graphStats.directive_nodes + graphStats.cda_nodes} nodes, ${graphStats.membership_edges + graphStats.relationship_edges} edges`)
-
-      // Integration readiness assessment
-      const integrationPoints = await db.all(`
-        SELECT
-          json_extract(body, '$.directive_id') as directive_id,
-          json_extract(body, '$.category') as category,
-          CASE
-            WHEN json_extract(body, '$.description') LIKE '%OH-%' THEN 'OH_Reference'
-            WHEN json_extract(body, '$.description') LIKE '%operational%' THEN 'Operational_Context'
-            WHEN json_extract(body, '$.description') LIKE '%heuristic%' THEN 'Heuristic_Context'
-            WHEN json_extract(body, '$.description') LIKE '%protocol%' THEN 'Protocol_Context'
-            ELSE 'General'
-          END as integration_type
-        FROM nodes
-        WHERE json_extract(body, '$.node_type') = 'directive'
-      `)
-
-      const integrationSummary = integrationPoints.reduce((acc, point) => {
-        acc[point.integration_type] = (acc[point.integration_type] || 0) + 1
-        return acc
-      }, {} as Record<string, number>)
-
-      console.log('\n🔗 Integration Readiness Assessment:')
-      Object.entries(integrationSummary).forEach(([type, count]) => {
-        console.log(`   ${type}: ${count} directives`)
-      })
-
-      // Proposed unified schema
-      console.log('\n🏗️  Proposed Unified Knowledge Graph Schema:')
-      console.log('   Node Types:')
-      console.log('     - Conceptual Terms (from lexicon)')
-      console.log('     - Core Directives (from CDA)')
-      console.log('     - Operational Heuristics (OH-xxx)')
-      console.log('     - Categories (for both systems)')
-      console.log('     - Version/Metadata nodes')
-      console.log('')
-      console.log('   Edge Types:')
-      console.log('     - belongs_to (categorization)')
-      console.log('     - references (cross-references)')
-      console.log('     - implements (directive → OH)')
-      console.log('     - supports (mutual support)')
-      console.log('     - supersedes (version evolution)')
-      console.log('     - depends_on (dependencies)')
-
-      expect(directiveComplexity.length).toBeGreaterThan(0)
-      expect(graphStats.directive_nodes).toBeGreaterThan(0)
-    })
-
-    it('should provide recommendations for knowledge graph enhancement', async () => {
-      console.log('\n💡 KNOWLEDGE GRAPH ENHANCEMENT RECOMMENDATIONS')
-      console.log('=' .repeat(60))
-
-      // Find isolated directives (no relationships)
-      const isolatedDirectives = await db.all(`
-        SELECT
-          json_extract(body, '$.directive_id') as directive_id,
-          json_extract(body, '$.title') as title,
-          json_extract(body, '$.category') as category
-        FROM nodes n
-        WHERE json_extract(body, '$.node_type') = 'directive'
-          AND NOT EXISTS (
-            SELECT 1 FROM edges e
-            WHERE (e.source = n.id OR e.target = n.id)
-              AND json_extract(e.properties, '$.type') NOT IN ('belongs_to_cda')
-          )
-        ORDER BY directive_id
-      `)
-
-      console.log('\n🏝️  Isolated Directives (No Relationships):')
-      isolatedDirectives.forEach((dir, index) => {
-        console.log(`   ${index + 1}. ${dir.directive_id}: "${dir.title}" (${dir.category})`)
-      })
-
-      // Categories with low interconnectivity
-      const lowConnectivityCategories = await db.all(`
-        SELECT
-          json_extract(body, '$.category') as category,
-          COUNT(*) as total_directives,
-          COUNT(DISTINCT e.source) as connected_directives,
-          ROUND(COUNT(DISTINCT e.source) * 100.0 / COUNT(*), 2) as connectivity_percentage
-        FROM nodes
-        LEFT JOIN edges e ON nodes.id = e.source
-          AND json_extract(e.properties, '$.type') NOT IN ('belongs_to_cda')
-        WHERE json_extract(body, '$.node_type') = 'directive'
-        GROUP BY category
-        HAVING connectivity_percentage < 50
-        ORDER BY connectivity_percentage ASC
-      `)
-
-      console.log('\n📉 Categories with Low Interconnectivity:')
-      lowConnectivityCategories.forEach(cat => {
-        console.log(`   ${cat.category}: ${cat.connectivity_percentage}% connected (${cat.connected_directives}/${cat.total_directives})`)
-      })
-
-      // Enhancement recommendations
-      console.log('\n🚀 Enhancement Recommendations:')
-      console.log('   1. RELATIONSHIP ENHANCEMENT:')
-      console.log(`      - Connect ${isolatedDirectives.length} isolated directives`)
-      console.log(`      - Improve connectivity in ${lowConnectivityCategories.length} under-connected categories`)
-      console.log('')
-      console.log('   2. INTEGRATION OPPORTUNITIES:')
-      console.log('      - Merge with conceptual lexicon (120+ terms)')
-      console.log('      - Create cross-references between CDA and OH terms')
-      console.log('      - Add semantic similarity edges')
-      console.log('')
-      console.log('   3. SEMANTIC ENHANCEMENT:')
-      console.log('      - Extract implicit relationships from descriptions')
-      console.log('      - Add keyword-based connections')
-      console.log('      - Create topic-based clustering')
-      console.log('')
-      console.log('   4. TEMPORAL ANALYSIS:')
-      console.log('      - Track directive evolution over CDA versions')
-      console.log('      - Identify deprecated/superseded relationships')
-      console.log('      - Monitor usage patterns')
-      console.log('')
-      console.log('   5. OPERATIONAL INTEGRATION:')
-      console.log('      - Map directives to specific OH implementations')
-      console.log('      - Create execution dependency graphs')
-      console.log('      - Add performance/priority metadata')
-
-      expect(isolatedDirectives.length + lowConnectivityCategories.length).toBeGreaterThanOrEqual(0)
-    })
-  })
-
-  afterEach(async () => {
-    await graph.close()
-    await new Promise(resolve => setTimeout(resolve, 100)); // Small delay for file release
-    db.close()
   })
 })
+

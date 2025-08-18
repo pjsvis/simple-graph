@@ -1,44 +1,40 @@
-import { describe, it, expect, beforeAll, afterAll } from 'vitest'
-import { createDatabase, type Database } from '../helpers/database'
-import { DotGraphGenerator } from '../../src/visualization/dot-generator'
-import { writeFileSync, mkdirSync, existsSync } from 'fs'
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { DotGraphGenerator } from '../../src/visualization/dot-generator';
+import { writeFileSync, mkdirSync, existsSync } from 'fs';
+import { SimpleGraph } from '../../src/SimpleGraph';
 
-const DB_FILE = 'cda-import-test.db'
-const OUTPUT_DIR = 'outputs/visualizations'
+const OUTPUT_DIR = 'outputs/visualizations';
 
 describe('Simple DOT Graph Test', () => {
-  let db: Database
-  let generator: DotGraphGenerator
+  let graph: SimpleGraph;
+  let generator: DotGraphGenerator;
 
   beforeAll(async () => {
-    db = createDatabase({ 
-      type: 'file', 
-      filename: DB_FILE, 
-      cleanup: false
-    })
-    
-    generator = new DotGraphGenerator(db)
+    graph = await SimpleGraph.connect({ path: `dot-graph-test-${Date.now()}.db` });
+    generator = new DotGraphGenerator(graph.query);
     
     if (!existsSync(OUTPUT_DIR)) {
-      mkdirSync(OUTPUT_DIR, { recursive: true })
+      mkdirSync(OUTPUT_DIR, { recursive: true });
     }
     if (!existsSync(`${OUTPUT_DIR}/organic`)) {
-      mkdirSync(`${OUTPUT_DIR}/organic`, { recursive: true })
+      mkdirSync(`${OUTPUT_DIR}/organic`, { recursive: true });
     }
     if (!existsSync(`${OUTPUT_DIR}/synth`)) {
-      mkdirSync(`${OUTPUT_DIR}/synth`, { recursive: true })
+      mkdirSync(`${OUTPUT_DIR}/synth`, { recursive: true });
     }
     
-    console.log('\n🔍 DEBUGGING DOT GRAPH GENERATION')
-    console.log('=' .repeat(50))
-  })
+    console.log('\n🔍 DEBUGGING DOT GRAPH GENERATION');
+    console.log('=' .repeat(50));
+  });
 
   afterAll(async () => {
-    await db.close()
-  })
+    if (graph) {
+      await graph.close();
+    }
+  });
 
   it('should debug database queries', async () => {
-    console.log('\n🔍 Testing database queries...')
+    console.log('\n🔍 Testing database queries...');
     
     // Test basic node query
     const nodeQuery = `
@@ -50,13 +46,13 @@ describe('Simple DOT Graph Test', () => {
       FROM nodes 
       WHERE json_extract(body, '$.node_type') = 'directive'
       LIMIT 5
-    `
+    `;
     
-    const nodeResult = await db.all(nodeQuery)
-    console.log('Node query result type:', typeof nodeResult)
-    console.log('Node query result is array:', Array.isArray(nodeResult))
-    console.log('Node query result length:', nodeResult?.length)
-    console.log('First node:', nodeResult?.[0])
+    const nodeResult = await graph.query.raw(nodeQuery);
+    console.log('Node query result type:', typeof nodeResult);
+    console.log('Node query result is array:', Array.isArray(nodeResult));
+    console.log('Node query result length:', nodeResult?.length);
+    console.log('First node:', nodeResult?.[0]);
     
     // Test basic edge query
     const edgeQuery = `
@@ -67,17 +63,18 @@ describe('Simple DOT Graph Test', () => {
       FROM edges 
       WHERE json_extract(properties, '$.type') = 'references'
       LIMIT 5
-    `
+    `;
     
-    const edgeResult = await db.all(edgeQuery)
-    console.log('\nEdge query result type:', typeof edgeResult)
-    console.log('Edge query result is array:', Array.isArray(edgeResult))
-    console.log('Edge query result length:', edgeResult?.length)
-    console.log('First edge:', edgeResult?.[0])
+    const edgeResult = await graph.query.raw(edgeQuery);
+    console.log('\nEdge query result type:', typeof edgeResult);
+    console.log('Edge query result is array:', Array.isArray(edgeResult));
+    console.log('Edge query result length:', edgeResult?.length);
+    console.log('First edge:', edgeResult?.[0]);
     
-    expect(Array.isArray(nodeResult)).toBe(true)
-    expect(Array.isArray(edgeResult)).toBe(true)
-  })
+    expect(Array.isArray(nodeResult)).toBe(true);
+    expect(Array.isArray(edgeResult)).toBe(true);
+  });
+
 
   it('should generate a simple DOT graph', async () => {
     console.log('\n🎨 Generating simple DOT graph...')
