@@ -339,16 +339,20 @@ function main() {
   for (let i = 0; i < args.length; i++) {
     switch (args[i]) {
       case '--input':
-        config.inputDir = args[++i]
+        const inputArg = args[++i]
+        if (inputArg) config.inputDir = inputArg
         break
       case '--output':
-        config.outputDir = args[++i]
+        const outputArg = args[++i]
+        if (outputArg) config.outputDir = outputArg
         break
       case '--formats':
-        config.formats = args[++i].split(',')
+        const formatsArg = args[++i]
+        if (formatsArg) config.formats = formatsArg.split(',')
         break
       case '--dpi':
-        config.dpi = parseInt(args[++i])
+        const dpiArg = args[++i]
+        if (dpiArg) config.dpi = parseInt(dpiArg)
         break
       case '--quiet':
         config.verbose = false

@@ -1,4 +1,4 @@
-import { DatabaseConnection } from './types/base-types';
+import { DatabaseConnection } from '../types/base-types';
 import { generateMindMap } from '../visualization/mind-map-generator';
 import { renderDotToImage, isGraphvizInstalled } from '../visualization/renderers/graphviz-renderer';
 import { DotGraphGenerator } from '../visualization/dot-generator';
@@ -17,11 +17,15 @@ export interface RenderOptions {
 }
 
 export class VisualizationManager {
-    constructor(private connection: DatabaseConnection) {}
+    private query: QueryManager;
+
+    constructor(private connection: DatabaseConnection) {
+        this.query = new QueryManager(connection);
+    }
 
     public async mindMap(options: MindMapOptions): Promise<string> {
-        // Pass this.query to generateMindMap
-        return generateMindMap(options.startNodeId, options.depth, this.query);
+        // Pass this.connection to generateMindMap
+        return generateMindMap(options.startNodeId, options.depth, this.connection);
     }
 
     public async cannedGraph(type: GraphType): Promise<string> {

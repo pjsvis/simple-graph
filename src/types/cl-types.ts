@@ -271,7 +271,7 @@ export class ConceptualLexiconUtils {
       while ((match = pattern.regex.exec(contextReference)) !== null) {
         const termList = match[1];
         // Handle comma-separated lists
-        const terms = termList.split(',').map(t => t.trim());
+        const terms = termList ? termList.split(',').map(t => t.trim()) : [];
         
         for (const term of terms) {
           if (term && term.match(/^[A-Z]{2,4}-\d+$/)) {
@@ -335,7 +335,7 @@ export class ConceptualLexiconUtils {
       while ((match = pattern.regex.exec(description)) !== null) {
         const directiveList = match[1];
         // Handle comma-separated lists
-        const directives = directiveList.split(',').map(d => d.trim());
+        const directives = directiveList ? directiveList.split(',').map(d => d.trim()) : [];
 
         for (const directive of directives) {
           if (directive && directive.match(/^[A-Z]{2,4}-\d+$/)) {
@@ -370,7 +370,7 @@ export class ConceptualLexiconUtils {
       'OPM': 'Operational Protocol Management'
     };
 
-    const category = directiveId.split('-')[0];
+    const category = directiveId.split('-')[0] || 'UNKNOWN';
     return {
       category,
       categoryTitle: categoryMap[category] || category
