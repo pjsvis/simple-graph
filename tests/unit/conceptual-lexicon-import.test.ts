@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll } from 'bun:test';
 import { SimpleGraph } from '../../src/SimpleGraph';
 import { ConceptualLexiconParser } from '../../src/parsers/conceptual-lexicon-parser';
 import type {
