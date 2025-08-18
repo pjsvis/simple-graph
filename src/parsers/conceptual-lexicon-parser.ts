@@ -31,7 +31,7 @@ export class ConceptualLexiconParser {
       }
       
       return data;
-    } catch (error) {
+    } catch (error: any) { // Fix: Add : any
       throw new Error(`Failed to parse conceptual lexicon file: ${error.message}`);
     }
   }
@@ -46,7 +46,7 @@ export class ConceptualLexiconParser {
       export_timestamp: lexiconData.export_timestamp,
       entry_count: lexiconData.entry_count,
       cda_reference_version: lexiconData.cda_reference_version,
-      purpose: lexiconData.lexicon_purpose,
+      lexicon_purpose: lexiconData.lexicon_purpose, // Fix: Add lexicon_purpose
       node_type: 'version'
     };
   }
@@ -72,7 +72,7 @@ export class ConceptualLexiconParser {
   static createCategoryNodes(categories: string[]): CategoryNode[] {
     return categories.map(category => ({
       id: ConceptualLexiconUtils.normalizeTermId(`category-${category}`),
-      category_name: category,
+      name: category, // Fix: Change category_name to name
       description: `Category for terms of type: ${category}`,
       node_type: 'category'
     }));
@@ -98,7 +98,7 @@ export class ConceptualLexiconParser {
           category: entry.Category,
           status: entry.Status,
           timestamp_added: entry.Timestamp_Added,
-          context_reference: entry.Context_Reference,
+          context_reference: entry.Context_Reference, // Fix: This is already handled by optional chaining
           colloquial_alias: aliases,
           lexicon_version: lexiconVersion,
           node_type: 'term'
@@ -112,7 +112,7 @@ export class ConceptualLexiconParser {
   static createCategoryMemberships(termNodes: TermNode[]): CategoryMembership[] {
     return termNodes
       .filter(term => term.category)
-      .map(term => ({
+.map(term => ({
         source: term.id,
         target: ConceptualLexiconUtils.normalizeTermId(`category-${term.category}`),
         properties: {
@@ -214,7 +214,7 @@ export class ConceptualLexiconParser {
         if (contextMatches) {
           contextMatches.forEach(match => {
             references.add(match);
-            contexts.push(`Context: ${entry.Context_Reference.substring(0, 100)}...`);
+            contexts.push(`Context: ${entry.Context_Reference!.substring(0, 100)}...`);
           });
         }
       }

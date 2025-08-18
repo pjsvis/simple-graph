@@ -10,6 +10,7 @@ import { VisualizationManager } from './api/VisualizationManager';
 
 export interface ConnectOptions {
     path?: string;
+    db?: DatabaseConnection; // Add this line
 }
 
 export class SimpleGraph {
@@ -26,11 +27,17 @@ export class SimpleGraph {
     }
 
     public static async connect(options: ConnectOptions = {}): Promise<SimpleGraph> {
-        const dbConnection = await createDatabaseConnection({
-            type: options.path ? 'file' : 'memory',
-            filename: options.path,
-        });
-        await dbConnection.exec(createSchema());
+        let dbConnection: DatabaseConnection;
+
+        if (options.db) {
+            dbConnection = options.db;
+        } else {
+            dbConnection = await createDatabaseConnection({
+                type: options.path ? 'file' : 'memory',
+                filename: options.path,
+            });
+            await dbConnection.exec(createSchema()); // Create schema only for new connections
+        }
         return new SimpleGraph(dbConnection);
     }
 

@@ -1,9 +1,10 @@
-import { DatabaseConnection } from '../types/base-types';
+import { DatabaseConnection } from './types/base-types';
 import { generateMindMap } from '../visualization/mind-map-generator';
 import { renderDotToImage, isGraphvizInstalled } from '../visualization/renderers/graphviz-renderer';
 import { DotGraphGenerator } from '../visualization/dot-generator';
 import { GRAPH_RECIPES } from '../visualization/canned-graphs';
 import { GraphType } from '../types/visualization-types';
+import { QueryManager } from './QueryManager';
 
 export interface MindMapOptions {
     startNodeId: string;
@@ -19,7 +20,8 @@ export class VisualizationManager {
     constructor(private connection: DatabaseConnection) {}
 
     public async mindMap(options: MindMapOptions): Promise<string> {
-        return generateMindMap(options.startNodeId, options.depth, this.connection);
+        // Pass this.query to generateMindMap
+        return generateMindMap(options.startNodeId, options.depth, this.query);
     }
 
     public async cannedGraph(type: GraphType): Promise<string> {
@@ -28,7 +30,8 @@ export class VisualizationManager {
             throw new Error(`Invalid graph type: ${type}`);
         }
 
-        const generator = new DotGraphGenerator(this.connection);
+        // Pass this.query to DotGraphGenerator
+        const generator = new DotGraphGenerator(this.query);
         const dotContent = await generator.generateDot(config);
         return dotContent;
     }

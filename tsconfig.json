@@ -1,15 +1,20 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "ESNext",
+    "target": "esnext",
+    "module": "esnext",
     "moduleResolution": "bundler",
+    "moduleDetection": "force",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "allowJs": true,
     "checkJs": false,
     "strict": true,
     "noEmit": true,
-    "types": ["vitest/globals"],
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true
+    "skipLibCheck": true,
+    "types" : ["bun-types"],   
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]

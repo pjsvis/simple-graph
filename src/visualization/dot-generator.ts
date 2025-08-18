@@ -1,4 +1,5 @@
 import { DatabaseConnection, Node } from '../types/base-types';
+import { QueryManager } from '../api/QueryManager';
 
 /**
  * Configuration for DOT graph generation
@@ -116,7 +117,7 @@ interface DotEdge {
  * DOT graph generator for knowledge graph visualization
  */
 export class DotGraphGenerator {
-  constructor(private db: DatabaseConnection) {}
+  constructor(private db: QueryManager) {}
 
   /**
    * Generate DOT graph from database

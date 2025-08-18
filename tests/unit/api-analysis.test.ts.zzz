@@ -1,0 +1,227 @@
+import { describe, it, expect, beforeEach, afterEach } from 'bun:test';
+import { SimpleGraph } from '../../src/SimpleGraph';
+import { createDatabase, type Database } from '../helpers/database';
+
+describe('API Analysis Tests', () => {
+  let graph: SimpleGraph;
+
+  // --- Test Suite for getRelationshipStats ---
+  describe('QueryManager.getRelationshipStats', () => {
+    beforeEach(async () => {
+      graph = await SimpleGraph.connect();
+      await graph.nodes.add({ id: 'A' });
+      await graph.nodes.add({ id: 'B' });
+      await graph.nodes.add({ id: 'C' });
+      await graph.nodes.add({ id: 'D' });
+      await graph.edges.add({ source: 'A', target: 'B', properties: { type: 'knows' } });
+      await graph.edges.add({ source: 'B', target: 'C', properties: { type: 'knows' } });
+      await graph.edges.add({ source: 'C', target: 'D', properties: { type: 'works_at' } });
+      await graph.edges.add({ source: 'D', target: 'A', properties: { type: 'belongs_to_cda' } });
+    });
+
+    afterEach(async () => { if (graph) await graph.close(); });
+
+    it('should return correct statistics for relationship types', async () => {
+      const stats = await graph.query.getRelationshipStats();
+      stats.sort((a, b) => a.relationship_type.localeCompare(b.relationship_type));
+      expect(stats).toHaveLength(2);
+      expect(stats[0].relationship_type).toBe('knows');
+      expect(stats[0].count).toBe(2);
+      expect(stats[0].percentage).toBe(66.67);
+      expect(stats[1].relationship_type).toBe('works_at');
+      expect(stats[1].count).toBe(1);
+      expect(stats[1].percentage).toBe(33.33);
+    });
+  });
+
+  // --- Test Suite for getConnectivityStats ---
+  describe('QueryManager.getConnectivityStats', () => {
+    beforeEach(async () => {
+      graph = await SimpleGraph.connect();
+      await graph.nodes.add({ id: 'D1', node_type: 'directive', directive_id: 'D-001' });
+      await graph.nodes.add({ id: 'D2', node_type: 'directive', directive_id: 'D-002' });
+      await graph.nodes.add({ id: 'D3', node_type: 'directive', directive_id: 'D-003' });
+      await graph.nodes.add({ id: 'N1', node_type: 'other' });
+      await graph.edges.add({ source: 'D1', target: 'D2', properties: { type: 'references' } });
+      await graph.edges.add({ source: 'N1', target: 'D1', properties: { type: 'references' } });
+    });
+
+    afterEach(async () => { if (graph) await graph.close(); });
+
+    it('should return correct connectivity stats', async () => {
+      const stats = await graph.query.getConnectivityStats();
+      const d1Stats = stats.find(s => s.directive_id === 'D-001');
+      expect(d1Stats.total_connections).toBe(2);
+      expect(d1Stats.outgoing_refs).toBe(1);
+      expect(d1Stats.incoming_refs).toBe(1);
+    });
+  });
+
+  // --- Test Suite for getIntraCategoryConnections ---
+  describe('QueryManager.getIntraCategoryConnections', () => {
+    beforeEach(async () => {
+      graph = await SimpleGraph.connect();
+      await graph.nodes.add({ id: 'D1', node_type: 'directive', category: 'CAT1' });
+      await graph.nodes.add({ id: 'D2', node_type: 'directive', category: 'CAT1' });
+      await graph.nodes.add({ id: 'D3', node_type: 'directive', category: 'CAT2' });
+      await graph.edges.add({ source: 'D1', target: 'D2', properties: { type: 'references' } });
+      await graph.edges.add({ source: 'D2', target: 'D3', properties: { type: 'references' } });
+    });
+
+    afterEach(async () => { if (graph) await graph.close(); });
+
+    it('should count connections within the same category', async () => {
+      const stats = await graph.query.getIntraCategoryConnections();
+      expect(stats).toHaveLength(1);
+      expect(stats[0].source_category).toBe('CAT1');
+      expect(stats[0].connection_count).toBe(1);
+    });
+  });
+
+  // --- Test Suite for getHubDirectives ---
+  describe('QueryManager.getHubDirectives', () => {
+    beforeEach(async () => {
+      graph = await SimpleGraph.connect();
+      await graph.nodes.add({ id: 'D1', node_type: 'directive', directive_id: 'D-001' });
+      await graph.nodes.add({ id: 'D2', node_type: 'directive', directive_id: 'D-002' });
+      await graph.nodes.add({ id: 'D3', node_type: 'directive', directive_id: 'D-003' });
+      await graph.edges.add({ source: 'D2', target: 'D1', properties: { type: 'references' } });
+      await graph.edges.add({ source: 'D3', target: 'D1', properties: { type: 'references' } });
+    });
+
+    afterEach(async () => { if (graph) await graph.close(); });
+
+    it('should return the most referenced directives as hubs', async () => {
+      const hubs = await graph.query.getHubDirectives();
+      expect(hubs).toHaveLength(1);
+      expect(hubs[0].directive_id).toBe('D-001');
+      expect(hubs[0].incoming_references).toBe(2);
+    });
+  });
+
+  // --- Test Suite for getAuthorityDirectives ---
+  describe('QueryManager.getAuthorityDirectives', () => {
+    beforeEach(async () => {
+      graph = await SimpleGraph.connect();
+      await graph.nodes.add({ id: 'D1', node_type: 'directive', directive_id: 'D-001' });
+      await graph.nodes.add({ id: 'D2', node_type: 'directive', directive_id: 'D-002' });
+      await graph.nodes.add({ id: 'D3', node_type: 'directive', directive_id: 'D-003' });
+      await graph.edges.add({ source: 'D1', target: 'D2', properties: { type: 'references' } });
+      await graph.edges.add({ source: 'D1', target: 'D3', properties: { type: 'references' } });
+    });
+
+    afterEach(async () => { if (graph) await graph.close(); });
+
+    it('should return the most referencing directives as authorities', async () => {
+      const authorities = await graph.query.getAuthorityDirectives();
+      expect(authorities).toHaveLength(1);
+      expect(authorities[0].directive_id).toBe('D-001');
+      expect(authorities[0].outgoing_references).toBe(2);
+    });
+  });
+
+  // --- Test Suite for getBridgeDirectives ---
+  describe('QueryManager.getBridgeDirectives', () => {
+    beforeEach(async () => {
+      graph = await SimpleGraph.connect();
+      await graph.nodes.add({ id: 'D1', node_type: 'directive', directive_id: 'D-001', category: 'CAT1' });
+      await graph.nodes.add({ id: 'D2', node_type: 'directive', directive_id: 'D-002', category: 'CAT2' });
+      await graph.nodes.add({ id: 'D3', node_type: 'directive', directive_id: 'D-003', category: 'CAT3' });
+      await graph.edges.add({ source: 'D1', target: 'D2', properties: { type: 'references' } }); // D1 bridges to CAT2
+      await graph.edges.add({ source: 'D1', target: 'D3', properties: { type: 'references' } }); // D1 bridges to CAT3
+    });
+
+    afterEach(async () => { if (graph) await graph.close(); });
+
+    it('should return directives that connect multiple categories', async () => {
+      const bridges = await graph.query.getBridgeDirectives();
+      expect(bridges).toHaveLength(1);
+      expect(bridges[0].directive_id).toBe('D-001');
+      expect(bridges[0].categories_referenced).toBe(2);
+    });
+  });
+
+  // --- Test Suite for getDanglingEdges ---
+  describe('QueryManager.getDanglingEdges', () => {
+    let db: Database; // Use lower-level db for this test
+
+    beforeEach(async () => {
+      db = createDatabase({ type: 'memory' }); // Create a raw database
+      await db.exec('CREATE TABLE nodes (id TEXT PRIMARY KEY, body TEXT);');
+      await db.exec('CREATE TABLE edges (source TEXT, target TEXT, properties TEXT);');
+
+      // Add a node that will be referenced
+      await db.exec("INSERT INTO nodes (id, body) VALUES ('existingNode', '{\"id\":\"existingNode\"}');");
+
+      // Add a dangling edge (source exists, target does not)
+      await db.exec("INSERT INTO edges (source, target, properties) VALUES ('existingNode', 'nonExistentNode', '{\"type\":\"dangling\"}');");
+      // Add another dangling edge (source does not exist, target does)
+      await db.exec("INSERT INTO edges (source, target, properties) VALUES ('anotherNonExistentNode', 'existingNode', '{\"type\":\"dangling\"}');");
+      // Add a valid edge (should not be returned)
+      await db.exec("INSERT INTO nodes (id, body) VALUES ('validTarget', '{\"id\":\"validTarget\"}');");
+      await db.exec("INSERT INTO edges (source, target, properties) VALUES ('existingNode', 'validTarget', '{\"type\":\"valid\"}');");
+
+      // Instantiate QueryManager with the raw db connection
+      graph = new SimpleGraph(db); // Pass the raw db to SimpleGraph
+    });
+
+    afterEach(async () => {
+      if (db) {
+        await db.close();
+      }
+    });
+
+    it('should return all dangling edges', async () => {
+      const danglingEdges = await graph.query.getDanglingEdges();
+      expect(danglingEdges).toHaveLength(2);
+      const danglingSources = danglingEdges.map(e => e.source).sort();
+      const danglingTargets = danglingEdges.map(e => e.target).sort();
+      expect(danglingSources).toEqual(['anotherNonExistentNode', 'existingNode']);
+      expect(danglingTargets).toEqual(['existingNode', 'nonExistentNode']);
+    });
+
+    it('should return an empty array if no dangling edges exist', async () => {
+      // Reconnect to a clean raw database for this specific test
+      const cleanDb = createDatabase({ type: 'memory' });
+      await cleanDb.exec('CREATE TABLE nodes (id TEXT PRIMARY KEY, body TEXT);');
+      await cleanDb.exec('CREATE TABLE edges (source TEXT, target TEXT, properties TEXT);');
+      await cleanDb.exec("INSERT INTO nodes (id, body) VALUES ('node1', '{\"id\":\"node1\"}');");
+      await cleanDb.exec("INSERT INTO nodes (id, body) VALUES ('node2', '{\"id\":\"node2\"}');");
+      await cleanDb.exec("INSERT INTO edges (source, target, properties) VALUES ('node1', 'node2', '{\"type\":\"valid\"}');");
+
+      const cleanGraph = new SimpleGraph(cleanDb);
+      const danglingEdges = await cleanGraph.query.getDanglingEdges();
+      expect(danglingEdges).toHaveLength(0);
+      await cleanDb.close(); // Close this specific test's db
+    });
+  });
+
+  // --- Test Suite for validateNodeIdsByPattern ---
+  describe('QueryManager.validateNodeIdsByPattern', () => {
+    beforeEach(async () => {
+      graph = await SimpleGraph.connect();
+      await graph.nodes.add({ id: 'cda-61-phi-1', node_type: 'directive' });
+      await graph.nodes.add({ id: 'cda-61-opm-8', node_type: 'directive' });
+      await graph.nodes.add({ id: 'invalid-id', node_type: 'directive' });
+      await graph.nodes.add({ id: 'non-directive-node', node_type: 'other' });
+    });
+
+    afterEach(async () => { if (graph) await graph.close(); });
+
+    it('should validate directive IDs against a pattern', async () => {
+      const patterns = ['^cda-\d+-[a-z]+-\d+$', '^cda-\d+-[a-z]+$']; // Example: cda-61-phi-1
+      const results = await graph.query.validateNodeIdsByPattern('directive', patterns);
+
+      expect(results).toHaveLength(3); // D1, D2, D3
+      expect(results.find(r => r.id === 'cda-61-phi-1')?.isValid).toBe(true);
+      expect(results.find(r => r.id === 'cda-61-opm-8')?.isValid).toBe(true);
+      expect(results.find(r => r.id === 'invalid-id')?.isValid).toBe(false);
+    });
+
+    it('should return an empty array if no nodes of the specified type exist', async () => {
+      const patterns = ['^cda-\d+-[a-z]+-\d+$', '^cda-\d+-[a-z]+$'];
+      const results = await graph.query.validateNodeIdsByPattern('nonExistentType', patterns);
+      expect(results).toHaveLength(0);
+    });
+  });
+});
