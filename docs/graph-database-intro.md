@@ -1,3 +1,6 @@
+**Learn more about vector databases and embeddings:**  
+[Introduction to Vector Databases & Embeddings (HTML)](vector-database-intro.html)
+
 # Introduction to Graph Databases
 
 A graph database is a system designed to store and query relationships between data using nodes (entities) and edges (connections). This structure makes it easy to explore complex relationships, hierarchies, and patterns—far beyond what traditional table-based databases can offer.

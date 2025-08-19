@@ -51,8 +51,11 @@ open outputs/images/index.html
 
 See `docs/` for comprehensive guides and API documentation.
 
-**Learn more about graph databases and see a practical example:**
-[Introduction to Graph Databases](docs/graph-database-intro.html)
+**Learn more about graph databases and see a practical example:**  
+[Introduction to Graph Databases (HTML)](docs/graph-database-intro.html)
+
+**Learn more about vector databases and embeddings:**  
+[Introduction to Vector Databases & Embeddings (HTML)](docs/vector-database-intro.html)
 
 ## 🎨 Visualizations
 
@@ -75,6 +78,20 @@ bun run test:integration  # Integration tests only
 ## ⚙️ Environment Variables
 
 - `SIMPLE_GRAPH_DB_PATH`: Specifies the absolute path to the SQLite database file that the CLI (`src/cli.ts`) should connect to. If not set, the CLI defaults to `cda-import-test.db`.
+
+## 📦 Dependencies
+
+This project uses the following key dependencies:
+
+- **sqlite-vec**: Adds vector search capabilities to SQLite, enabling fast similarity queries for semantic search.
+- **@xenova/transformers**: Provides state-of-the-art transformer models for generating text embeddings, used in semantic search and node similarity.
+- **bun**: Optional runtime and package manager for fast development and testing.
+- **typescript**: Type-safe development and static analysis.
+- **sqlite3**: Core database engine for storing graph data and relationships.
+- **graphviz**: Used for generating visualizations of graph structures.
+- **undici**: Modern HTTP client for Node.js and Bun. Used as a dependency by other packages (such as SQLite or transformer libraries) for efficient network requests, not typically used directly in application code.
+
+These dependencies enable hybrid search (semantic + structural), efficient graph traversal, and rich data visualization.
 
 ## 📊 Analysis
 

@@ -37,6 +37,32 @@ import { SimpleGraph } from './SimpleGraph';
 
 export { SimpleGraph };
 
+/**
+ * Vector Search & Semantic Search Integration
+ *
+ * The vector search module enables semantic search and similarity queries using vector embeddings.
+ * It leverages sqlite-vec for fast vector similarity and @xenova/transformers for generating embeddings.
+ *
+ * ## Key Classes
+ * - VectorStore: Manages vector storage and similarity search in SQLite.
+ * - Vectorizer: Generates vector embeddings for text using transformer models.
+ *
+ * ## Example Usage
+ * ```ts
+ * import { VectorStore, Vectorizer } from './vector-search';
+ *
+ * const vectorizer = new Vectorizer();
+ * await vectorizer.init();
+ * const embedding = await vectorizer.embed('search text');
+ *
+ * const store = new VectorStore('mydb.sqlite');
+ * await store.init();
+ * await store.addNodeVector('node1', 'some text');
+ * const results = await store.findSimilar('search text');
+ * ```
+ */
+export * from './vector-search';
+
 // If you want to run CLI logic, you can add:
 // if (require.main === module) {
 //   // CLI logic here
