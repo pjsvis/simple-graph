@@ -51,6 +51,9 @@ open outputs/images/index.html
 
 See `docs/` for comprehensive guides and API documentation.
 
+**Learn more about graph databases and see a practical example:**
+[Introduction to Graph Databases](docs/graph-database-intro.html)
+
 ## 🎨 Visualizations
 
 Generated visualizations are available in `outputs/images/` with an interactive HTML browser.

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Introduction to Graph Databases</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2em;
+      display: flex;
+      justify-content: center;
+      background: #f6f7f9;
+    }
+    .container {
+      max-width: 80ch;
+      width: 100%;
+      margin: 0 auto;
+      background: #fcfcfd;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      border-radius: 8px;
+      padding: 2em;
+    }
+    h1, h2 { color: #1976D2; }
+    ul, ol { margin-left: 2em; }
+    .example { background: #f3f3f3; padding: 1em; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Introduction to Graph Databases</h1>
+    <p>A graph database is a system designed to store and query relationships between data using nodes (entities) and edges (connections). This structure makes it easy to explore complex relationships, hierarchies, and patterns—far beyond what traditional table-based databases can offer.</p>
+
+    <h2>Why Use a Graph Database?</h2>
+    <ul>
+      <li>Discover connections between concepts, people, or objects.</li>
+      <li>Analyze networks (social, knowledge, recommendations).</li>
+      <li>Efficiently answer questions like “Who is connected to whom?” or “What are the shortest paths between two points?”</li>
+      <li>Visualize and understand data structure in a more intuitive way.</li>
+    </ul>
+
+    <h2>Example: E-Commerce Recommendation Engine</h2>
+    <div class="example">
+      <p>Imagine a simple online store that wants to provide “customers who bought this also bought...” recommendations.</p>
+      <strong>Graph Structure:</strong>
+      <ul>
+        <li><strong>Nodes:</strong>
+          <ul>
+            <li><code>customer</code>: Represents a user (e.g., <code>{ id: 'user123', type: 'customer', name: 'Alice' }</code>)</li>
+            <li><code>product</code>: Represents an item for sale (e.g., <code>{ id: 'product-abc', type: 'product', name: 'Quantum Entangler' }</code>)</li>
+            <li><code>category</code>: Represents a product category (e.g., <code>{ id: 'cat-01', type: 'category', name: 'Gadgets' }</code>)</li>
+          </ul>
+        </li>
+        <li><strong>Edges:</strong>
+          <ul>
+            <li><code>PURCHASED</code>: Connects a <code>customer</code> to a <code>product</code></li>
+            <li><code>BELONGS_TO</code>: Connects a <code>product</code> to a <code>category</code></li>
+          </ul>
+        </li>
+      </ul>
+      <strong>Workflow:</strong>
+      <ol>
+        <li>Add nodes for each customer, product, and category.</li>
+        <li>When a customer buys a product, add a <code>PURCHASED</code> edge.</li>
+        <li>To generate recommendations:
+          <ul>
+            <li>Find all customers who bought “Product X”.</li>
+            <li>Find all other products those customers bought.</li>
+            <li>Aggregate and rank these products to recommend the most popular co-purchases.</li>
+          </ul>
+        </li>
+      </ol>
+      <p>This example shows how graph databases make it easy to analyze relationships and generate insights in real-world scenarios.</p>
+    </div>
+  </div>
+</body>
+</html>
