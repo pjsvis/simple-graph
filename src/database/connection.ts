@@ -76,13 +76,13 @@ export async function createDatabaseConnection(config: Partial<DatabaseConfig> =
 }
 
 /**
- * Create a connection to The Loom knowledge graph database
+ * Create a connection to the knowledge graph database
  * 
  * @param dbPath - Path to the database file (defaults to the-loom-v2.db)
  * @param readonly - Whether to open in readonly mode
  * @returns Promise that resolves to a DatabaseConnection
  */
-export async function connectToTheLoom(
+export async function connectWithConfig(
   dbPath: string = 'data/databases/the-loom-v2.db',
   readonly: boolean = false
 ): Promise<DatabaseConnection> {

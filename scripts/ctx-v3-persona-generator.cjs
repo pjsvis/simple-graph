@@ -5,7 +5,7 @@ const fs = require('fs')
 const path = require('path')
 
 /**
- * Ctx-V3 Persona Generator - Extract data from The Loom v2 knowledge graph
+ * Ctx-V3 Persona Generator - Extract data from the v2 knowledge graph
  */
 class CtxV3PersonaGenerator {
   constructor() {
@@ -22,7 +22,7 @@ class CtxV3PersonaGenerator {
         if (err) {
           reject(new Error(`Failed to connect to database: ${err.message}`))
         } else {
-          console.log('📊 Connected to The Loom v2 database')
+          console.log('📊 Connected to the v2 database')
           resolve()
         }
       })
@@ -196,7 +196,7 @@ version_history:
     date: "${currentDate}"
     target_substrate: "Baseline (Substrate Agnostic)"
     changes:
-      - Initial formulaic generation from The Loom knowledge graph.
+      - Initial formulaic generation from the knowledge graph.
     lessons_learned: >
       This artifact represents the baseline, architecturally-sound persona derived from
       the analysis of the Ctx v61/1.76 system. It serves as the starting point for

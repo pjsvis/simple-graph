@@ -166,7 +166,7 @@ class RefactorOrchestrator {
     console.log('      - Find all COG directives: SELECT * WHERE id LIKE "cda-61-cog-%"')
     console.log('      - Cross-version analysis ready for future CDA versions')
     console.log('')
-    console.log('🎊 The Loom v2 is ready for production!')
+    console.log('🎊 Graph Database v2 is ready for production!')
   }
 
   /**

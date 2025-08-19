@@ -17,11 +17,6 @@ export interface RenderOptions {
 }
 
 /**
- * Generate a mind map visualization starting from a given node.
- * Use this to explore the graph structure from a specific entry point.
- * @param options Options including start node ID and traversal depth.
- * @returns DOT-format string representing the mind map.
-/**
  * Provides visualization and rendering methods for the graph database.
  * Includes mind map generation, canned graph views, and image rendering.
  *

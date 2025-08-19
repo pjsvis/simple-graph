@@ -111,7 +111,7 @@ class WebAssetsBuilder {
     // Copy database files
     if (fs.existsSync('data/databases/the-loom-v2.db')) {
       fs.copyFileSync('data/databases/the-loom-v2.db', 'www/exports/the-loom-v2.db')
-      console.log('   ✅ Copied The Loom database')
+      console.log('   ✅ Copied graph database')
     }
 
     // Copy JSON files
@@ -141,9 +141,9 @@ class WebAssetsBuilder {
     }
 
     // Create README for web interface
-    const webReadme = `# The Loom Web Interface
+    const webReadme = `# Graph Database Web Interface
 
-This web interface provides an interactive way to explore The Loom knowledge graph.
+This web interface provides an interactive way to explore the knowledge graph.
 
 ## Features
 

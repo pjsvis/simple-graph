@@ -1,5 +1,5 @@
 /**
- * The Loom Knowledge Graph Explorer - Main JavaScript
+ * Knowledge Graph Explorer - Main JavaScript
  */
 
 // Visualization data structure

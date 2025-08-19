@@ -44,7 +44,7 @@ export type {
 // Connection management
 export {
   createDatabaseConnection,
-  connectToTheLoom,
+  connectWithConfig,
   connectToTestDatabase,
   createMemoryDatabase,
   testConnection,

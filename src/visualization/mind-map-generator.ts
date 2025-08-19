@@ -1,5 +1,5 @@
 
-import { connectToTheLoom } from '../database/connection';
+import { connectWithConfig } from '../database/connection';
 import { Node, Edge, DatabaseConnection } from '../types/base-types';
 
 /**
@@ -15,7 +15,7 @@ export async function generateMindMap(
   depth: number,
   dbConnection?: DatabaseConnection
 ): Promise<string> {
-  const db = dbConnection || (await connectToTheLoom());
+  const db = dbConnection || (await connectWithConfig());
   const nodes: Node[] = [];
   const edges: Edge[] = [];
   const visited = new Set<string>();
