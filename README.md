@@ -7,6 +7,7 @@ A comprehensive knowledge graph system for analyzing and visualizing the Core Di
 > **⚡ Node.js & Bun Compatible**: This project now supports both [Node.js](https://nodejs.org/) and [Bun](https://bun.sh) runtimes.
 
 ### Node.js Usage
+
 ```bash
 # Install dependencies
 npm install
@@ -22,6 +23,7 @@ open outputs/images/index.html
 ```
 
 ### Bun Usage (optional)
+
 ```bash
 # Install dependencies
 bun install

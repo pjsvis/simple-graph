@@ -18,7 +18,7 @@ export interface FindNodesQuery {
  *
  * Example usage:
  * ```ts
- * const nodes = new NodeManager(connection);
+ * const nodes = new Nodes(connection);
  * await nodes.add({ id: 'A', label: 'Node A', type: 'directive' });
  * ```
  */
@@ -33,10 +33,10 @@ export class Nodes {
      * This is the basic way to retrieve an entity from the graph by its unique identifier.
      * Returns the node object if found, or null if no such node exists.
      *
-     * Example:
-     * ```ts
-     * const node = await nodeManager.get('node-123');
-     * ```
+    * Example:
+    * ```ts
+    * const node = await nodes.get('node-123');
+    * ```
      * @param id Node ID.
      * @returns The node object or null if not found.
      */
@@ -52,10 +52,10 @@ export class Nodes {
      * Add a new node to the graph.
      * This creates a new entity in the graph. If the node already exists, it may be updated.
      *
-     * Example:
-     * ```ts
-     * await nodeManager.add({ id: 'A', label: 'Node A', type: 'directive' });
-     * ```
+    * Example:
+    * ```ts
+    * await nodes.add({ id: 'A', label: 'Node A', type: 'directive' });
+    * ```
      * @param node Node object to add.
      */
     public async add(node: Node): Promise<any> {
@@ -69,10 +69,10 @@ export class Nodes {
      * Removes the entity from the graph by its ID. This does not delete related edges automatically.
      * Throws an error if you try to delete the genesis node (ID '0').
      *
-     * Example:
-     * ```ts
-     * await nodeManager.delete('node-123');
-     * ```
+    * Example:
+    * ```ts
+    * await nodes.delete('node-123');
+    * ```
      * @param id Node ID.
      * @throws Error if trying to delete the genesis node.
      */
@@ -87,10 +87,10 @@ export class Nodes {
      * Update properties of an existing node.
      * Use this to change metadata or attributes of an entity in the graph.
      *
-     * Example:
-     * ```ts
-     * await nodeManager.update('node-123', { label: 'Updated Node' });
-     * ```
+    * Example:
+    * ```ts
+    * await nodes.update('node-123', { label: 'Updated Node' });
+    * ```
      * @param id Node ID.
      * @param partialNode Partial node object with properties to update.
      */
@@ -110,10 +110,10 @@ export class Nodes {
      * Find nodes by label and/or type.
      * Use this to search for entities in the graph matching specific criteria.
      *
-     * Example:
-     * ```ts
-     * const nodes = await nodeManager.find({ type: 'directive' });
-     * ```
+    * Example:
+    * ```ts
+    * const foundNodes = await nodes.find({ type: 'directive' });
+    * ```
      * @param query Query object with label and/or type.
      * @returns Array of node objects.
      */
@@ -145,10 +145,10 @@ export class Nodes {
      * Search nodes using a full-text query.
      * Use this to perform a text search across all entities in the graph.
      *
-     * Example:
-     * ```ts
-     * const results = await nodeManager.search('search term');
-     * ```
+    * Example:
+    * ```ts
+    * const results = await nodes.search('search term');
+    * ```
      * @param query Search query string.
      * @returns Array of node objects matching the query.
      */

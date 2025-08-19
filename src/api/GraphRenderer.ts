@@ -16,6 +16,22 @@ export interface RenderOptions {
     path: string;
 }
 
+/**
+ * Generate a mind map visualization starting from a given node.
+ * Use this to explore the graph structure from a specific entry point.
+ * @param options Options including start node ID and traversal depth.
+ * @returns DOT-format string representing the mind map.
+/**
+ * Provides visualization and rendering methods for the graph database.
+ * Includes mind map generation, canned graph views, and image rendering.
+ *
+ * Example usage:
+ * ```ts
+ * const renderer = new GraphRenderer(connection);
+ * const dot = await renderer.mindMap({ startNodeId: 'A', depth: 2 });
+ * await renderer.render(dot, { format: 'svg', path: 'output.svg' });
+ * ```
+ */
 export class GraphRenderer {
     private query: GraphQuery;
 
@@ -23,12 +39,6 @@ export class GraphRenderer {
         this.query = new GraphQuery(connection);
     }
 
-    /**
-     * Generate a mind map visualization starting from a given node.
-     * Use this to explore the graph structure from a specific entry point.
-     * @param options Options including start node ID and traversal depth.
-     * @returns DOT-format string representing the mind map.
-     */
     public async mindMap(options: MindMapOptions): Promise<string> {
         // Pass this.connection to generateMindMap
         return generateMindMap(options.startNodeId, options.depth, this.connection);

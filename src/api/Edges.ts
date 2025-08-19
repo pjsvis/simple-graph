@@ -7,8 +7,8 @@ import { insertEdgeFromObject, getInsertEdgeParams } from '../database/insert-ed
  *
  * Example usage:
  * ```ts
- * const edgeManager = new EdgeManager(connection);
- * await edgeManager.add({ source: 'A', target: 'B', properties: { type: 'references' } });
+ * const edges = new Edges(connection);
+ * await edges.add({ source: 'A', target: 'B', properties: { type: 'references' } });
  * ```
  */
 export class Edges {
@@ -22,10 +22,10 @@ export class Edges {
      * This is the basic way to retrieve a relationship between two nodes.
      * Returns the edge object if found, or null if no such edge exists.
      *
-     * Example:
-     * ```ts
-     * const edge = await edgeManager.get('A', 'B');
-     * ```
+    * Example:
+    * ```ts
+    * const edge = await edges.get('A', 'B');
+    * ```
      * @param source Source node ID.
      * @param target Target node ID.
      * @returns The edge object or null if not found.
@@ -47,10 +47,10 @@ export class Edges {
      * Get all edges for a node, optionally filtered by direction.
      * Use this to find all relationships for a node, whether incoming, outgoing, or both.
      *
-     * Example:
-     * ```ts
-     * const edges = await edgeManager.forNode('A', 'outgoing');
-     * ```
+    * Example:
+    * ```ts
+    * const edgeList = await edges.forNode('A', 'outgoing');
+    * ```
      * @param id Node ID.
      * @param direction Direction of edges ('incoming', 'outgoing', or 'both').
      * @returns Array of edge objects.
@@ -82,10 +82,10 @@ export class Edges {
      * Add a new edge to the graph.
      * This creates a relationship between two nodes. If the edge already exists, it may be updated.
      *
-     * Example:
-     * ```ts
-     * await edgeManager.add({ source: 'A', target: 'B', properties: { type: 'references' } });
-     * ```
+    * Example:
+    * ```ts
+    * await edges.add({ source: 'A', target: 'B', properties: { type: 'references' } });
+    * ```
      * @param edge Edge object to add.
      */
     public async add(edge: Edge): Promise<any> {
@@ -98,10 +98,10 @@ export class Edges {
      * Update properties of an existing edge.
      * Use this to change metadata or attributes of a relationship between two nodes.
      *
-     * Example:
-     * ```ts
-     * await edgeManager.update('A', 'B', { weight: 2 });
-     * ```
+    * Example:
+    * ```ts
+    * await edges.update('A', 'B', { weight: 2 });
+    * ```
      * @param source Source node ID.
      * @param target Target node ID.
      * @param properties Properties to update.
@@ -118,10 +118,10 @@ export class Edges {
      * Delete an edge from the graph.
      * Removes the relationship between two nodes. This does not delete the nodes themselves.
      *
-     * Example:
-     * ```ts
-     * await edgeManager.delete('A', 'B');
-     * ```
+    * Example:
+    * ```ts
+    * await edges.delete('A', 'B');
+    * ```
      * @param source Source node ID.
      * @param target Target node ID.
      */

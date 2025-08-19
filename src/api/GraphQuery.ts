@@ -17,6 +17,12 @@ export interface TraverseOptions {
 /**
  * Provides advanced query and analysis methods for the graph database.
  * Includes raw SQL queries, graph statistics, traversal, and specialized analysis.
+ *
+ * Example usage:
+ * ```ts
+ * const query = new GraphQuery(connection);
+ * const stats = await query.stats();
+ * ```
  */
 export class GraphQuery {
     private nodes: Nodes;
