@@ -5,6 +5,7 @@ This guide explains how to integrate the knowledge graph database module with Gr
 ## 📋 Files to Copy
 
 ### Required Core Files
+
 ```
 src/types/base-types.ts       # Core type definitions
 src/database/connection.ts    # Database connection with high-concurrency settings
@@ -16,6 +17,7 @@ src/database/index.ts         # Main exports and KnowledgeGraph class
 ```
 
 ### Optional Files (for full CDA support)
+
 ```
 src/types/cl-types.ts         # CDA-specific types (DirectiveNode, etc.)
 src/parsers/cda-parser.ts     # CDA markdown parser
@@ -24,6 +26,7 @@ src/parsers/cda-parser.ts     # CDA markdown parser
 ## 🔧 Dependencies
 
 Add to your `package.json`:
+
 ```json
 {
   "dependencies": {
@@ -38,180 +41,188 @@ Add to your `package.json`:
 ## 🚀 Basic Usage
 
 ### Simple Knowledge Graph
+
 ```typescript
-import { createKnowledgeGraph } from './database'
+import { createKnowledgeGraph } from "./database";
 
 // Create in-memory graph
-const kg = await createKnowledgeGraph()
+const kg = await createKnowledgeGraph();
 
 // Add nodes
 await kg.insertNode({
-  id: 'concept-1',
-  type: 'concept',
-  name: 'Machine Learning',
-  description: 'A subset of artificial intelligence'
-})
+  id: "concept-1",
+  type: "concept",
+  name: "Machine Learning",
+  description: "A subset of artificial intelligence",
+});
 
 await kg.insertNode({
-  id: 'concept-2', 
-  type: 'concept',
-  name: 'Neural Networks',
-  description: 'Computing systems inspired by biological neural networks'
-})
+  id: "concept-2",
+  type: "concept",
+  name: "Neural Networks",
+  description: "Computing systems inspired by biological neural networks",
+});
 
 // Add relationship
 await kg.insertEdge({
-  source: 'concept-2',
-  target: 'concept-1',
+  source: "concept-2",
+  target: "concept-1",
   properties: {
-    type: 'is_subset_of',
-    context: 'Neural networks are a key technique in machine learning'
-  }
-})
+    type: "is_subset_of",
+    context: "Neural networks are a key technique in machine learning",
+  },
+});
 
 // Search and traverse
-const results = await kg.search('neural')
-const related = await kg.traverse('concept-1', 2, 'both')
-const stats = await kg.getStats()
+const results = await kg.search("neural");
+const related = await kg.traverse("concept-1", 2, "both");
+const stats = await kg.getStats();
 
-console.log('Search results:', results)
-console.log('Related concepts:', related)
-console.log('Graph stats:', stats)
+console.log("Search results:", results);
+console.log("Related concepts:", related);
+console.log("Graph stats:", stats);
 ```
 
 ### File-based Database
+
 ```typescript
-import { createKnowledgeGraph } from './database'
+import { createKnowledgeGraph } from "./database";
 
 // Create persistent database
-const kg = await createKnowledgeGraph('my-knowledge-graph.db')
+const kg = await createKnowledgeGraph("my-knowledge-graph.db");
 
 // Use the same API as above
-await kg.insertNode({ id: 'node1', type: 'entity', name: 'Example' })
+await kg.insertNode({ id: "node1", type: "entity", name: "Example" });
 
 // Close when done
-await kg.close()
+await kg.close();
 ```
 
 ### Connect to the knowledge graph
+
 ```typescript
-import { connectToLoom } from './database'
+import { connectToLoom } from "./database";
 
 // Connect to existing Loom database
-const loom = await connectToLoom('path/to/the-loom-v2.db', true) // readonly
+const loom = await connectToLoom("path/to/the-loom-v2.db", true); // readonly
 
 // Query CDA directives
-const phiDirectives = await loom.search('processing philosophy')
-const cogStrategies = await loom.search('cognitive')
+const phiDirectives = await loom.search("processing philosophy");
+const cogStrategies = await loom.search("cognitive");
 
 // Traverse from a specific directive
-const related = await loom.traverse('cda-61-phi-1', 3, 'both')
+const related = await loom.traverse("cda-61-phi-1", 3, "both");
 ```
 
 ## 🏗️ Advanced Usage
 
 ### Custom Database Configuration
+
 ```typescript
-import { createDatabaseConnection, KnowledgeGraph } from './database'
+import { createDatabaseConnection, KnowledgeGraph } from "./database";
 
 const connection = await createDatabaseConnection({
-  type: 'file',
-  filename: 'custom.db',
+  type: "file",
+  filename: "custom.db",
   readonly: false,
   timeout: 10000,
   pragmas: {
-    journal_mode: 'WAL',
+    journal_mode: "WAL",
     busy_timeout: 10000,
-    synchronous: 'FULL',
-    foreign_keys: 'ON'
-  }
-})
+    synchronous: "FULL",
+    foreign_keys: "ON",
+  },
+});
 
-const kg = new KnowledgeGraph(connection)
-await kg.initialize()
+const kg = new KnowledgeGraph(connection);
+await kg.initialize();
 ```
 
 ### Batch Operations
+
 ```typescript
 // Batch insert nodes
 const nodes = [
-  { id: 'n1', type: 'concept', name: 'Concept 1' },
-  { id: 'n2', type: 'concept', name: 'Concept 2' },
-  { id: 'n3', type: 'concept', name: 'Concept 3' }
-]
+  { id: "n1", type: "concept", name: "Concept 1" },
+  { id: "n2", type: "concept", name: "Concept 2" },
+  { id: "n3", type: "concept", name: "Concept 3" },
+];
 
-await kg.batchInsertNodes(nodes)
+await kg.batchInsertNodes(nodes);
 
 // Batch insert edges
 const edges = [
-  { source: 'n1', target: 'n2', properties: { type: 'relates_to' } },
-  { source: 'n2', target: 'n3', properties: { type: 'leads_to' } }
-]
+  { source: "n1", target: "n2", properties: { type: "relates_to" } },
+  { source: "n2", target: "n3", properties: { type: "leads_to" } },
+];
 
-await kg.batchInsertEdges(edges)
+await kg.batchInsertEdges(edges);
 ```
 
 ### Low-level Operations
-```typescript
-import { 
-  createDatabaseConnection, 
-  insertNodeSQL, 
-  getInsertNodeParams,
-  getNodeById 
-} from './database'
 
-const connection = await createDatabaseConnection({ type: 'memory' })
+```typescript
+import {
+  createDatabaseConnection,
+  insertNodeSQL,
+  getInsertNodeParams,
+  getNodeById,
+} from "./database";
+
+const connection = await createDatabaseConnection({ type: "memory" });
 
 // Direct SQL operations
-const node = { id: 'test', type: 'example', data: 'value' }
-const sql = insertNodeSQL(node)
-const params = getInsertNodeParams(node)
-await connection.run(sql, params)
+const node = { id: "test", type: "example", data: "value" };
+const sql = insertNodeSQL(node);
+const params = getInsertNodeParams(node);
+await connection.run(sql, params);
 
 // Direct queries
-const retrieved = await getNodeById(connection, 'test')
+const retrieved = await getNodeById(connection, "test");
 ```
 
 ## 🎯 Integration Patterns
 
 ### Groq Query Enhancement
+
 ```typescript
 // Enhance Groq queries with knowledge graph context
 async function enhanceQuery(query: string, kg: KnowledgeGraph) {
   // Search for relevant concepts
-  const concepts = await kg.search(query)
-  
+  const concepts = await kg.search(query);
+
   // Get related information
-  const context = []
+  const context = [];
   for (const concept of concepts.slice(0, 5)) {
-    const related = await kg.traverse(concept.id, 2, 'both')
-    context.push(...related)
+    const related = await kg.traverse(concept.id, 2, "both");
+    context.push(...related);
   }
-  
+
   return {
     originalQuery: query,
     relevantConcepts: concepts,
-    contextualInformation: context
-  }
+    contextualInformation: context,
+  };
 }
 ```
 
 ### Knowledge Graph as Context Provider
+
 ```typescript
 // Use knowledge graph to provide context for LLM queries
 async function getContextForQuery(query: string, kg: KnowledgeGraph) {
-  const searchResults = await kg.search(query)
-  const stats = await kg.getStats()
-  
+  const searchResults = await kg.search(query);
+  const stats = await kg.getStats();
+
   return {
     relevantNodes: searchResults,
     graphSize: stats.nodeCount,
     availableTypes: Object.keys(stats.nodeTypes),
-    suggestedTraversals: searchResults.map(node => ({
+    suggestedTraversals: searchResults.map((node) => ({
       startNode: node.id,
-      description: node.name || node.title || node.id
-    }))
-  }
+      description: node.name || node.title || node.id,
+    })),
+  };
 }
 ```
 
@@ -228,6 +239,7 @@ The database module includes production-grade concurrency features:
 ## 📊 Schema Overview
 
 ### Nodes Table
+
 ```sql
 CREATE TABLE nodes (
     body TEXT,                                                    -- JSON node data
@@ -236,7 +248,8 @@ CREATE TABLE nodes (
 );
 ```
 
-### Edges Table  
+### Edges Table
+
 ```sql
 CREATE TABLE edges (
     source     TEXT,                                              -- Source node ID
@@ -250,6 +263,7 @@ CREATE TABLE edges (
 ## 🎊 Ready for Production
 
 This database module is production-ready with:
+
 - ✅ High-concurrency SQLite configuration
 - ✅ Comprehensive error handling
 - ✅ Type-safe interfaces
