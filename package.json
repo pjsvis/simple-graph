@@ -37,8 +37,8 @@
     "web-build": "bun run scripts/build-web-assets.cjs",
     "web-deploy": "bun run web-build && bun run web-serve",
     "view-images": "open outputs/images/index.html",
-  "clean": "rm -rf outputs/visualizations/*.dot outputs/images/*.png outputs/images/*.svg",
-  "docs": "typedoc"
+    "clean": "rm -rf outputs/visualizations/*.dot outputs/images/*.png outputs/images/*.svg",
+    "docs": "typedoc"
   },
   "devDependencies": {
     "@types/node": "^24.3.0",
@@ -58,6 +58,7 @@
   "license": "MIT",
   "dependencies": {
     "@types/bun": "^1.2.20",
+    "sqlite-vec": "^0.1.7-alpha.2",
     "sqlite3": "^5.1.7",
     "undici": "^7.14.0"
   }
