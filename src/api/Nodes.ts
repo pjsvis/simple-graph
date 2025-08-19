@@ -18,11 +18,11 @@ export interface FindNodesQuery {
  *
  * Example usage:
  * ```ts
- * const nodeManager = new NodeManager(connection);
- * await nodeManager.add({ id: 'A', label: 'Node A', type: 'directive' });
+ * const nodes = new NodeManager(connection);
+ * await nodes.add({ id: 'A', label: 'Node A', type: 'directive' });
  * ```
  */
-export class NodeManager {
+export class Nodes {
     /**
      * @param connection Database connection instance.
      */

@@ -1,6 +1,6 @@
 import { DatabaseConnection, Node, GraphStats } from '../types/base-types';
-import { NodeManager } from './NodeManager';
-import { EdgeManager } from './EdgeManager';
+import { Nodes } from './Nodes';
+import { Edges } from './Edges';
 
 /**
  * Options for traversing the graph.
@@ -18,16 +18,16 @@ export interface TraverseOptions {
  * Provides advanced query and analysis methods for the graph database.
  * Includes raw SQL queries, graph statistics, traversal, and specialized analysis.
  */
-export class QueryManager {
-    private nodes: NodeManager;
-    private edges: EdgeManager;
+export class GraphQuery {
+    private nodes: Nodes;
+    private edges: Edges;
 
     /**
      * @param connection Database connection instance.
      */
     constructor(private connection: DatabaseConnection) {
-        this.nodes = new NodeManager(connection);
-        this.edges = new EdgeManager(connection);
+        this.nodes = new Nodes(connection);
+        this.edges = new Edges(connection);
     }
 
   /**

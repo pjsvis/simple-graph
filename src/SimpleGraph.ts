@@ -3,10 +3,10 @@ import { createDatabaseConnection, DEFAULT_DB_CONFIG } from './database/connecti
 import { createSchema } from './database/schema';
 
 // Import managers
-import { NodeManager } from './api/NodeManager';
-import { EdgeManager } from './api/EdgeManager';
-import { QueryManager } from './api/QueryManager';
-import { VisualizationManager } from './api/VisualizationManager';
+import { Nodes } from './api/Nodes';
+import { Edges } from './api/Edges';
+import { GraphQuery } from './api/GraphQuery';
+import { GraphRenderer } from './api/GraphRenderer';
 
 /**
  * Main entry point for the SimpleGraph knowledge graph database.
@@ -33,13 +33,13 @@ export interface ConnectOptions {
  */
 export class SimpleGraph {
     /** Node manager for CRUD operations on nodes. */
-    public nodes: NodeManager;
+    public nodes: Nodes;
     /** Edge manager for CRUD operations on edges. */
-    public edges: EdgeManager;
+    public edges: Edges;
     /** Query manager for advanced graph queries and stats. */
-    public query: QueryManager;
+    public query: GraphQuery;
     /** Visualization manager for graph visualizations. */
-    public visualize: VisualizationManager;
+    public visualize: GraphRenderer;
 
     /**
      * The underlying database connection used by all managers.
@@ -49,10 +49,10 @@ export class SimpleGraph {
      * @param connection Database connection instance.
      */
     private constructor(private connection: DatabaseConnection) {
-        this.nodes = new NodeManager(connection);
-        this.edges = new EdgeManager(connection);
-        this.query = new QueryManager(connection);
-        this.visualize = new VisualizationManager(connection);
+        this.nodes = new Nodes(connection);
+        this.edges = new Edges(connection);
+        this.query = new GraphQuery(connection);
+        this.visualize = new GraphRenderer(connection);
     }
 
     /**

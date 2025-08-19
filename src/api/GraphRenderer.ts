@@ -4,7 +4,7 @@ import { renderDotToImage, isGraphvizInstalled } from '../visualization/renderer
 import { DotGraphGenerator } from '../visualization/dot-generator';
 import { GRAPH_RECIPES } from '../visualization/canned-graphs';
 import { GraphType } from '../types/visualization-types';
-import { QueryManager } from './QueryManager';
+import { GraphQuery } from './GraphQuery';
 
 export interface MindMapOptions {
     startNodeId: string;
@@ -16,11 +16,11 @@ export interface RenderOptions {
     path: string;
 }
 
-export class VisualizationManager {
-    private query: QueryManager;
+export class GraphRenderer {
+    private query: GraphQuery;
 
     constructor(private connection: DatabaseConnection) {
-        this.query = new QueryManager(connection);
+        this.query = new GraphQuery(connection);
     }
 
     /**

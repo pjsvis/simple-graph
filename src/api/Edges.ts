@@ -11,7 +11,7 @@ import { insertEdgeFromObject, getInsertEdgeParams } from '../database/insert-ed
  * await edgeManager.add({ source: 'A', target: 'B', properties: { type: 'references' } });
  * ```
  */
-export class EdgeManager {
+export class Edges {
     /**
      * @param connection Database connection instance.
      */
