@@ -1,6 +1,6 @@
-# The Loom Web Interface
+# the knowledge graph Web Interface
 
-This web interface provides an interactive way to explore The Loom knowledge graph.
+This web interface provides an interactive way to explore the knowledge graph.
 
 ## Features
 

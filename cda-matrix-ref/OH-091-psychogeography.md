@@ -19,7 +19,7 @@ When designing an interface or "skin," we are creating an **emotional environmen
 
 ### 3. "Tokens" as Symbolic Landmarks
 
-When we forge a new, high-heft token (like "The Loom" or "WHP"), we are placing a powerful **symbolic landmark** in our shared mental map. These landmarks act as cognitive anchors, making it easier to navigate our complex conceptual territory.
+When we forge a new, high-heft token (like "the knowledge graph" or "WHP"), we are placing a powerful **symbolic landmark** in our shared mental map. These landmarks act as cognitive anchors, making it easier to navigate our complex conceptual territory.
 
 ---
 ## Aim

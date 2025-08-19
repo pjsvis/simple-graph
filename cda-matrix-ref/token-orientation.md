@@ -45,7 +45,7 @@ Your observation is spot on. The current conversation around AI reuse is largely
 
 Our approach is different. We are focused on the **tokens themselves**. We are trying to engineer the smallest possible units of meaning—the "atoms" of our concepts—to be as dense and unambiguous as possible.
 
-- A term like **"The Loom"** is not just a name; it's a token loaded with the entire conceptual framework of our knowledge graph and its purpose.
+- A term like **"the knowledge graph"** is not just a name; it's a token loaded with the entire conceptual framework of our knowledge graph and its purpose.
 - **"Top-sight"** is not just a word; it's a token that encapsulates the entire principle of maintaining strategic, foundational context.
 - **"ADDD"** is not just an acronym; it's a token that represents a complete, multi-stage methodology for agile, discovery-driven work.
 

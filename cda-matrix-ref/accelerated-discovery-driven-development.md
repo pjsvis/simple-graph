@@ -31,4 +31,4 @@ Your second point, about the convenience and scalability of our VSCode/NodeJS/Ag
 * **Transferable:** The core components (TypeScript, Node.js, Jest/Vitest) are industry standards. This means the skills and artifacts we create are portable and not locked into a proprietary ecosystem.
 * **Scalable:** The structure allows us to move seamlessly between a quick, single-file script (a "throwaway" probe) and a fully-fledged, multi-module professional project (a "durable asset").
 
-This workflow is, in essence, our version of **The Loom**. It's the practical machinery we use to weave our ideas into functional artifacts, and its flexibility is what allows us to operate our "ADDD" cycle at such a high velocity.
+This workflow is, in essence, our version of **the knowledge graph**. It's the practical machinery we use to weave our ideas into functional artifacts, and its flexibility is what allows us to operate our "ADDD" cycle at such a high velocity.

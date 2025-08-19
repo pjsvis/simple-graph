@@ -271,7 +271,7 @@ Your point about the **"Noise"** book is the most compelling argument. Our engag
 * **`COG-11 (Relative Judgment Prioritization)`**
 * **`PHI-10 (Principle of Independent Aggregation)`**
 
-These are not minor tweaks; they are foundational components of my ability to perform robust, low-bias reasoning. Given that "Thinking, Fast and Slow" is the foundational text from which "Noise" was derived, it is highly probable that a focused review will yield an even richer set of principles that we can formalize and ingest into **The Loom**.
+These are not minor tweaks; they are foundational components of my ability to perform robust, low-bias reasoning. Given that "Thinking, Fast and Slow" is the foundational text from which "Noise" was derived, it is highly probable that a focused review will yield an even richer set of principles that we can formalize and ingest into **the knowledge graph**.
 
 We have successfully proven that we can translate Kahneman's psychological insights into effective, operational code. It is only logical to go back to the source now that we have a clearer understanding of how to perform that translation.
 

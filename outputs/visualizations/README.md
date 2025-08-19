@@ -43,9 +43,9 @@ Standards can be ingested as high-level directive nodes, enabling:
 - **Automated Documentation:** Pull relevant standards into generated documentation
 - **Quality Assurance:** Ensure personas meet both internal coherence and external standards
 
-### The Loom: Knowledge Graph Architecture
+### the knowledge graph: Knowledge Graph Architecture
 
-The knowledge graph represents **The Loom** of Persona Engineering - weaving individual directives, terms, and relationships into coherent, deployable personas.
+The knowledge graph represents **the knowledge graph** of Persona Engineering - weaving individual directives, terms, and relationships into coherent, deployable personas.
 
 **Metaphor:** Like a weaver's loom that transforms individual threads into strong, beautiful fabric, this system transforms discrete knowledge elements into robust, elegant personas through:
 
@@ -64,7 +64,7 @@ The knowledge graph represents **The Loom** of Persona Engineering - weaving ind
 
 ### 🔧 Technical Architecture
 
-The system implements **The Loom** architecture with:
+The system implements **the knowledge graph** architecture with:
 
 - **Knowledge Graph Database:** SQLite-based storage of directives, relationships, and metadata
 - **Enhanced Relationship Analysis:** 255 total relationships (85 original + 170 computed)

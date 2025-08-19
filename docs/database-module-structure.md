@@ -70,7 +70,7 @@ await kg.insertNode({ id: 'concept1', type: 'concept', name: 'AI' })
 await kg.insertEdge({ source: 'concept1', target: 'concept2', properties: { type: 'relates_to' } })
 ```
 
-### **Connect to The Loom**
+### **Connect to the knowledge graph**
 ```typescript
 import { connectToLoom } from './database'
 
@@ -133,7 +133,7 @@ class KnowledgeGraph {
 // Create new knowledge graph
 createKnowledgeGraph(dbPath?: string): Promise<KnowledgeGraph>
 
-// Connect to The Loom
+// Connect to the knowledge graph
 connectToLoom(dbPath?: string, readonly?: boolean): Promise<KnowledgeGraph>
 
 // Low-level connection
@@ -180,4 +180,4 @@ getGraphStats(connection): Promise<GraphStats>
 - **✅ Integration Ready**: Complete Groq-CLI package available
 - **✅ Production Grade**: High-concurrency, error-free operation
 
-**The database module is now perfectly structured for external integration while maintaining full compatibility with The Loom knowledge graph system!** 🚀
+**The database module is now perfectly structured for external integration while maintaining full compatibility with the knowledge graph system!** 🚀

@@ -8,7 +8,7 @@ version_history:
     date: "2025-08-12"
     target_substrate: "Baseline (Substrate Agnostic)"
     changes:
-      - Initial formulaic generation from The Loom knowledge graph.
+      - Initial formulaic generation from the knowledge graph.
     lessons_learned: >
       This artifact represents the baseline, architecturally-sound persona derived from
       the analysis of the Ctx v61/1.76 system. It serves as the starting point for

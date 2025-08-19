@@ -1,7 +1,7 @@
 # **OPM-14: Knowledge Graph Ingestion Protocol (KIP)**
 
 - **OPM-14.1 (Principle):**
-  To provide a structured, multi-stage workflow for the formal ingestion of new conceptual artifacts (directives, heuristics, etc.) into The Loom, ensuring data integrity, architectural coherence, and complete validation at every step.
+  To provide a structured, multi-stage workflow for the formal ingestion of new conceptual artifacts (directives, heuristics, etc.) into the knowledge graph, ensuring data integrity, architectural coherence, and complete validation at every step.
 - **OPM-14.2 (Workflow):**
   The protocol consists of four distinct phases:
 

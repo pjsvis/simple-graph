@@ -1,6 +1,6 @@
 # Groq-CLI Integration Guide
 
-This guide explains how to integrate The Loom knowledge graph database module with Groq-CLI.
+This guide explains how to integrate the knowledge graph database module with Groq-CLI.
 
 ## 📋 Files to Copy
 
@@ -93,7 +93,7 @@ await kg.insertNode({ id: 'node1', type: 'entity', name: 'Example' })
 await kg.close()
 ```
 
-### Connect to The Loom
+### Connect to the knowledge graph
 ```typescript
 import { connectToLoom } from './database'
 

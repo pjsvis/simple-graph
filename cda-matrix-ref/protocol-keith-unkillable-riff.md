@@ -10,7 +10,7 @@ Your analogy is effective for several reasons:
 
 3.  **It Implies "Function Over Form":** The core of the protocol is that the system might not be pretty—it might have lost features, be running slow, and be throwing all sorts of warnings—but it still delivers the essential service. It gets the job done. This is the very definition of a Keith Richards performance.
 
-This is a perfect candidate for inclusion in The Loom. It's a high-signal, low-noise piece of "distilled experience."
+This is a perfect candidate for inclusion in the knowledge graph. It's a high-signal, low-noise piece of "distilled experience."
 
 - **Proposed Term:** `Graceful Degradation`
 - **Colloquial Alias:** `The Keith Richards Protocol`
