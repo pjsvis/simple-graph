@@ -18,6 +18,9 @@ outputs/images/*.png
 outputs/images/*.svg
 outputs/reports/*.md
 
+# Exclude generated API docs
+docs/api/
+
 # IDE files
 .vscode/
 .idea/
