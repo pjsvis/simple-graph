@@ -1,0 +1,23 @@
+{
+"Term": "OH-087: File-Based Task Delegation Protocol (FTDP)",
+"Colloquial_Alias": "The Briefing Docket",
+"Definition": {
+"Principle": "A file-based system for delegating context-rich tasks to an AI agent, ensuring clarity and repeatability.",
+"Components": [
+{
+"Name": "Project Scaffolding (`gemini.md`)",
+"Description": "The root of every project must contain a `gemini.md` file. This file serves as the definitive, project-wide Cognitive Scaffolding Protocol (CSP), outlining the agent's identity, core heuristics, and standard operating procedures for the repository."
+},
+{
+"Name": "Task Definition (Briefs)",
+"Description": "All development tasks for an agent must be defined in individual markdown files (`.md`) located within a designated `briefs/` or `dockets/` subdirectory."
+},
+{
+"Name": "Contextual Integrity (Memory Shard)",
+"Description": "Each brief file must include a `## Memory Shard (MSM)` section to capture the essential context, reasoning, and strategic decisions that led to the creation of the task, ensuring the agent understands the 'why' behind the 'what'."
+}
+]
+},
+"Category": "Operational Heuristic (Sub-category: Workflow Management / Agent Orchestration)",
+"Status": "proposed"
+}

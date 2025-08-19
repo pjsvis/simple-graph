@@ -32,7 +32,7 @@ To formalize this, I propose we add the following Operational Heuristic to our C
 
 ### **Proposed Addition to Conceptual Lexicon**
 
-- **Term**: `OH-085: Layered Configuration Protocol (LCP)`
+- **Term**: `OH-086: Layered Configuration Protocol (LCP)`
 - **Definition**: For any module or application requiring configuration, a layered approach shall be implemented to ensure both flexibility and predictability. The order of precedence for loading settings will be:
   1. **Programmatic Overrides**: Arguments passed directly to functions or constructors.
   2. **User-Defined Configuration**: An external file (e.g., `settings.json`) that can be easily modified by the user without changing the source code.
