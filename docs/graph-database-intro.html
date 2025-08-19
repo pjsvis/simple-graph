@@ -40,6 +40,32 @@
 
     <h2>Example: E-Commerce Recommendation Engine</h2>
     <div class="example">
+      <h3>Finding Your Starting Point: The Importance of Search</h3>
+      <p>
+        In graph databases, the journey often begins with <strong>search</strong>. Before you can explore relationships, you need to locate your starting node—such as a customer by name. The <code>search()</code> function helps you find the node ID for "Alice" so you can traverse her connections and recommendations.
+      </p>
+      <pre style="background:#222;color:#eee;padding:1em;border-radius:6px;overflow-x:auto;"><code>// Find-then-traverse pattern in an e-commerce graph
+import { createKnowledgeGraph } from './database';
+
+const kg = await createKnowledgeGraph('ecommerce.db');
+
+// Step 1: Find the starting node
+const searchResults = await kg.search('Alice', ['name']);
+const aliceNode = searchResults[0];
+
+if (aliceNode) {
+  console.log(`Found Alice's node ID: ${aliceNode.id}`);
+
+  // Step 2: Use the ID to traverse the graph
+  const purchases = await kg.traverse(aliceNode.id, 1, 'outgoing');
+  console.log("Alice's Purchases:", purchases);
+} else {
+  console.log('Customer not found.');
+}
+</code></pre>
+      <p>
+        This <strong>find-then-traverse</strong> pattern is central to graph database workflows. It enables recommendations, relationship analysis, and much more.
+      </p>
       <p>Imagine a simple online store that wants to provide “customers who bought this also bought...” recommendations.</p>
       <strong>Graph Structure:</strong>
       <ul>
