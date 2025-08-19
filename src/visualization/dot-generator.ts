@@ -45,44 +45,27 @@ export interface DotGraphConfig {
 
 
 /**
- * Default configuration for DOT graph generation
+ * Default configuration for DOT graph generation (generic, minimal).
+ *
+ * To use this library, you must provide your own node/edge types, colors, shapes, and other visual settings at runtime.
+ * Example:
+ * ```ts
+ * const config: DotGraphConfig = {
+ *   includeNodeTypes: ['my_type1', 'my_type2'],
+ *   nodeColors: { my_type1: '#FF0000', my_type2: '#00FF00' },
+ *   // ...other settings
+ * };
+ * const dot = await generator.generateDot(config);
+ * ```
  */
 export const DEFAULT_DOT_CONFIG: DotGraphConfig = {
   layout: 'dot',
   rankdir: 'TB',
-  includeNodeTypes: ['directive', 'cda', 'oh_term'],
-  includeEdgeTypes: ['references', 'semantic_similarity', 'category_bridge', 'shared_inspiration'],
   maxEdges: 200,
-  nodeColors: {
-    'directive': '#E3F2FD',
-    'cda': '#FFF3E0', 
-    'oh_term': '#F3E5F5',
-    'core_concept': '#E8F5E8'
-  },
-  edgeColors: {
-    'references': '#1976D2',
-    'semantic_similarity': '#388E3C',
-    'category_bridge': '#F57C00',
-    'shared_inspiration': '#7B1FA2',
-    'keyword_similarity': '#5D4037',
-    'belongs_to_cda': '#757575'
-  },
-  nodeShapes: {
-    'directive': 'box',
-    'cda': 'ellipse',
-    'oh_term': 'diamond',
-    'core_concept': 'hexagon'
-  },
-  edgeStyles: {
-    'references': 'solid',
-    'semantic_similarity': 'dashed',
-    'category_bridge': 'bold',
-    'shared_inspiration': 'dotted'
-  },
   showNodeLabels: true,
   showEdgeLabels: false,
   maxLabelLength: 30,
-  clusterByCategory: true,
+  clusterByCategory: false,
   fontSize: 10,
   dpi: 300
 }
