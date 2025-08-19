@@ -12,33 +12,33 @@ A new `qroq-code` tool and a corresponding slash command (`/graph`) that allows 
 
 - **Phase 1: Module Integration**
 
-  - **File Scaffolding**: Copy the required core files from `simple-graph` into a new `src/tools/simple-graph/` directory within the `qroq-code` project.
-    - `src/types/base-types.ts`
-    - `src/database/connection.ts`
-    - `src/database/schema.ts`
-    - `src/database/insert-node.ts`
-    - `src/database/insert-edge.ts`
-    - `src/database/operations.ts`
-    - `src/database/index.ts`
-  - **Dependency Management**: Add `sqlite3` and its corresponding types to the `package.json` and run `bun install`.
+- **File Scaffolding**: Copy the required core files from `simple-graph` into a new `src/tools/simple-graph/` directory within the `qroq-code` project.
+- `src/types/base-types.ts`
+- `src/database/connection.ts`
+- `src/database/schema.ts`
+- `src/database/insert-node.ts`
+- `src/database/insert-edge.ts`
+- `src/database/operations.ts`
+- `src/database/index.ts`
+- **Dependency Management**: Add `sqlite3` and its corresponding types to the `package.json` and run `bun install`.
 
 ## **Phase 2: Tool Definition & Registration**
 
 - **Schema Definition**: Create a new tool schema, `knowledgeGraphToolSchema`, in `src/tools/tool-schemas.ts`.
-  - **Name**: `knowledgeGraphQuery`
-  - **Description**: "Queries the codebase knowledge graph for nodes and relationships."
-  - **Parameters**:
-    - `query`: (string, required) The search query to execute against the knowledge graph.
+- **Name**: `knowledgeGraphQuery`
+- **Description**: "Queries the codebase knowledge graph for nodes and relationships."
+- **Parameters**:
+- `query`: (string, required) The search query to execute against the knowledge graph.
 - **Tool Implementation**: Implement the `knowledgeGraphQuery` function in `src/tools/tools.ts`.
-  - This function will import and instantiate the `KnowledgeGraph` class from the newly integrated module.
-  - It will execute the `search()` and `traverse()` methods based on the user's query and return a formatted string of the results.
+- This function will import and instantiate the `KnowledgeGraph` class from the newly integrated module.
+- It will execute the `search()` and `traverse()` methods based on the user's query and return a formatted string of the results.
 - **Registration**: Register the new schema and function in the `TOOL_REGISTRY` and `executeTool` switch statement in `src/tools/tools.ts`.
 
 ## **Phase 3: User Interface (Slash Command)**
 
 - **Command Definition**: Create a new command definition file, `src/commands/definitions/graph.ts`.
-  - **Command**: `/graph`
-  - **Description**: "Query the project's knowledge graph."
+- **Command**: `/graph`
+- **Description**: "Query the project's knowledge graph."
 - **Handler Logic**: The command's handler will construct a tool-call message for the `knowledgeGraphQuery` tool, passing the user's input as the `query` parameter.
 - **Registration**: Register the new `/graph` command in `src/commands/index.ts`.
 
@@ -46,7 +46,7 @@ A new `qroq-code` tool and a corresponding slash command (`/graph`) that allows 
 
 - After reviewing the files, and implelmenting part 3. above I have identified several issues that are causing the build to fail.
 - NOTE: Filenames refer to the fioles in their new location in the groq-code-cli repo
-- however we should resolve these errors her in the simple-graph repo 
+- however we should resolve these errors her in the simple-graph repo
 - then we can port a fully functional set of files to the groq-code-cli repo
 - provide your opinion and propose a plan and checklist to resolve the issues
 
@@ -75,19 +75,18 @@ A new `qroq-code` tool and a corresponding slash command (`/graph`) that allows 
 
 To fix these issues, I will perform the following changes:
 
-1.  In `src/tools/simple-graph/database/search.ts`:
+1. In `src/tools/simple-graph/database/search.ts`:
 
-    - Rename fullTextSearch to searchNodes and export it.
+- Rename fullTextSearch to searchNodes and export it.
 
-2.  In `src/tools/simple-graph/database/operations.ts`:
+2. In `src/tools/simple-graph/database/operations.ts`:
 
-    - Change the import from ./search to import { searchNodes } from './search'.
-    - Replace all instances of db: Database with db: DatabaseConnection.
-    - Update the getGraphStats function to return the correct GraphStats object.
-    - Remove the label property from the batchInsertEdges function.
+- Change the import from ./search to import { searchNodes } from './search'.
+- Replace all instances of db: Database with db: DatabaseConnection.
+- Update the getGraphStats function to return the correct GraphStats object.
+- Remove the label property from the batchInsertEdges function.
 
-3.  In `src/tools/simple-graph/database/index.ts`:
-    - I will review the imports and exports to ensure that the DatabaseConnection, Node, and Edge
-      types are correctly handled.
+3. In `src/tools/simple-graph/database/index.ts`:
 
-
+- I will review the imports and exports to ensure that the DatabaseConnection, Node, and Edge
+  types are correctly handled.

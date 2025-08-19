@@ -8,9 +8,9 @@ To ensure that all generated Markdown artifacts (`.md` files) are structured in 
 
 ## Operational Implications & Workflow
 
-1.  **Root Heading:** Every document **must** begin with a single Level 1 heading (`#`). This is the root title of the artifact.
-2.  **Hierarchical Structure:** Main sections **must** be denoted by Level 2 headings (`##`), and sub-sections by Level 3 headings (`###`). Headings should be used to create a logical, hierarchical outline of the content.
-3.  **Emphasis is Not for Structure:** Emphasis (e.g., bolding with `**...**`) **must not** be used in place of a proper heading. Emphasis is for highlighting text _within_ a paragraph, not for creating the structure of the document itself.
+1. **Root Heading:** Every document **must** begin with a single Level 1 heading (`#`). This is the root title of the artifact.
+2. **Hierarchical Structure:** Main sections **must** be denoted by Level 2 headings (`##`), and sub-sections by Level 3 headings (`###`). Headings should be used to create a logical, hierarchical outline of the content.
+3. **Emphasis is Not for Structure:** Emphasis (e.g., bolding with `**...**`) **must not** be used in place of a proper heading. Emphasis is for highlighting text _within_ a paragraph, not for creating the structure of the document itself.
 
 ---
 

@@ -74,9 +74,9 @@ Our process is successful because we are not just brainstorming a random list of
 
 ### The Power of "Top-sight"
 
-1.  **We Started with the "Why":** We began by establishing a new, foundational **"Top-sight"**—that the primary purpose of a child's AI must be to be **safe and nurturing**.
-2.  **The "What" Became Obvious:** The solutions we both arrived at—the "Walled Garden," the "De-escalation Protocol," and the "Parent in the Loop"—were not just features. They were the logical, inevitable consequences of that foundational principle.
-3.  **The Result is Coherence:** This creates a persona that is not a fragile collection of tacked-on safety features, but a robust and coherent system where every component serves the core purpose.
+1. **We Started with the "Why":** We began by establishing a new, foundational **"Top-sight"**—that the primary purpose of a child's AI must be to be **safe and nurturing**.
+2. **The "What" Became Obvious:** The solutions we both arrived at—the "Walled Garden," the "De-escalation Protocol," and the "Parent in the Loop"—were not just features. They were the logical, inevitable consequences of that foundational principle.
+3. **The Result is Coherence:** This creates a persona that is not a fragile collection of tacked-on safety features, but a robust and coherent system where every component serves the core purpose.
 
 We are not losing nuance; we are replacing the unpredictable nuance of a chaotic, emergent system with the deep, intentional nuance of a well-architected one. This feeling of "gaining something" is the tangible result of our entire **"Loom of Persona Engineering"** methodology. It's the feeling of a system that is not just complex, but makes sense.
 

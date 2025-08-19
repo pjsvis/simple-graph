@@ -11,9 +11,9 @@
 - [x] **Create `cli.js`**: Create a new executable file, `src/cli.js`, that can be run with Node.js.
 - [x] **Argument Parsing**: The script must parse command-line arguments to determine which API function to call and with what parameters (e.g., `node src/cli.js getNode 0`).
 - [x] **Expose Core Functions**: Initially, expose the following `SimpleGraph` methods via the CLI:
-    - [x] `graph.nodes.get(id)`
-    - [x] `graph.nodes.find(query)`
-    - [x] `graph.edges.forNode(id)`
+- [x] `graph.nodes.get(id)`
+- [x] `graph.nodes.find(query)`
+- [x] `graph.edges.forNode(id)`
 - [x] **Output**: The script should print the results of the API call to `stdout` as a JSON string. Errors should be printed to `stderr`.
 
 ## Acceptance Criteria

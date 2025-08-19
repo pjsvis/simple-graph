@@ -9,18 +9,18 @@
 
 ### ## Key Requirements
 
-1.  **Web Server Setup**: Create a simple, lightweight web server using a library like `Express.js`.
-2.  **MCP Endpoint**: The server must expose a single POST endpoint (e.g., `/mcp`).
-3.  **JSON-RPC Handling**: The server must be able to handle JSON-RPC 2.0 requests, which is a common standard for MCP implementations. The request body will specify the `method` to call (e.g., `"graph.nodes.get"`) and the `params`.
-4.  **API Integration**: The server will instantiate a `SimpleGraph` instance and route incoming MCP requests to the corresponding API methods.
-5.  **Process Management**: The server should be runnable as a background process from the command line.
+1. **Web Server Setup**: Create a simple, lightweight web server using a library like `Express.js`.
+2. **MCP Endpoint**: The server must expose a single POST endpoint (e.g., `/mcp`).
+3. **JSON-RPC Handling**: The server must be able to handle JSON-RPC 2.0 requests, which is a common standard for MCP implementations. The request body will specify the `method` to call (e.g., `"graph.nodes.get"`) and the `params`.
+4. **API Integration**: The server will instantiate a `SimpleGraph` instance and route incoming MCP requests to the corresponding API methods.
+5. **Process Management**: The server should be runnable as a background process from the command line.
 
 ---
 
 ### ## Acceptance Criteria
 
-1.  **Health Check Test**: An integration test must be written that makes a simple GET request to a health check endpoint (e.g., `/health`) on the running server to verify it is active.
-2.  **MCP Request Test**: An integration test must be written that sends a valid JSON-RPC request to the `/mcp` endpoint (e.g., to get the genesis node) and asserts that the server returns a valid JSON-RPC response with the correct data.
+1. **Health Check Test**: An integration test must be written that makes a simple GET request to a health check endpoint (e.g., `/health`) on the running server to verify it is active.
+2. **MCP Request Test**: An integration test must be written that sends a valid JSON-RPC request to the `/mcp` endpoint (e.g., to get the genesis node) and asserts that the server returns a valid JSON-RPC response with the correct data.
 
 ## Proposed Naming Convention
 

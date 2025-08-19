@@ -211,17 +211,17 @@ const semanticView = {
 
 ```
 graph-visualizations/
-├── complete-knowledge-graph.dot     # Full network overview
-├── directives-only.dot              # Directive network only
-├── relationships-network.dot        # Relationship-focused view
-├── category-*.dot                   # Individual category networks
-├── cross-category-bridges.dot       # Inter-category connections
-├── inspirational-clusters.dot       # Inspirational source groups
-├── semantic-similarity.dot          # Semantic relationship network
-├── hub-authority.dot               # Central nodes visualization
-├── layout-*.dot                    # Different layout comparisons
-├── minimal-example.dot             # Simple example for testing
-└── simple-test.dot                 # Basic test output
+├── complete-knowledge-graph.dot  # Full network overview
+├── directives-only.dot    # Directive network only
+├── relationships-network.dot  # Relationship-focused view
+├── category-*.dot     # Individual category networks
+├── cross-category-bridges.dot  # Inter-category connections
+├── inspirational-clusters.dot  # Inspirational source groups
+├── semantic-similarity.dot   # Semantic relationship network
+├── hub-authority.dot    # Central nodes visualization
+├── layout-*.dot     # Different layout comparisons
+├── minimal-example.dot    # Simple example for testing
+└── simple-test.dot     # Basic test output
 ```
 
 ## 🎯 Use Cases

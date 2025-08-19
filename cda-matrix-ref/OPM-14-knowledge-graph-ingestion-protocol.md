@@ -7,20 +7,21 @@
 
   **Phase 1: Triage & Formalization**
 
-  - **Trigger:** We identify a new concept or heuristic from our "dialogue" context that is a candidate for inclusion in our "Top-sight" context.
-  - **Action:** We will collaboratively draft the full, formal definition of the new artifact, ensuring it has a clear `ID`, `Principle`, and `Definition`.
+- **Trigger:** We identify a new concept or heuristic from our "dialogue" context that is a candidate for inclusion in our "Top-sight" context.
+- **Action:** We will collaboratively draft the full, formal definition of the new artifact, ensuring it has a clear `ID`, `Principle`, and `Definition`.
 
-  **Phase 2: Ingestion (The "Brief")**
+**Phase 2: Ingestion (The "Brief")**
 
-  - **Action:** We will create a specific "brief" for an agent. The prompt will instruct it to:
-    1.  Parse the newly formalized artifact.
-    2.  Add it as a new node to a **temporary, new version of the database**.
-    3.  Attempt to automatically infer and add any new `edges` (relationships) based on references in the new artifact's text.
+- **Action:** We will create a specific "brief" for an agent. The prompt will instruct it to:
 
-  **Phase 3: Validation (The "Eval")**
+1. Parse the newly formalized artifact.
+2. Add it as a new node to a **temporary, new version of the database**.
+3. Attempt to automatically infer and add any new `edges` (relationships) based on references in the new artifact's text.
 
-  - **Action:** After the agent reports success, we run a dedicated validation test suite against the _new_ database. This "eval" will confirm the new node exists, the new edges are correct, and overall graph integrity is maintained.
+**Phase 3: Validation (The "Eval")**
 
-  **Phase 4: Promotion (The "Merge")**
+- **Action:** After the agent reports success, we run a dedicated validation test suite against the _new_ database. This "eval" will confirm the new node exists, the new edges are correct, and overall graph integrity is maintained.
 
-  - **Action:** Only after all validation tests pass do we manually promote the new database to become the canonical version.
+**Phase 4: Promotion (The "Merge")**
+
+- **Action:** Only after all validation tests pass do we manually promote the new database to become the canonical version.
