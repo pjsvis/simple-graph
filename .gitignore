@@ -18,8 +18,10 @@ outputs/images/*.png
 outputs/images/*.svg
 outputs/reports/*.md
 
-# Exclude generated API docs
+# Exclude generated API docs except media folder
 docs/api/
+!docs/api/media/
+!docs/api/media/*
 
 # IDE files
 .vscode/

@@ -57,6 +57,9 @@ See `docs/` for comprehensive guides and API documentation.
 **Learn more about vector databases and embeddings:**  
 [Introduction to Vector Databases & Embeddings (HTML)](docs/vector-database-intro.html)
 
+**Learn more about Ollama**
+[Introduction to Ollama (HTML)](docs/ollama-client.html)
+
 ## 🎨 Visualizations
 
 Generated visualizations are available in `outputs/images/` with an interactive HTML browser.

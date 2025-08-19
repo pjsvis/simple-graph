@@ -15,17 +15,17 @@ All API interfaces are fully typed and documented for Typedoc.
 ## Usage Example
 
 ```typescript
-import { OllamaClient } from "./src/llm/ollama-client";
+import { OllamaClient } from './src/llm/ollama-client';
 
 const client = new OllamaClient();
 
 // Generate text
-const text = await client.generate("Say hello world");
+const text = await client.generate('Say hello world');
 console.log(text);
 
 // Chat
 const chat = await client.chat([
-  { role: "user", content: "What is the capital of France?" },
+  { role: 'user', content: 'What is the capital of France?' }
 ]);
 console.log(chat);
 ```

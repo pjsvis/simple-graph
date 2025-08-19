@@ -1,0 +1,11 @@
+Date: 2025-08-19T18:26:33.104Z
+Description: Ollama chat session test: simple Q&A dialog.
+
+User Messages:
+Hello! What is your name?
+Can you tell me a fun fact about AI?
+What is the capital of France?
+
+LLM Response:
+Hello! My name is Gemma, an open-weights AI model I'm a large language model created by the Gemma team at Google DeepMind.
+
