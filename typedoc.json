@@ -2,10 +2,10 @@
   "entryPoints": [
     "src/index.ts",
     "src/SimpleGraph.ts",
-    "src/api/EdgeManager.ts",
-    "src/api/NodeManager.ts",
-    "src/api/QueryManager.ts",
-    "src/api/VisualizationManager.ts",
+  "src/api/Edges.ts",
+  "src/api/Nodes.ts",
+  "src/api/GraphQuery.ts",
+  "src/api/GraphRenderer.ts",
   "src/types/base-types.ts",
   "src/types/cl-types.ts",
   "src/types/visualization-types.ts"
